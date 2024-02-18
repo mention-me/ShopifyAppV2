@@ -1,0 +1,19 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "e74b8c5a5854a3d50a97330a49e4a97f"
+name = "mention-me"
+application_url = "https://example.com/"
+embedded = true
+
+[build]
+dev_store_url = "mention-me-checkout-extensibility.myshopify.com"
+include_config_on_deploy = true
+
+[auth]
+redirect_urls = [ "https://example.com/api/auth" ]
+
+[webhooks]
+api_version = "2024-01"
+
+[pos]
+embedded = false
