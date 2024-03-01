@@ -66,7 +66,7 @@ function fetchRefereeEntryPoint(mmPartnerCode: string, locale: string, setApiRes
             request: {
                 partnerCode: mmPartnerCode,
                 situation: "shopify-checkout",
-                appVersion: "v1",
+                appVersion: "v0.1",
                 appName: "mention-me-shopify-app",
                 localeCode: locale,
             },

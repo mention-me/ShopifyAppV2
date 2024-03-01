@@ -86,7 +86,7 @@ function fetchReferrerEntryPoint(mmPartnerCode: string, locale: string, setApiRe
             request: {
                 partnerCode: mmPartnerCode,
                 situation: "shopify-checkout",
-                appVersion: "v1",
+                appVersion: "v0.1",
                 appName: "mention-me-shopify-app",
                 localeCode: locale,
             },
