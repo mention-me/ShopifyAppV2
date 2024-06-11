@@ -13,7 +13,18 @@ import {
 
 import { useEffect, useState } from "react";
 
-export default reactExtension("purchase.thank-you.block.render", () => <Extension />);
+const thankYouRender = reactExtension(
+	"purchase.thank-you.block.render",
+	() => <Extension />
+);
+export thankYouRender;
+
+// See: https://github.com/Shopify/cli/issues/3984
+// const orderStatusRender = reactExtension(
+// 	"customer-account.order-status.block.render",
+// 	() => <Extension />
+// );
+// export orderStatusRender;
 
 function Extension() {
     const { extension } = useApi();

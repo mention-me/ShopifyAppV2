@@ -17,6 +17,13 @@ handle = "thank-you-ui"
 [[extensions.targeting]]
 module = "./src/ThankYou.tsx"
 target = "purchase.thank-you.block.render"
+export = "thankYouRender"
+
+# See https://github.com/Shopify/cli/issues/3984
+# [[extensions.targeting]]
+# module = "./src/ThankYou.tsx"
+# target = "customer-account.order-status.block.render"
+# export = "orderStatusRender"
 
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.
