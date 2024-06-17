@@ -45,6 +45,16 @@ network_access = true
 
 [extensions.settings]
 [[extensions.settings.fields]]
+key = "environment"
+type = "single_line_text_field"
+name = "Environment"
+description = "Which Mention Me environment do you wish to use?"
+
+[[extensions.settings.fields.validations]]
+name = "choices"
+value = "[\"production\", \"demo\", \"local\"]"
+
+[[extensions.settings.fields]]
 key = "mmPartnerCode"
 type = "single_line_text_field"
 name = "Partner code"

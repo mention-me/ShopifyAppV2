@@ -4,6 +4,7 @@
     "version": "1.0.0",
     "license": "UNLICENSED",
     "dependencies": {
+        "@api/mention-me": "file:./../../.api/apis/mention-me",
         "react": "^18.0.0",
         "@shopify/ui-extensions": "2024.1.x",
         "@shopify/ui-extensions-react": "2024.1.x"
