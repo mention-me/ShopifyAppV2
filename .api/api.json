@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/api@7/schema.json",
+  "apis": [
+    {
+      "private": true,
+      "identifier": "mention-me",
+      "source": "@mention-me/v2.0#jyriq1clxerzls0",
+      "integrity": "sha512-QDfmMtmDuXbRI/mhV9VlbWud3wKwmeydnctFrPyhz4elzd2tlZPTcsUt/MSFe1X+Mdz3eFj0dz04XpMf2Yngwg==",
+      "installerVersion": "7.0.0-beta.7",
+      "language": "js",
+      "createdAt": "2024-06-15T13:03:22.646Z"
+    }
+  ]
+}
