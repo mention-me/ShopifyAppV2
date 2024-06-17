@@ -1,0 +1,75 @@
+# Learn more about configuring your checkout UI extension:
+# https://shopify.dev/api/checkout-extensions/checkout/configuration
+
+# The version of APIs your extension will receive. Learn more:
+# https://shopify.dev/docs/api/usage/versioning
+api_version = "2024-01"
+
+[[extensions]]
+type = "ui_extension"
+name = "Mention Me Refer a Friend Journey"
+handle = "order-status-ui"
+
+# Controls where in Shopify your extension will be injected,
+# and the file that contains your extension’s source code. Learn more:
+# https://shopify.dev/docs/api/checkout-ui-extensions/unstable/extension-targets-overview
+
+[[extensions.targeting]]
+module = "./src/OrderStatus.tsx"
+target = "customer-account.order-status.block.render"
+
+[extensions.capabilities]
+# Gives your extension access to directly query Shopify’s storefront API.
+# https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#api-access
+api_access = true
+
+# Gives your extension access to make external network calls, using the
+# JavaScript `fetch()` API. Learn more:
+# https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#network-access
+network_access = true
+
+# Loads metafields on checkout resources, including the cart,
+# products, customers, and more. Learn more:
+# https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#metafields
+
+# [[extensions.metafields]]
+# namespace = "my_namespace"
+# key = "my_key"
+# [[extensions.metafields]]
+# namespace = "my_namespace"
+# key = "my_other_key"
+
+# Defines settings that will be collected from merchants installing
+# your extension. Learn more:
+# https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#settings-definition
+
+[extensions.settings]
+[[extensions.settings.fields]]
+key = "environment"
+type = "single_line_text_field"
+name = "Environment"
+description = "Which Mention Me environment do you wish to use?"
+
+[[extensions.settings.fields.validations]]
+name = "choices"
+value = "[\"production\", \"demo\", \"local\"]"
+
+[[extensions.settings.fields]]
+key = "mmPartnerCode"
+type = "single_line_text_field"
+name = "Partner code"
+description = "Enter your Mention Me Partner Code"
+
+[[extensions.settings.fields.validations]]
+name = "regex"
+value = "^mm[a-z0-9]{8}$"
+
+[[extensions.settings.fields]]
+key = "layout"
+type = "single_line_text_field"
+name = "Layout"
+description = "Choose a layout type for your referral journey"
+
+[[extensions.settings.fields.validations]]
+name = "choices"
+value = "[\"banner\", \"max\"]"
