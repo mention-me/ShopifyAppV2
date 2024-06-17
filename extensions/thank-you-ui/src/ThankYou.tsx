@@ -86,7 +86,7 @@ const Extension = () => {
 			body,
 			setJson,
 		});
-	}, [body, setJson]);
+	}, [mmPartnerCode, environment, body, setJson]);
 
 	console.log("Json", json);
 
