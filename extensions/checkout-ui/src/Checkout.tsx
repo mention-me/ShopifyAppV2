@@ -1,14 +1,9 @@
 import {
 	Banner,
-	BlockLayout,
 	BlockStack,
-	Button,
-	Form,
-	Grid,
 	Link,
-	Modal,
 	reactExtension,
-	TextField,
+	SkeletonTextBlock, useApplyDiscountCodeChange,
 	useExtensionEditor,
 	useLanguage,
 	useLocalizationCountry,
@@ -18,12 +13,29 @@ import {
 
 import { useEffect, useMemo, useState } from "react";
 import { isValidEnvironment } from "../../../shared/utils";
-import { fetchRefereeEntryPoint } from "../../../shared/refereeEntryPoint";
+import { fetchRefereeEntryPoint } from "./refereeEntryPoint";
 import { EntryPointForRefereeType, EntryPointLink } from "@api/mention-me/dist/types";
+import { APP_NAME, APP_VERSION } from "../../../shared/constants";
+import { FindFriendModal } from "./FindFriendModal";
+import { WhoAreYouModal } from "./WhoAreYouModal";
+
+export const SITUATION = "shopify-checkout";
+
+export type NameSearchResult = "loading" | "no-match" | "duplicate-match" | "single-match" | "error";
+
+export interface FoundReferrerState {
+	referrerMentionMeIdentifier: string;
+	referrerToken: string;
+}
 
 const Extension = () => {
 	const [json, setJson] = useState<EntryPointLink>();
+	const [nameSearchResult, setNameSearchResult] = useState<NameSearchResult>(undefined);
 	const [shouldProvideEmail, setShouldProvideEmail] = useState(false);
+	const [foundReferrerState, setFoundReferrerState] = useState<FoundReferrerState>(undefined);
+	const [refereeRegisterResult, setRefereeRegisterResult] = useState(undefined);
+
+	const applyDiscountChange = useApplyDiscountCodeChange();
 
 	const language = useLanguage();
 	const country = useLocalizationCountry();
@@ -40,9 +52,9 @@ const Extension = () => {
 		return {
 			request: {
 				partnerCode: mmPartnerCode,
-				situation: "shopify-checkout",
-				appVersion: "v0.1",
-				appName: "mention-me-shopify-app",
+				situation: SITUATION,
+				appVersion: APP_VERSION,
+				appName: APP_NAME,
 				// TODO(EHG): Figure out locales
 				localeCode: "en_GB",
 			},
@@ -70,8 +82,7 @@ const Extension = () => {
 		});
 	}, [fetchRefereeEntryPoint, mmPartnerCode, language, setJson]);
 
-
-	if (!environment || typeof environment !== "string") {
+	if (!isValidEnvironment(environment)) {
 		console.error("Mention Me environment not set");
 
 		if (editor) {
@@ -95,43 +106,32 @@ const Extension = () => {
 		return null;
 	}
 
-	if (!json) {
-		return null;
-	}
-
 	return (
-		json && (
+		json ? (
 			<BlockStack spacing="base">
 				<View>
-					<Link overlay={<Modal title="Welcome! Let us know who sent you." padding>
-						<BlockLayout>
-							<Form
-								onSubmit={() => {
-									console.log("Submitted");
-									setShouldProvideEmail(true);
-								}}
-								disabled={false}
-							>
-								<Grid spacing="base">
-									{shouldProvideEmail && <Banner
-										title="Sorry, we can't find your friend. Try searching with their email address too."
-										status="warning" />}
-									<TextField label="Your friends name" icon={{ source: "magnify", position: "end" }}
-											   autocomplete={false} />
-									{shouldProvideEmail && (
-										<TextField label="Your friends email" type="email"
-												   icon={{ source: "magnify", position: "end" }} autocomplete={false} />
-									)}
-									<Button accessibilityRole="submit">Submit</Button>
-								</Grid>
-							</Form>
-						</BlockLayout>
-					</Modal>}>
-						{json.defaultCallToAction}
-					</Link>
+					{refereeRegisterResult ? <Banner title="Thank you for registering!" status="success" /> :
+						<Link overlay={nameSearchResult === "single-match" ?
+							<WhoAreYouModal
+								mmPartnerCode={mmPartnerCode}
+								environment={environment}
+								foundReferrerState={foundReferrerState}
+								setRefereeRegisterResult={setRefereeRegisterResult}
+							/> :
+							<FindFriendModal
+								environment={environment}
+								mmPartnerCode={mmPartnerCode}
+								shouldProvideEmail={shouldProvideEmail}
+								setShouldProvideEmail={setShouldProvideEmail}
+								nameSearchResult={nameSearchResult}
+								setNameSearchResult={setNameSearchResult}
+								setFoundReferrerState={setFoundReferrerState}
+							/>}>
+							{json.defaultCallToAction}
+						</Link>}
 				</View>
 			</BlockStack>
-		)
+		) : <SkeletonTextBlock />
 	);
 };
 

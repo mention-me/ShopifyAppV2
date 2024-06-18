@@ -1,4 +1,4 @@
-import { Environment } from "./utils";
+import { Environment } from "../../../shared/utils";
 import { EntryPointForRefereeType } from "@api/mention-me/src/types";
 
 export interface RefereeEntryPointArgs {
@@ -12,8 +12,6 @@ export const fetchRefereeEntryPoint = async (args: RefereeEntryPointArgs) => {
 
 	const { environment, body, setJson } = args;
 
-	// TODO(EHG): Should we override the behaviour to demo when in the editor?
-	// Or perhaps just remove the order data? Or set the order value to 0 when set to production?
 	let url = "demo.mention-me.com";
 	if (environment === "production") {
 		url = "mention-me.com";
