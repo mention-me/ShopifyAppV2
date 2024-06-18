@@ -71,68 +71,71 @@ export default class SDK {
   }
 
   /**
-   * Provide a customers' details so we can tell you if we could enrol them into an offer.
-   * We'll provide the URL to the web-view for their journey.
+   * Tell us that an order took place so that we can reward any appropriate referrer, track
+   * the order and optimise the performance of the referral scheme.
    *
-   * Given a set of input parameters about the customer (and segment and any order that has
-   * just taken place), decide if we could enrol them as a customer and if so, give you a
-   * link to the web view so they can share the offer - whether referral, IFA or NPS - with
-   * their friends.
    *
-   * We encourage you to include the details of any order which has just taken place as this
-   * helps us with segmentation and propensity modelling. You can tell us about orders
-   * separately too.
+   * We'll transform the request in to something that the existing tag persister can
+   * understand.
    *
-   * You can present this as a button, link or broader display panel. We include other useful
-   * content which you can choose to present to the customer to give them a richer invitation
-   * to join the promotion
-   * programme. A headline and description describe the offer and the default CTA text gives
-   * you content to add to the link or button. There is also an optional image URL. There is
-   * also an optional privacy information notice if you need it.
-   *
-   * Users of the Mention Me platform can configure and edit the content and image returned
-   * and those can be AB tested also - for example half the customers see one image and one
-   * set of content and half see another so that you can test how offers perform.
-   *
-   * Note: you can also use `/api/entry-point/{version}/referrer` as the endpoint, which is
-   * an alias of this path
-   *
-   * @summary Enrol a customer in an offer
+   * @summary Record order
    */
-  post_api_entry_point_offer(body: types.EntryPointForReferrerType, metadata: types.PostApiEntryPointOfferMetadataParam): Promise<FetchResponse<200, types.EntryPointOfferAndLink>> {
-    return this.core.fetch('/api/entry-point/{version}/offer', 'post', body, metadata);
+  post_api_order(body: types.ConfirmOrderType, metadata: types.PostApiOrderMetadataParam): Promise<FetchResponse<number, unknown>> {
+    return this.core.fetch('/api/consumer/{version}/order', 'post', body, metadata);
   }
 
   /**
-   * Provide some details of a referee (optional - if you have them) and some context (such
-   * as locale) so we can tell you if we can serve a name finder journey. We'll provide the
-   * URL to the web-view for their journey.
+   * Tell us about a customer (and any related order and segmentation details) to enrol them
+   * as a referrer and receive an offer to share with them
    *
-   * Given a set of input parameters about the referee (and segment etc), decide if we could
-   * serve them a referee
-   * name finder journey and give them a link to the web view for doing that.
-   *
-   * If you choose to direct the consumer to the URL via an iframe, the closing of the
-   * journey and the fulfillment of any coupon is done via postMessage. If you send the
-   * consumer to the URL they will close the flow using the browser itself and the CTA at the
-   * end is the defined CTA URL to take them to the next step of their journey.
-   *
-   * @summary Find a friend by name
+   * @summary Enrol referrer
    */
-  post_api_entry_point_referee(body: types.EntryPointForRefereeType, metadata: types.PostApiEntryPointRefereeMetadataParam): Promise<FetchResponse<200, types.EntryPointLink>> {
-    return this.core.fetch('/api/entry-point/{version}/referee', 'post', body, metadata);
+  post_api_referrer_enrol(body: types.EnrolReferrerType, metadata: types.PostApiReferrerEnrolMetadataParam): Promise<FetchResponse<200, types.ReferralShareOffer>> {
+    return this.core.fetch('/api/consumer/{version}/referrer/enrol', 'post', body, metadata);
   }
 
   /**
-   * Provide a customers' details so we can tell you if we could show them a dashboard (or
-   * offer). We'll provide the URL to the web-view for their dashboard.
+   * Get a referrer's dashboard (given a referrer identity, get their dashboard data).
    *
-   * Provide their full details (name, email, customerId) if you want us to optionally
-   * register them if they're not yet a referrer.
+   * If we respond with a 404 they are not a referrer. Instead, you should Enrol them as a
+   * referrer first, then call this endpoint again.
    *
    * @summary Get dashboard
    */
-  post_api_entry_point_dashboard(body: types.EntryPointForDashboardType, metadata: types.PostApiEntryPointDashboardMetadataParam): Promise<FetchResponse<200, types.EntryPointLink>> {
-    return this.core.fetch('/api/entry-point/{version}/dashboard', 'post', body, metadata);
+  get_api_referrer_dashboard(metadata: types.GetApiReferrerDashboardMetadataParam): Promise<FetchResponse<200, types.ReferralDashboardOffer>> {
+    return this.core.fetch('/api/consumer/{version}/referrer/dashboard', 'get', metadata);
+  }
+
+  /**
+   * Search for a referrer to connect to a referee, just using the referrer's name, entered
+   * by the referee. If we don't have an exact match for the referrer's name we'll respond
+   * with a 404 or 400. The referee can change the name and/or enter an email address of the
+   * referrer to find an exact match.
+   *
+   * In a non-exact match we will not return a payload response and we'll also set the
+   * `foundMultipleReferrers` parameter in the root of the response, to indicate that the
+   * search needs to be narrowed (i.e. ask for an email address or possibly prompt for a more
+   * verbose name). The exact narrowing strategy is up to the client.
+   *
+   * If there is no payload and no foundMultipleReferrers set, the client should prompt for a
+   * fresh search.
+   *
+   * When an exact match is found, the payload contains the customer ID, flow token and the
+   * offer.
+   *
+   * @summary Find a friend
+   */
+  get_api_name_search(metadata: types.GetApiNameSearchMetadataParam): Promise<FetchResponse<200, types.ReferrerFound>> {
+    return this.core.fetch('/api/consumer/{version}/referrer/search', 'get', metadata);
+  }
+
+  /**
+   * Post a referee's details to register them as a referee after successfully finding a
+   * referrer to link them to.
+   *
+   * @summary Register referee
+   */
+  post_api_register_referee(body: types.EnrolRefereeType, metadata: types.PostApiRegisterRefereeMetadataParam): Promise<FetchResponse<200, types.RefereeRegister>> {
+    return this.core.fetch('/api/consumer/{version}/referee/register', 'post', body, metadata);
   }
 }

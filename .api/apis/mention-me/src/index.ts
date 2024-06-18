@@ -1,10 +1,9 @@
 import SDK from './sdk.js';
 
 /**
- * Entry Point API
+ * Consumer API
  *
- * Add links or buttons to your App which take customers into a hosted web view to allow
- * them to refer their friends or become referred.
+ * Create your own front end for the referral journey using our Consumer API.
  *
  * @see {@link https://mention-me.com/help/tnc_f/site Terms of Service}
  */
