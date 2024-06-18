@@ -22,6 +22,7 @@ import { useEffect, useMemo, useState } from "react";
 import { EntryPointForReferrerType, EntryPointOfferAndLink } from "@api/mention-me/src/types";
 import { isValidEnvironment, parseShopifyId } from "../../../shared/utils";
 import { fetchReferrerEntryPoint } from "../../../shared/referrerEntryPoint";
+import { APP_NAME, APP_VERSION } from "../../../shared/constants";
 
 
 const Extension = () => {
@@ -52,8 +53,8 @@ const Extension = () => {
 			request: {
 				partnerCode: mmPartnerCode,
 				situation: "shopify-thank-you",
-				appVersion: "v0.1",
-				appName: "mention-me-shopify-app",
+				appVersion: APP_VERSION,
+				appName: APP_NAME,
 				// TODO(EHG): Figure out locales
 				localeCode: "en_GB",
 			},
