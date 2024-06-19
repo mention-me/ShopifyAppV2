@@ -34,6 +34,21 @@ module.exports = tseslint.config(
 			...eslintPluginReactHooks.configs.recommended.rules,
 			"react/react-in-jsx-scope": "off",
 			"react/jsx-uses-react": "off",
+			"react/jsx-wrap-multilines": "off",
+			"react/jsx-indent": "off",
+			"react/jsx-indent-props": "off",
+			"react/jsx-max-depth": "off",
+			"react/jsx-no-bind": "off",
+			"react/jsx-newline": "off",
+			"react/jsx-filename-extension": "off",
+			"react/jsx-closing-bracket-location": "off",
+			"react/function-component-definition": [
+				2,
+				{
+					namedComponents: "arrow-function",
+					unnamedComponents: "arrow-function",
+				},
+			],
 		},
 	},
 	{
