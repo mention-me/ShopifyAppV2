@@ -1,5 +1,5 @@
 {
-  "name": "@api/mention-me",
+  "name": "@api/entry-point-api",
   "version": "2.0.0",
   "type": "module",
   "main": "dist/index.cjs",

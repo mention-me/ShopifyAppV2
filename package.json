@@ -11,7 +11,8 @@
         "deploy": "shopify app deploy"
     },
     "dependencies": {
-        "@api/mention-me": "file:.api/apis/mention-me",
+        "@api/consumer-api": "file:.api/apis/consumer-api",
+        "@api/entry-point-api": "file:.api/apis/entry-point-api",
         "@shopify/app": "^3.58.2",
         "@shopify/cli": "^3.60.1"
     },

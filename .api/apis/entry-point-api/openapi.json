@@ -203,7 +203,7 @@
                           "dateString": {
                             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                             "type": "string",
-                            "example": "2024-06-14T14:19:13+00:00"
+                            "example": "2024-06-18T16:31:06+00:00"
                           },
                           "couponCode": {
                             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -916,7 +916,7 @@
                   "dateString": {
                     "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                     "type": "string",
-                    "example": "2024-06-14T14:19:13+00:00"
+                    "example": "2024-06-18T16:31:06+00:00"
                   },
                   "couponCode": {
                     "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -1460,7 +1460,7 @@
           "dateString": {
             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
             "type": "string",
-            "example": "2024-06-14T14:19:13+00:00"
+            "example": "2024-06-18T16:31:06+00:00"
           },
           "couponCode": {
             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -1611,5 +1611,9 @@
         "x-readme-ref-name": "RequestWithAuthenticationType"
       }
     }
+  },
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
   }
 }
