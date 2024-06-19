@@ -1,14 +1,17 @@
-import react from "eslint-plugin-react";
-import eslintPluginReactHooks from "eslint-plugin-react-hooks";
-import globals from "globals";
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import { fixupPluginRules } from "@eslint/compat";
+const reactAll = require("eslint-plugin-react/configs/all");
 
-export default tseslint.config(
+const globals = require("globals");
+const eslint = require("@eslint/js");
+const tseslint = require("typescript-eslint");
+
+const eslintPluginReactHooks = require("eslint-plugin-react-hooks");
+const { fixupPluginRules } = require("@eslint/compat");
+
+
+module.exports = tseslint.config(
 	eslint.configs.recommended,
 	...tseslint.configs.recommendedTypeChecked,
-	react.configs.recommended,
+	reactAll,
 
 	{
 		files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
@@ -29,6 +32,8 @@ export default tseslint.config(
 		},
 		rules: {
 			...eslintPluginReactHooks.configs.recommended.rules,
+			"react/react-in-jsx-scope": "off",
+			"react/jsx-uses-react": "off",
 		},
 	},
 	{
