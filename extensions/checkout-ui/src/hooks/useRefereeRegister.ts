@@ -1,6 +1,6 @@
-import { Environment } from "../../../shared/utils";
-import { APP_NAME, APP_VERSION } from "../../../shared/constants";
-import { FoundReferrerState, SITUATION } from "./Checkout";
+import { Environment } from "../../../../shared/utils";
+import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
+import { FoundReferrerState, SITUATION } from "../Checkout";
 import { EnrolRefereeType } from "@api/mention-me/src/types";
 
 export interface RefereeRegisterFriendArgs {
@@ -12,14 +12,13 @@ export interface RefereeRegisterFriendArgs {
 	setRefereeRegisterResult: React.Dispatch<any>;
 }
 
-export const registerReferee = async (args: RefereeRegisterFriendArgs) => {
+export const useRefereeRegister = async (args: RefereeRegisterFriendArgs) => {
 	console.log("registerReferee", args);
 
 	const {
 		environment,
 		mmPartnerCode,
 		email,
-		situation,
 		foundReferrerState,
 		setRefereeRegisterResult
 	} = args;

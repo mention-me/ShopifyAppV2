@@ -1,27 +1,17 @@
 import {
 	Banner,
-	BlockStack,
-	Link,
 	reactExtension,
-	SkeletonTextBlock, useApplyDiscountCodeChange,
 	useExtensionEditor,
 	useLanguage,
 	useLocalizationCountry,
 	useSettings,
-	View,
 } from "@shopify/ui-extensions-react/checkout";
-
-import { useEffect, useMemo, useState } from "react";
 import { isValidEnvironment } from "../../../shared/utils";
-import { fetchRefereeEntryPoint } from "./refereeEntryPoint";
-import { EntryPointForRefereeType, EntryPointLink } from "@api/mention-me/dist/types";
-import { APP_NAME, APP_VERSION } from "../../../shared/constants";
-import { FindFriendModal } from "./FindFriendModal";
-import { WhoAreYouModal } from "./WhoAreYouModal";
+
+import { RefereeJourneyContext, RefereeJourneyProvider } from "./context/RefereeJourneyContext";
+import CheckoutUI from "./CheckoutUI";
 
 export const SITUATION = "shopify-checkout";
-
-export type NameSearchResult = "loading" | "no-match" | "duplicate-match" | "single-match" | "error";
 
 export interface FoundReferrerState {
 	referrerMentionMeIdentifier: string;
@@ -29,13 +19,13 @@ export interface FoundReferrerState {
 }
 
 const Extension = () => {
-	const [json, setJson] = useState<EntryPointLink>();
-	const [nameSearchResult, setNameSearchResult] = useState<NameSearchResult>(undefined);
-	const [shouldProvideEmail, setShouldProvideEmail] = useState(false);
-	const [foundReferrerState, setFoundReferrerState] = useState<FoundReferrerState>(undefined);
-	const [refereeRegisterResult, setRefereeRegisterResult] = useState(undefined);
 
-	const applyDiscountChange = useApplyDiscountCodeChange();
+	// const [json, setJson] = useState<EntryPointLink>();
+	// const [nameSearchResult, setNameSearchResult] = useState<NameSearchResult>(undefined);
+	// const [shouldProvideEmail, setShouldProvideEmail] = useState(false);
+	// const [foundReferrerState, setFoundReferrerState] = useState<FoundReferrerState>(undefined);
+	// const [refereeRegisterResult, setRefereeRegisterResult] = useState(undefined);
+	//
 
 	const language = useLanguage();
 	const country = useLocalizationCountry();
@@ -46,41 +36,7 @@ const Extension = () => {
 	const editor = useExtensionEditor();
 
 	let { mmPartnerCode, layout, environment } = useSettings();
-	console.log("environment", environment);
-
-	const body: EntryPointForRefereeType = useMemo(() => {
-		return {
-			request: {
-				partnerCode: mmPartnerCode,
-				situation: SITUATION,
-				appVersion: APP_VERSION,
-				appName: APP_NAME,
-				// TODO(EHG): Figure out locales
-				localeCode: "en_GB",
-			},
-			implementation: {
-				wrapContentWithBranding: true,
-				showCloseIcon: false,
-			},
-		};
-	}, [mmPartnerCode]);
-
-	useEffect(() => {
-		if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
-			return;
-		}
-
-		if (!isValidEnvironment(environment)) {
-			console.error("Invalid Mention Me environment", environment);
-			return;
-		}
-
-		fetchRefereeEntryPoint({
-			environment,
-			body,
-			setJson,
-		});
-	}, [fetchRefereeEntryPoint, mmPartnerCode, language, setJson]);
+	console.log("environment:", environment);
 
 	if (!isValidEnvironment(environment)) {
 		console.error("Mention Me environment not set");
@@ -106,33 +62,10 @@ const Extension = () => {
 		return null;
 	}
 
-	return (
-		json ? (
-			<BlockStack spacing="base">
-				<View>
-					{refereeRegisterResult ? <Banner title="Thank you for registering!" status="success" /> :
-						<Link overlay={nameSearchResult === "single-match" ?
-							<WhoAreYouModal
-								mmPartnerCode={mmPartnerCode}
-								environment={environment}
-								foundReferrerState={foundReferrerState}
-								setRefereeRegisterResult={setRefereeRegisterResult}
-							/> :
-							<FindFriendModal
-								environment={environment}
-								mmPartnerCode={mmPartnerCode}
-								shouldProvideEmail={shouldProvideEmail}
-								setShouldProvideEmail={setShouldProvideEmail}
-								nameSearchResult={nameSearchResult}
-								setNameSearchResult={setNameSearchResult}
-								setFoundReferrerState={setFoundReferrerState}
-							/>}>
-							{json.defaultCallToAction}
-						</Link>}
-				</View>
-			</BlockStack>
-		) : <SkeletonTextBlock />
-	);
+	return <RefereeJourneyProvider mmPartnerCode={mmPartnerCode} environment={environment}>
+		<CheckoutUI />
+	</RefereeJourneyProvider>;
+
 };
 
 export default reactExtension("purchase.checkout.block.render", () => <Extension />);

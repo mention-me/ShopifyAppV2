@@ -1,25 +1,14 @@
 import { Banner, BlockLayout, Button, Form, Grid, Modal, TextField } from "@shopify/ui-extensions-react/checkout";
-import { fetchRefereeFindFriend } from "./refereeFindFriend";
-import { FoundReferrerState, NameSearchResult, SITUATION } from "./Checkout";
-import { Environment } from "../../../shared/utils";
-import { useEffect, useState } from "react";
+import { useRefereeFindFriend } from "../hooks/useRefereeFindFriend";
+import { FoundReferrerState, NameSearchResult, SITUATION } from "../Checkout";
+import { Environment } from "../../../../shared/utils";
+import { useContext, useEffect, useState } from "react";
 import { NameSearchResultBanner } from "./NameSearchResultBanner";
-import { registerReferee } from "./refereeRegisterFriend";
+import { useRefereeRegister } from "../hooks/useRefereeRegister";
+import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 
-interface WhoAreYouModalProps {
-	environment: Environment;
-	mmPartnerCode: string;
-	foundReferrerState: FoundReferrerState;
-	setRefereeRegisterResult: React.Dispatch<any>;
-}
-
-export const WhoAreYouModal = (args: WhoAreYouModalProps) => {
-	const {
-		environment,
-		mmPartnerCode,
-		foundReferrerState,
-		setRefereeRegisterResult
-	} = args;
+export const WhoAreYouModal = () => {
+	const { mmPartnerCode, environment, step, refereeEntryPointResponse } = useContext(RefereeJourneyContext);
 
 	const [registering, setRegistering] = useState(false);
 	const [formStateEmail, setFormStateEmail] = useState("");
@@ -34,7 +23,7 @@ export const WhoAreYouModal = (args: WhoAreYouModalProps) => {
 				onSubmit={() => {
 					setRegistering(true);
 
-					registerReferee({
+					useRefereeRegister({
 						environment,
 						mmPartnerCode,
 						email: formStateEmail,

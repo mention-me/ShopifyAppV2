@@ -1,5 +1,5 @@
 import { Banner } from "@shopify/ui-extensions-react/checkout";
-import { NameSearchResult } from "./Checkout";
+import { NameSearchResult } from "../Checkout";
 
 interface NameSearchResultBannerProps {
 	nameSearchResult: NameSearchResult;
