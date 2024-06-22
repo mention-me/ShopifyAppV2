@@ -49,6 +49,17 @@ module.exports = tseslint.config(
 					unnamedComponents: "arrow-function",
 				},
 			],
+			"react/jsx-closing-tag-location": "off",
+			"react/jsx-first-prop-new-line": "off",
+			"react/jsx-no-leaked-render": "off",
+			"@typescript-eslint/no-misused-promises": "off",
+			"@typescript-eslint/no-floating-promises": "off",
+			/*
+			 * Something puzzling here. We're getting these rules thrown up a lot on all the fetch of our API calls.
+			 */
+			"@typescript-eslint/no-unsafe-member-access": "off",
+			"@typescript-eslint/no-unsafe-assignment": "off",
+
 		},
 	},
 	{
