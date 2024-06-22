@@ -1,8 +1,9 @@
-import { Banner, TextBlock } from "@shopify/ui-extensions-react/checkout";
+import { Banner } from "@shopify/ui-extensions-react/checkout";
 import { useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { WhoAreYouModal } from "./WhoAreYouModal";
 import { FindFriendModal } from "./FindFriendModal";
+import { RegisterResultModal } from "./RegisterResultModal";
 
 export const CheckoutModal = () => {
 	const { step } = useContext(RefereeJourneyContext);
@@ -15,8 +16,8 @@ export const CheckoutModal = () => {
 		return <WhoAreYouModal />;
 	}
 
-	if (step === "no-match") {
-		return <TextBlock>No luck mate.</TextBlock>;
+	if (step === "register-result") {
+		return <RegisterResultModal />;
 	}
 
 	console.error("Unknown step", step);

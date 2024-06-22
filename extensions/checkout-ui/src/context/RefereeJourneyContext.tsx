@@ -1,9 +1,9 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useMemo, useState } from "react";
-import { useApplyDiscountCodeChange } from "@shopify/ui-extensions-react/checkout";
 import { Environment } from "../../../../shared/utils";
 import { RefereeEntryPointResponse } from "../hooks/useRefereeEntryPoint";
+import { RefereeRegister, ReferrerFound } from "@api/consumer-api/dist/types";
 
-export type Step = "search-by-name" | "search-by-name-and-email" | "no-match" | "register" | "error";
+export type Step = "search-by-name" | "search-by-name-and-email" | "no-match" | "register" | "register-result" | "completed-success";
 
 export type NameSearchResultType = "loading" | "no-match" | "duplicate-match" | "single-match" | "error";
 
@@ -14,7 +14,7 @@ export interface RefereeSearch {
 
 export interface NameSearchResult {
 	type: NameSearchResultType;
-	result: any;
+	result?: ReferrerFound;
 }
 
 type RefereeJourneyState = {
@@ -32,7 +32,10 @@ type RefereeJourneyState = {
 	setSearch: Dispatch<SetStateAction<RefereeSearch>>;
 	nameSearchResult: NameSearchResult;
 	setNameSearchResult: Dispatch<SetStateAction<NameSearchResult>>;
-	applyDiscountChange: ReturnType<typeof useApplyDiscountCodeChange>;
+	registerResult: RefereeRegister;
+	setRegisterResult: Dispatch<SetStateAction<RefereeRegister>>;
+	errorState: string;
+	setErrorState: Dispatch<SetStateAction<string>>;
 }
 
 export const RefereeJourneyContext = createContext<RefereeJourneyState>(undefined);
@@ -53,7 +56,9 @@ export const RefereeJourneyProvider = ({ mmPartnerCode, environment, children }:
 	const [search, setSearch] = useState<RefereeSearch>();
 	const [nameSearchResult, setNameSearchResult] = useState<NameSearchResult>();
 
-	const applyDiscountChange = useApplyDiscountCodeChange();
+	const [registerResult, setRegisterResult] = useState<RefereeRegister>();
+
+	const [errorState, setErrorState] = useState<string>();
 
 	const state = useMemo(() => {
 		return {
@@ -71,7 +76,10 @@ export const RefereeJourneyProvider = ({ mmPartnerCode, environment, children }:
 			setSearch,
 			nameSearchResult,
 			setNameSearchResult,
-			applyDiscountChange,
+			registerResult,
+			setRegisterResult,
+			errorState,
+			setErrorState,
 		};
 	}, [
 		mmPartnerCode,
@@ -82,7 +90,8 @@ export const RefereeJourneyProvider = ({ mmPartnerCode, environment, children }:
 		refereeEntryPointResponse,
 		search,
 		nameSearchResult,
-		applyDiscountChange,
+		registerResult,
+		errorState,
 	]);
 
 	return (

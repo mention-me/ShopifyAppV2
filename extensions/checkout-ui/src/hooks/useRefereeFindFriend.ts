@@ -1,6 +1,6 @@
 import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
 import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { SITUATION } from "../Checkout";
 import { ReferrerFound } from "@api/consumer-api/dist/types";
@@ -11,6 +11,7 @@ export const useRefereeFindFriend = () => {
 		environment,
 		setLoadingConsumerApi,
 		setNameSearchResult,
+		setStep,
 		search,
 	} = useContext(RefereeJourneyContext);
 
@@ -19,6 +20,7 @@ export const useRefereeFindFriend = () => {
 		setLoadingConsumerApi(true);
 
 		if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
+			console.error("Mention Me partner code not provided", mmPartnerCode);
 			return;
 		}
 
@@ -27,12 +29,27 @@ export const useRefereeFindFriend = () => {
 			return;
 		}
 
-		const {name, email} = search;
+		const { name, email } = search;
 
 		const url = getDomainForEnvironment(environment);
 
+		const params = new URLSearchParams({
+			"request[partnerCode]": mmPartnerCode,
+			"request[situation]": SITUATION,
+			"request[appName]": APP_NAME,
+			"request[appVersion]": APP_VERSION,
+		});
+
+		if (name) {
+			params.set("name", name);
+		}
+
+		if (email) {
+			params.set("email", email);
+		}
+
 		try {
-			const response = await fetch(`https://${url}/api/consumer/v2/referrer/search?request[partnerCode]=${mmPartnerCode}&name=${name}&email=${email}&request[situation]=${SITUATION}&request[appName]=${APP_NAME}&request[appVersion]=${APP_VERSION}`,
+			const response = await fetch(`https://${url}/api/consumer/v2/referrer/search?${params.toString()}`,
 				{
 					method: "GET",
 					// mode: "no-cors",
@@ -42,6 +59,8 @@ export const useRefereeFindFriend = () => {
 			);
 
 			const json = (await response.json()) as ReferrerFound;
+
+			setLoadingConsumerApi(false);
 
 			console.log("fetchRefereeFindFriend result", json);
 
@@ -54,6 +73,7 @@ export const useRefereeFindFriend = () => {
 						// Can only occur if searching by name. Email search can't get a duplicate match.
 						setNameSearchResult({
 							type: "duplicate-match",
+							result: json,
 						});
 						return;
 					}
@@ -61,12 +81,14 @@ export const useRefereeFindFriend = () => {
 					console.log("Nothing found");
 					setNameSearchResult({
 						type: "no-match",
+						result: json,
 					});
 					return;
 				}
 
 				setNameSearchResult({
 					type: "error",
+					result: json,
 				});
 				return;
 			}
@@ -87,6 +109,8 @@ export const useRefereeFindFriend = () => {
 					},
 				);
 
+				setStep("register");
+
 				return;
 			}
 
@@ -94,16 +118,15 @@ export const useRefereeFindFriend = () => {
 			setNameSearchResult(
 				{
 					type: "error",
+					result: json,
 				},
 			);
 			return;
 		} catch (error) {
 			console.error("Error caught calling referrerFindFriend:", error);
-			setNameSearchResult(
-				{
-					type: "error",
-				},
-			);
+			setNameSearchResult({
+				type: "error",
+			});
 		}
-	}, []);
+	}, [environment, mmPartnerCode, search, setLoadingConsumerApi, setNameSearchResult, setStep]);
 };

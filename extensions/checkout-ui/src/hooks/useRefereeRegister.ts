@@ -1,75 +1,92 @@
-import { Environment } from "../../../../shared/utils";
+import { isValidEnvironment } from "../../../../shared/utils";
 import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
-import { FoundReferrerState, SITUATION } from "../Checkout";
+import { SITUATION } from "../Checkout";
 import { EnrolRefereeType } from "@api/mention-me/src/types";
+import { useCallback, useContext } from "react";
+import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
+import { RefereeRegister } from "@api/consumer-api/dist/types";
 
-export interface RefereeRegisterFriendArgs {
-	environment: Environment,
-	mmPartnerCode: string,
-	email: string,
-	situation: string,
-	foundReferrerState: FoundReferrerState
-	setRefereeRegisterResult: React.Dispatch<any>;
-}
-
-export const useRefereeRegister = async (args: RefereeRegisterFriendArgs) => {
-	console.log("registerReferee", args);
-
+export const useRefereeRegister = () => {
 	const {
-		environment,
 		mmPartnerCode,
-		email,
-		foundReferrerState,
-		setRefereeRegisterResult
-	} = args;
+		environment,
+		setStep,
+		setLoadingConsumerApi,
+		nameSearchResult,
+		setRegisterResult,
+	} = useContext(RefereeJourneyContext);
 
-	let url = "demo.mention-me.com";
-	if (environment === "production") {
-		url = "mention-me.com";
-	} else if (environment === "local") {
-		url = "mentionme.dev";
-	}
+	return useCallback(async (email: string) => {
+		console.debug("useRefereeRegister");
 
-	try {
-		const body: EnrolRefereeType = {
-			request: {
-				partnerCode: mmPartnerCode,
-				situation: SITUATION,
-				appName: APP_NAME,
-				appVersion: APP_VERSION,
-			},
-			customer: {
-				emailAddress: email,
-			},
-			referrerMentionMeIdentifier: foundReferrerState.referrerMentionMeIdentifier,
-			referrerToken: foundReferrerState.referrerToken,
-		};
-		const response = await fetch(`https://${url}/api/consumer/v2/referee/register`,
-			{
-				method: "POST",
-				// mode: "no-cors",
-				credentials: "include",
-				headers: { accept: "application/json", "Content-Type": "application/json" },
-				body: JSON.stringify(body),
-			},
-		);
-
-		const json = await response.json();
-
-		if (!response.ok) {
-			console.error("Response not ok when calling referrerFindFriend:", response);
-
+		if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
+			console.error("Mention Me partner code not provided", mmPartnerCode);
 			return;
 		}
 
-		if (response.ok && response.status === 200) {
-			setRefereeRegisterResult(json);
+		if (!isValidEnvironment(environment)) {
+			console.error("Invalid Mention Me environment", environment);
 			return;
 		}
 
-		console.error("Unexpected response from API", json);
-		return;
-	} catch (error) {
-		console.error("Error caught calling registerReferee:", error);
-	}
+		setLoadingConsumerApi(true);
+
+		let url = "demo.mention-me.com";
+		if (environment === "production") {
+			url = "mention-me.com";
+		} else if (environment === "local") {
+			url = "mentionme.dev";
+		}
+
+		if (!nameSearchResult.result) {
+			throw new Error("Expected nameSearchResult result to be defined");
+		}
+
+		try {
+			const body: EnrolRefereeType = {
+				request: {
+					partnerCode: mmPartnerCode,
+					situation: SITUATION,
+					appName: APP_NAME,
+					appVersion: APP_VERSION,
+				},
+				customer: {
+					emailAddress: email,
+				},
+				referrerMentionMeIdentifier: nameSearchResult.result.referrerMentionMeIdentifier,
+				referrerToken: nameSearchResult.result.referrerToken,
+			};
+			const response = await fetch(`https://${url}/api/consumer/v2/referee/register`,
+				{
+					method: "POST",
+					// mode: "no-cors",
+					credentials: "include",
+					headers: { accept: "application/json", "Content-Type": "application/json" },
+					body: JSON.stringify(body),
+				},
+			);
+
+			const json = (await response.json()) as RefereeRegister;
+
+			setLoadingConsumerApi(false);
+
+			if (!response.ok) {
+				console.error("Response not ok when calling refereeRegister:", response);
+
+				return;
+			}
+
+			if (response.ok && response.status === 200) {
+				setRegisterResult(json);
+				setStep("register-result");
+				console.log(json);
+				return;
+			}
+
+			console.error("Unexpected response from API", json);
+			return;
+		} catch (error) {
+			console.error("Error caught calling registerReferee:", error);
+		}
+	}, [environment, mmPartnerCode, nameSearchResult.result, setLoadingConsumerApi, setRegisterResult, setStep]);
 };

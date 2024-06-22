@@ -1,60 +1,68 @@
 import { Banner, BlockLayout, Button, Form, Grid, Modal, TextField } from "@shopify/ui-extensions-react/checkout";
-import { useRefereeFindFriend } from "../hooks/useRefereeFindFriend";
-import { FoundReferrerState, NameSearchResult, SITUATION } from "../Checkout";
-import { Environment } from "../../../../shared/utils";
-import { useContext, useEffect, useState } from "react";
-import { NameSearchResultBanner } from "./NameSearchResultBanner";
+import { useCallback, useContext, useState } from "react";
 import { useRefereeRegister } from "../hooks/useRefereeRegister";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
+import { isValidEmail } from "../../../../shared/utils";
 
 export const WhoAreYouModal = () => {
-	const { mmPartnerCode, environment, step, refereeEntryPointResponse } = useContext(RefereeJourneyContext);
+	const { nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);
 
-	const [registering, setRegistering] = useState(false);
-	const [formStateEmail, setFormStateEmail] = useState("");
+	const [registerEmail, setRegisterEmail] = useState("");
 
-	if (!foundReferrerState) {
-		throw new Error("Expected foundReferrerState to be defined");
+	const [errors, setErrors] = useState<{ email?: string }>({});
+
+	if (!nameSearchResult.result) {
+		throw new Error("Expected nameSearchResult result to be defined");
 	}
 
-	return (<Modal title="Welcome!!" padding>
-		<BlockLayout>
-			<Form
-				onSubmit={() => {
-					setRegistering(true);
+	const registerSubmitCallback = useRefereeRegister();
 
-					useRefereeRegister({
-						environment,
-						mmPartnerCode,
-						email: formStateEmail,
-						situation: SITUATION,
-						foundReferrerState,
-						setRefereeRegisterResult
-					});
-				}}
-				disabled={registering}
-			>
-				<Grid spacing="base">
-					<Banner title="Welcome!" status="success" />
-					<TextField label="What is your email address?"
-							   icon={{ source: "email", position: "end" }}
-							   autocomplete={false}
-							   name="email"
-							   type="email"
-							   required
-							   onChange={(value) => {
-								   setFormStateEmail(value);
-							   }}
-					/>
-					<Button
-						loading={registering}
-						accessibilityRole="submit"
-					>
-						Get my reward
-					</Button>
-				</Grid>
-			</Form>
-		</BlockLayout>
-	</Modal>);
+	// This is a little overcomplicated for one field - but it's stolen from FindFriendModal.tsx and copied
+	// for simplicity/consistency.
+	const onSubmit = useCallback(() => {
+		const emailError = isValidEmail(registerEmail) ? undefined : "Please enter your own email.";
+
+		setErrors({
+			email: emailError,
+		});
+
+		if (emailError) {
+			return;
+		}
+
+		registerSubmitCallback(registerEmail);
+	}, [registerEmail, registerSubmitCallback]);
+
+	return (
+		<Modal padding
+			   title="Welcome!!">
+			<BlockLayout>
+				<Form
+					disabled={loadingConsumerApi}
+					onSubmit={onSubmit}
+				>
+					<Grid spacing="base">
+						<Banner status="success"
+								title="Welcome!" />
+						<TextField error={errors?.email}
+								   icon={{ source: "email", position: "end" }}
+								   label="What is your email address?"
+								   name="email"
+								   onChange={(value) => {
+									   setRegisterEmail(value);
+								   }}
+								   required
+								   type="email"
+						/>
+						<Button
+							accessibilityRole="submit"
+							loading={loadingConsumerApi}
+						>
+							Get my reward
+						</Button>
+					</Grid>
+				</Form>
+			</BlockLayout>
+		</Modal>);
 
 };

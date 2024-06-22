@@ -8,7 +8,7 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import { isValidEnvironment } from "../../../shared/utils";
 
-import { RefereeJourneyContext, RefereeJourneyProvider } from "./context/RefereeJourneyContext";
+import { RefereeJourneyProvider } from "./context/RefereeJourneyContext";
 import CheckoutUI from "./CheckoutUI";
 
 export const SITUATION = "shopify-checkout";
@@ -35,16 +35,25 @@ const Extension = () => {
 
 	const editor = useExtensionEditor();
 
-	let { mmPartnerCode, layout, environment } = useSettings();
+	let { mmPartnerCode, environment } = useSettings();
 	console.log("environment:", environment);
+
+	// TODO(EHG): Remove. Useful for testing.
+	if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
+		mmPartnerCode = "mmf1c1195b";
+	}
+
+	if (!environment || typeof environment !== "string") {
+		environment = "demo";
+	}
 
 	if (!isValidEnvironment(environment)) {
 		console.error("Mention Me environment not set");
 
 		if (editor) {
 			return <Banner
-				title="Mention Me environment not set. Choose demo for testing, production for live customers."
-				status="critical" />;
+				status="critical"
+				title="Mention Me environment not set. Choose demo for testing, production for live customers." />;
 		}
 
 		return null;
@@ -55,14 +64,16 @@ const Extension = () => {
 
 		if (editor) {
 			return <Banner
-				title="Mention Me partner code needs to be set to show Mention Me journey. Click the Mention Me app on the left to add it."
-				status="critical" />;
+				status="critical"
+				title="Mention Me partner code needs to be set to show Mention Me journey. Click the Mention Me app on the left to add it." />;
 		}
 
 		return null;
 	}
 
-	return <RefereeJourneyProvider mmPartnerCode={mmPartnerCode} environment={environment}>
+	return <RefereeJourneyProvider
+		environment={environment}
+		mmPartnerCode={mmPartnerCode}>
 		<CheckoutUI />
 	</RefereeJourneyProvider>;
 

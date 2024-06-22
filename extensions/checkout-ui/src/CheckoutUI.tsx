@@ -6,17 +6,26 @@ import {
 	useExtensionEditor,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { RefereeJourneyContext } from "./context/RefereeJourneyContext";
 import { useRefereeEntryPoint } from "./hooks/useRefereeEntryPoint";
 import { CheckoutModal } from "./components/CheckoutModal";
 
 const CheckoutUI = () => {
 	const editor = useExtensionEditor();
-	const { loadingEntryPointApi, refereeEntryPointResponse } = useContext(RefereeJourneyContext);
+	const {
+		loadingEntryPointApi,
+		refereeEntryPointResponse,
+		step,
+		errorState,
+	} = useContext(RefereeJourneyContext);
 
 	// On load, fetch the referee entry point to get the "Been referred by a friend?" link.
 	useRefereeEntryPoint();
+
+	const showBeenReferredByFriendLink = useMemo(() => {
+		return !errorState && step !== "completed-success";
+	}, [errorState, step]);
 
 	if (loadingEntryPointApi) {
 		return <SkeletonTextBlock />;
@@ -31,7 +40,8 @@ const CheckoutUI = () => {
 
 	if (error) {
 		if (editor) {
-			return <Banner title={"Failed to load Mention Me journey: " + error} status="critical" />;
+			return <Banner status="critical"
+						   title={"Failed to load Mention Me journey: " + error} />;
 		}
 
 		return null;
@@ -40,10 +50,13 @@ const CheckoutUI = () => {
 	return (
 		<BlockStack spacing="base">
 			<View>
-				{/*{refereeRegisterResult ? <Banner title="Thank you for registering!" status="success" /> :*/}
-				<Link overlay={<CheckoutModal />}>
+				{step === "completed-success" && <Banner status="success"
+														 title="Your discount has been applied for being referred. Thank you!" />}
+				{errorState && <Banner status="critical"
+									   title={errorState} />}
+				{showBeenReferredByFriendLink && <Link overlay={<CheckoutModal />}>
 					{refereeEntryPointJson.defaultCallToAction}
-				</Link>
+				</Link>}
 			</View>
 		</BlockStack>
 	);
