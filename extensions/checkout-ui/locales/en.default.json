@@ -1,0 +1,47 @@
+{
+	"banner": {
+		"error": "Sorry, an error has occurred. Please try again later.",
+		"no-match": "Sorry, we can't find your friend. We'd recommend you confirm the email address they used with us and try again later."
+		"search-by-email": "Sorry, we can't find your friend by the name '{{name}}'. Try searching with their email address too."
+	},
+	"checkout": {
+		"modal": {
+			"error": "Sorry, an unknown error has occurred. Please try again later."
+		}
+	},
+	"find-friend": {
+		"welcome": "Welcome, who referred you to us?",
+		"form": {
+			"error": {
+				"name": {
+					"missing": "Please enter your friends name."
+				},
+				"email": {
+					"missing-or-invalid": "Please enter your friends email address."
+				}
+			},
+			"label": {
+				"friend-name": "Your friend's name",
+				"friend-email": "Your friend's email"
+			},
+			"submit": "Find friend"
+		}
+	},
+	"register-result": {
+		"apply-discount": "Apply my discount",
+		"error": {
+			"applying-coupon": "We were unable to apply your discount."
+		}
+	},
+	"who-are-you": {
+		"form": {
+			"label": {
+				"your-email": "What is your email address?"
+			},
+			"error": {
+				"your-email": "Please enter your own email."
+			},
+			"submit": "Claim your reward"
+		}
+	}
+}

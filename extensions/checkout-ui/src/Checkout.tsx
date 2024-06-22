@@ -39,7 +39,7 @@ const Extension = () => {
 	console.log("environment:", environment);
 
 	// TODO(EHG): Remove. Useful for testing.
-	if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
+	if (!mmPartnerCode) {
 		mmPartnerCode = "mmf1c1195b";
 	}
 

@@ -4,13 +4,15 @@ import {
 	Button,
 	Modal,
 	TextBlock,
-	useApplyDiscountCodeChange,
+	useApplyDiscountCodeChange, useTranslate,
 } from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 
 export const RegisterResultModal = () => {
 	const applyDiscountCodeChange = useApplyDiscountCodeChange();
+
+	const translate = useTranslate();
 
 	const {
 		setStep,
@@ -40,16 +42,16 @@ export const RegisterResultModal = () => {
 		}
 
 		if (result.type === "error") {
-			// TODO(EHG): Better message. This one isn't localised and isn't supposed to be used.
-			setErrorState(result.message);
+			setErrorState(translate("register-result.error.applying-coupon"));
 			return;
 		}
 
-		throw new Error("Unexpected result from applyDiscountCodeChange");
 		console.log("applyDiscountCodeChange result", result);
-	}, [applyDiscountCodeChange, registerResult?.refereeReward?.couponCode, setErrorState, setStep]);
+		throw new Error("Unexpected result from applyDiscountCodeChange");
+	}, [applyDiscountCodeChange, registerResult?.refereeReward?.couponCode, setErrorState, setStep, translate]);
 
 	const content = useMemo(() => {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
 		return registerResult.content.resource.reduce((acc, curr) => {
 			acc[curr.key] = curr.content;
 
@@ -68,8 +70,9 @@ export const RegisterResultModal = () => {
 						title={registerResult.refereeReward.couponCode}
 				/>
 				<Button loading={applyingDiscount}
-						onPress={applyCouponCode}>
-					Apply my code
+						onPress={applyCouponCode}
+				>
+					{translate("register-result.apply-discount")}
 				</Button>
 				<TextBlock>
 					{content["voucher-usage-restriction"] || ""}

@@ -1,4 +1,12 @@
-import { BlockLayout, Button, Form, Grid, Modal, TextField } from "@shopify/ui-extensions-react/checkout";
+import {
+	BlockLayout,
+	BlockStack,
+	Button,
+	Form,
+	Modal,
+	TextField,
+	useTranslate,
+} from "@shopify/ui-extensions-react/checkout";
 import { useRefereeFindFriend } from "../hooks/useRefereeFindFriend";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { RefereeJourneyContext, RefereeSearch } from "../context/RefereeJourneyContext";
@@ -13,6 +21,8 @@ export const FindFriendModal = () => {
 		setSearch,
 		nameSearchResult,
 	} = useContext(RefereeJourneyContext);
+
+	const translate = useTranslate();
 
 	const [shouldProvideEmail, setShouldProvideEmail] = useState(false);
 
@@ -49,8 +59,8 @@ export const FindFriendModal = () => {
 	const findFriendSubmitCallback = useRefereeFindFriend();
 
 	const onSubmit = useCallback(() => {
-		const nameError = search?.name ? undefined : "Please enter your friends name.";
-		const emailError = !shouldProvideEmail || isValidEmail(search?.email) ? undefined : "Please enter your friends email.";
+		const nameError = search?.name ? undefined : translate("find-friend.form.error.name.missing");
+		const emailError = !shouldProvideEmail || isValidEmail(search?.email) ? undefined : translate("find-friend.form.error.email.missing-or-invalid");
 
 		setErrors({
 			name: nameError,
@@ -66,19 +76,19 @@ export const FindFriendModal = () => {
 
 	return (<Modal
 			padding
-			title="Welcome! Let us know who sent you.">
+			title={translate("find-friend.welcome")}>
 			<BlockLayout>
 				<Form
 					disabled={loadingConsumerApi}
 					onSubmit={onSubmit}
 				>
-					<Grid spacing="base">
+					<BlockStack>
 						<NameSearchResultBanner />
 						<TextField
 							autocomplete={false}
 							error={errors?.name}
 							icon={{ source: "magnify", position: "end" }}
-							label="Your friends name"
+							label={translate("find-friend.form.label.friend-name")}
 							name="name"
 							onChange={(value) => {
 								setSearch((existing: RefereeSearch) => {
@@ -94,7 +104,7 @@ export const FindFriendModal = () => {
 							autocomplete={false}
 							error={errors?.email}
 							icon={{ source: "email", position: "end" }}
-							label="Your friends email"
+							label={translate("find-friend.form.label.friend-email")}
 							name="email"
 							onChange={(value) => {
 								setSearch((existing: RefereeSearch) => {
@@ -111,9 +121,9 @@ export const FindFriendModal = () => {
 							accessibilityRole="submit"
 							loading={loadingConsumerApi}
 						>
-							Submit
+							{translate("find-friend.form.submit")}
 						</Button>
-					</Grid>
+					</BlockStack>
 				</Form>
 			</BlockLayout>
 		</Modal>

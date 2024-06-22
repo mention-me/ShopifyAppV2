@@ -1,4 +1,16 @@
-import { Banner, BlockLayout, Button, Form, Grid, Modal, TextField } from "@shopify/ui-extensions-react/checkout";
+import {
+	Banner,
+	BlockLayout,
+	BlockStack,
+	Button,
+	Checkbox,
+	Form,
+	Link,
+	Modal,
+	TextBlock,
+	TextField,
+	useTranslate,
+} from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext, useState } from "react";
 import { useRefereeRegister } from "../hooks/useRefereeRegister";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
@@ -6,6 +18,8 @@ import { isValidEmail } from "../../../../shared/utils";
 
 export const WhoAreYouModal = () => {
 	const { nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);
+
+	const translate = useTranslate();
 
 	const [registerEmail, setRegisterEmail] = useState("");
 
@@ -20,7 +34,7 @@ export const WhoAreYouModal = () => {
 	// This is a little overcomplicated for one field - but it's stolen from FindFriendModal.tsx and copied
 	// for simplicity/consistency.
 	const onSubmit = useCallback(() => {
-		const emailError = isValidEmail(registerEmail) ? undefined : "Please enter your own email.";
+		const emailError = isValidEmail(registerEmail) ? undefined : translate("who-are-you.form.error.your-email");
 
 		setErrors({
 			email: emailError,
@@ -31,7 +45,7 @@ export const WhoAreYouModal = () => {
 		}
 
 		registerSubmitCallback(registerEmail);
-	}, [registerEmail, registerSubmitCallback]);
+	}, [registerEmail, registerSubmitCallback, translate]);
 
 	return (
 		<Modal padding
@@ -41,12 +55,12 @@ export const WhoAreYouModal = () => {
 					disabled={loadingConsumerApi}
 					onSubmit={onSubmit}
 				>
-					<Grid spacing="base">
+					<BlockStack>
 						<Banner status="success"
 								title="Welcome!" />
 						<TextField error={errors?.email}
 								   icon={{ source: "email", position: "end" }}
-								   label="What is your email address?"
+								   label={translate("who-are-you.form.label.your-email")}
 								   name="email"
 								   onChange={(value) => {
 									   setRegisterEmail(value);
@@ -54,13 +68,20 @@ export const WhoAreYouModal = () => {
 								   required
 								   type="email"
 						/>
+						<Link external
+							  to={nameSearchResult.result.termsLinks.linkToTermsInLocale}
+						>
+							{translate("who-are-you.form.terms-link")}
+						</Link>
+						<TextBlock>Privacy policy stuff</TextBlock>
+						<Checkbox>Opt in</Checkbox>
 						<Button
 							accessibilityRole="submit"
 							loading={loadingConsumerApi}
 						>
-							Get my reward
+							{translate("who-are-you.form.submit")}
 						</Button>
-					</Grid>
+					</BlockStack>
 				</Form>
 			</BlockLayout>
 		</Modal>);

@@ -1,4 +1,4 @@
-import { Banner } from "@shopify/ui-extensions-react/checkout";
+import { Banner, useTranslate } from "@shopify/ui-extensions-react/checkout";
 import { useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { WhoAreYouModal } from "./WhoAreYouModal";
@@ -7,6 +7,8 @@ import { RegisterResultModal } from "./RegisterResultModal";
 
 export const CheckoutModal = () => {
 	const { step } = useContext(RefereeJourneyContext);
+
+	const translate = useTranslate();
 
 	if (step === "search-by-name" || step === "search-by-name-and-email") {
 		return <FindFriendModal />;
@@ -21,5 +23,6 @@ export const CheckoutModal = () => {
 	}
 
 	console.error("Unknown step", step);
-	return <Banner title="Something went wrong." status="critical" />;
+	return <Banner status="critical"
+				   title={translate("checkout.modal.error")} />;
 };

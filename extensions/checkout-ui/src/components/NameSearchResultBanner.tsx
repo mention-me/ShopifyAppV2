@@ -1,6 +1,7 @@
-import { Banner } from "@shopify/ui-extensions-react/checkout";
+import { Banner, useTranslate } from "@shopify/ui-extensions-react/checkout";
 import { useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
+import { isValidEmail } from "../../../../shared/utils";
 
 
 export const NameSearchResultBanner = () => {
@@ -9,23 +10,27 @@ export const NameSearchResultBanner = () => {
 		nameSearchResult,
 	} = useContext(RefereeJourneyContext);
 
+	const translate = useTranslate();
+
 	if (!nameSearchResult) {
 		return null;
 	}
 
-	if (nameSearchResult.type === "no-match" && search.email) {
+	if (nameSearchResult.type === "no-match" && search.email && isValidEmail(search.email)) {
 		return <Banner status="critical"
-					   title="Sorry, we can't find your friend. We'd recommend you confirm the email address they used with us and try again later." />;
+					   title={translate("banner.no-match")} />;
 	}
 
-	if (nameSearchResult.type === "duplicate-match" || (nameSearchResult.type === "no-match" && !search.email)) {
+	if (nameSearchResult.type === "duplicate-match" || (nameSearchResult.type === "no-match" && !isValidEmail(search.email))) {
 		return <Banner status="warning"
-					   title={`Sorry, we can't find your friend by the name '${search.name}'. Try searching with their email address too.`} />;
+					   title={translate("banner.search-by-email", {
+						   name: search.name,
+					   })} />;
 	}
 
 	if (nameSearchResult.type === "error") {
 		return <Banner status="critical"
-					   title="Sorry, an error has occurred. Please try again later." />;
+					   title={translate("banner.error")} />;
 	}
 
 	// No banner required
