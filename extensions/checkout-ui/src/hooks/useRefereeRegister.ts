@@ -1,7 +1,7 @@
 import { isValidEnvironment } from "../../../../shared/utils";
 import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
 import { SITUATION } from "../Checkout";
-import { EnrolRefereeType } from "@api/mention-me/src/types";
+import { EnrolRefereeType } from "@api/consumer-api/src/types";
 import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { RefereeRegister } from "@api/consumer-api/dist/types";
@@ -59,7 +59,6 @@ export const useRefereeRegister = () => {
 			const response = await fetch(`https://${url}/api/consumer/v2/referee/register`,
 				{
 					method: "POST",
-					// mode: "no-cors",
 					credentials: "include",
 					headers: { accept: "application/json", "Content-Type": "application/json" },
 					body: JSON.stringify(body),

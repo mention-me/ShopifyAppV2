@@ -52,7 +52,6 @@ export const useRefereeFindFriend = () => {
 			const response = await fetch(`https://${url}/api/consumer/v2/referrer/search?${params.toString()}`,
 				{
 					method: "GET",
-					// mode: "no-cors",
 					credentials: "include",
 					headers: { accept: "application/json", "Content-Type": "application/json" },
 				},

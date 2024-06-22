@@ -62,7 +62,6 @@ export const useRefereeEntryPoint = async () => {
 				const response = await fetch(`https://${url}/api/entry-point/v2/referee`,
 					{
 						method: "POST",
-						// mode: "no-cors",
 						credentials: "include",
 						headers: { accept: "application/json", "Content-Type": "application/json" },
 						body: JSON.stringify(body),
