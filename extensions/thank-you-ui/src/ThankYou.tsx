@@ -23,7 +23,9 @@ import { EntryPointForReferrerType, EntryPointOfferAndLink } from "@api/mention-
 import { isValidEnvironment, parseShopifyId } from "../../../shared/utils";
 import { fetchReferrerEntryPoint } from "../../../shared/referrerEntryPoint";
 import { APP_NAME, APP_VERSION } from "../../../shared/constants";
+import { setupSentry } from "../../../shared/sentry";
 
+setupSentry();
 
 const Extension = () => {
 	const { orderConfirmation } = useApi("purchase.thank-you.block.render");

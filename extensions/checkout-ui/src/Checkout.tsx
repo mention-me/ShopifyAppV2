@@ -10,6 +10,7 @@ import { isValidEnvironment } from "../../../shared/utils";
 
 import { RefereeJourneyProvider } from "./context/RefereeJourneyContext";
 import CheckoutUI from "./CheckoutUI";
+import { setupSentry } from "../../../shared/sentry";
 
 export const SITUATION = "shopify-checkout";
 
@@ -17,6 +18,8 @@ export interface FoundReferrerState {
 	referrerMentionMeIdentifier: string;
 	referrerToken: string;
 }
+
+setupSentry();
 
 const Extension = () => {
 
