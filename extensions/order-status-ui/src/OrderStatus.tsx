@@ -1,10 +1,15 @@
 import {
 	Banner,
-	BlockLayout,
+	BlockSpacer,
+	BlockStack,
 	Button,
+	Grid,
+	GridItem,
+	Heading,
 	Image,
 	Link,
 	reactExtension,
+	TextBlock,
 	useBillingAddress,
 	useEmail,
 	useExtensionEditor,
@@ -15,7 +20,7 @@ import {
 	useTotalAmount,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
-import { EntryPointForReferrerType, EntryPointOfferAndLink } from "@api/mention-me/src/types";
+import { EntryPointForReferrerType, EntryPointOfferAndLink } from "@api/entry-point-api/src/types";
 import { useEffect, useMemo, useState } from "react";
 
 import { isValidEnvironment, parseShopifyId } from "../../../shared/utils";
@@ -35,9 +40,12 @@ const Extension = () => {
 
 	const editor = useExtensionEditor();
 
-	const [json, setJson] = useState<EntryPointOfferAndLink | null>(null);
+	const [json, setJson] = useState<EntryPointOfferAndLink>(null);
 
 	let { mmPartnerCode, layout, environment } = useSettings();
+
+	mmPartnerCode = "mmf1c1195b";
+	environment = "demo";
 
 	const body: EntryPointForReferrerType = useMemo(() => {
 		return {
@@ -83,7 +91,7 @@ const Extension = () => {
 			body,
 			setJson,
 		});
-	}, [body, setJson]);
+	}, [body, environment, mmPartnerCode, setJson]);
 
 	console.log("Json", json);
 
@@ -94,8 +102,8 @@ const Extension = () => {
 
 		if (editor) {
 			return <Banner
-				title="Mention Me environment not set. Choose demo for testing, production for live customers."
-				status="critical" />;
+				status="critical"
+				title="Mention Me environment not set. Choose demo for testing, production for live customers." />;
 		}
 
 		return null;
@@ -106,8 +114,8 @@ const Extension = () => {
 
 		if (editor) {
 			return <Banner
-				title="Mention Me partner code needs to be set to show Mention Me journey. Click the Mention Me app on the left to add it."
-				status="critical" />;
+				status="critical"
+				title="Mention Me partner code needs to be set to show Mention Me journey. Click the Mention Me app on the left to add it." />;
 		}
 
 		return null;
@@ -118,28 +126,76 @@ const Extension = () => {
 	}
 
 	if (layout === "banner") {
-		return <Banner title={json.description} status="info">
-			<Link external to={json.url}>
+		return <Banner status="info"
+					   title={json.description}>
+			<Link external
+				  to={json.url}>
 				{json.defaultCallToAction}
 			</Link>
 		</Banner>;
 	}
 
 	return (
-		<BlockLayout rows={[60, "fill"]}>
-			<View blockAlignment="center">
-				<Button to={json.url}>
-					{json.defaultCallToAction}
-				</Button>
-			</View>
-			<View>
+		<BlockStack border="base"
+					borderRadius="large"
+		>
+			<Grid columns={["1fr", "1fr"]}
+				  padding={["base", "base", "none", "base"]}
+			>
+				<GridItem>
+					<BlockStack padding="base"
+								spacing="base">
+						{/*<BlockSpacer />*/}
+						<Heading level={2}>
+							{json.headline}
+						</Heading>
+						<TextBlock>
+							{json.description}
+						</TextBlock>
+						<BlockSpacer />
+						<View blockAlignment="center"
+							  minBlockSize="fill">
+							{/* Button can't support "external". See https://github.com/Shopify/ui-extensions/issues/1835#issuecomment-2113067449
+							 And because Link can't be full width, the button is restricted in size :( */}
+							<Link external
+								  to={json.url}
+							>
+								<Button inlineAlignment="center">
+									{json.defaultCallToAction}
+								</Button>
+							</Link>
+						</View>
+					</BlockStack>
+				</GridItem>
 				{json.imageUrl && (
-					<Link external={true} to={json.url}>
-						<Image source={json.imageUrl} />
-					</Link>
+					<GridItem>
+						{/*<BlockStack>*/}
+						{/*<BlockSpacer />*/}
+						<View>
+							<Link external
+								  to={json.url}>
+								<Image borderRadius="large"
+									   fit="cover"
+									   source={json.imageUrl} />
+							</Link>
+						</View>
+						{/*<BlockSpacer />*/}
+						{/*</BlockStack>*/}
+					</GridItem>
 				)}
+			</Grid>
+			<View background="subdued"
+				  padding="base">
+				<TextBlock appearance="subdued">
+					{json.privacyNotice}
+					{" "}
+					<Link external
+						  to={json.privacyNoticeUrl}>
+						{json.privacyNoticeLinkText || "More info and your privacy rights"}
+					</Link>
+				</TextBlock>
 			</View>
-		</BlockLayout>
+		</BlockStack>
 	);
 };
 
