@@ -4,7 +4,7 @@ import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/
 import { EntryPointForRefereeType, EntryPointLink } from "@api/entry-point-api/src/types";
 import { useContext, useEffect } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import { useShop } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
+import { useShop } from "@shopify/ui-extensions-react/checkout";
 
 export type RefereeEntryPointResponse = {
 	error?: string;

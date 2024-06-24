@@ -5,7 +5,7 @@ import { EnrolRefereeType } from "@api/consumer-api/src/types";
 import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { RefereeRegister } from "@api/consumer-api/dist/types";
-import { useShop } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
+import { useShop } from "@shopify/ui-extensions-react/checkout";
 
 export const useRefereeRegister = () => {
 	const {

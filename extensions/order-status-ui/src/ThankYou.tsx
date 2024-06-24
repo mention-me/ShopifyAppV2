@@ -1,5 +1,5 @@
 import Extension from "./Extension";
-import { reactExtension } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
+import { reactExtension } from "@shopify/ui-extensions-react/checkout";
 
 const ThankYou = () => {
 	return <Extension />;
