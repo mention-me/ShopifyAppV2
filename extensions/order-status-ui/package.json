@@ -4,7 +4,9 @@
     "version": "1.0.0",
     "license": "UNLICENSED",
     "dependencies": {
-		"@api/mention-me": "file:./../../.api/apis/mention-me",
+        "@api/consumer-api": "file:./../../.api/apis/consumer-api",
+        "@api/entry-point-api": "file:./../../.api/apis/entry-point-api",
+        "@sentry/browser": "^8.11.0",
         "@shopify/ui-extensions": "^2024",
         "@shopify/ui-extensions-react": "^2024",
         "react": "^18.0.0"

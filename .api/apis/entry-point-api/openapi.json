@@ -1,0 +1,1619 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Entry Point API",
+    "description": "Add links or buttons to your App which take customers into a hosted web view to allow them to refer their friends or become referred.",
+    "termsOfService": "https://mention-me.com/help/tnc_f/site",
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "https://mention-me.com",
+      "description": "Production"
+    },
+    {
+      "url": "https://demo.mention-me.com",
+      "description": "Demo"
+    }
+  ],
+  "paths": {
+    "/api/entry-point/{version}/offer": {
+      "post": {
+        "tags": [
+          "Referrer"
+        ],
+        "summary": "Enrol a customer in an offer",
+        "description": "Provide a customers' details so we can tell you if we could enrol them into an offer. We'll provide the URL to the web-view for their journey.\n\nGiven a set of input parameters about the customer (and segment and any order that has just taken place), decide if we could enrol them as a customer and if so, give you a link to the web view so they can share the offer - whether referral, IFA or NPS - with their friends.\n\nWe encourage you to include the details of any order which has just taken place as this helps us with segmentation and propensity modelling. You can tell us about orders separately too.\n\nYou can present this as a button, link or broader display panel. We include other useful content which you can choose to present to the customer to give them a richer invitation to join the promotion\nprogramme. A headline and description describe the offer and the default CTA text gives you content to add to the link or button. There is also an optional image URL. There is also an optional privacy information notice if you need it.\n\nUsers of the Mention Me platform can configure and edit the content and image returned and those can be AB tested also - for example half the customers see one image and one set of content and half see another so that you can test how offers perform.\n\nNote: you can also use `/api/entry-point/{version}/referrer` as the endpoint, which is an alias of this path",
+        "operationId": "post_api_entry_point_offer",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "v2|v1",
+              "enum": [
+                "v2",
+                "v1"
+              ]
+            },
+            "example": "v2"
+          }
+        ],
+        "requestBody": {
+          "description": "Information to retrieve an offer entry point URL",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "customer",
+                  "request"
+                ],
+                "properties": {
+                  "customer": {
+                    "title": "Customer",
+                    "description": "Information about the referrer",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "emailAddress",
+                          "firstname",
+                          "surname"
+                        ],
+                        "properties": {
+                          "emailAddress": {
+                            "description": "Customer email address",
+                            "type": "string",
+                            "example": "jane.doe@example.com"
+                          },
+                          "title": {
+                            "description": "Customer title such as Mr, Miss, Dr or Sir",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "firstname": {
+                            "description": "Customer firstname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "surname": {
+                            "description": "Customer surname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "uniqueIdentifier": {
+                            "description": "Your unique identifier for this customer e.g. CustomerId",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "segment": {
+                            "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "customField": {
+                            "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "CustomerType",
+                        "x-readme-ref-name": "CustomerType"
+                      }
+                    ]
+                  },
+                  "request": {
+                    "title": "Request",
+                    "description": "Information about the request",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "partnerCode",
+                          "situation"
+                        ],
+                        "properties": {
+                          "partnerCode": {
+                            "description": "Your partner code, used to link to your users and offers",
+                            "type": "string",
+                            "example": "[YOUR-PARTNER-CODE]"
+                          },
+                          "situation": {
+                            "description": "Situation - a string representing where in the application you are making this request",
+                            "type": "string",
+                            "example": "mobile-app"
+                          },
+                          "localeCode": {
+                            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                            "type": "string",
+                            "example": "en_GB"
+                          },
+                          "ipAddress": {
+                            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                            "type": "string",
+                            "example": "127.0.0.1"
+                          },
+                          "userDeviceIdentifier": {
+                            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "deviceType": {
+                            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appName": {
+                            "description": "Your application name. Used for reporting.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appVersion": {
+                            "description": "Your application version reference. Used for reporting and troubleshooting.",
+                            "type": "string",
+                            "example": "v1.73"
+                          },
+                          "authenticationToken": {
+                            "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "variation": {
+                            "description": "Variation - an index (0,1,2...) specifying which of the currently running AB tests to choose (if available)",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "RequestWithVariationType",
+                        "x-readme-ref-name": "RequestWithVariationType"
+                      }
+                    ]
+                  },
+                  "order": {
+                    "title": "Order",
+                    "description": "Information about the order (used for recording order events AND segmentation)",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "orderIdentifier",
+                          "total",
+                          "currencyCode",
+                          "dateString"
+                        ],
+                        "properties": {
+                          "orderIdentifier": {
+                            "description": "Your Order Identifier for the transaction that has taken place",
+                            "type": "string",
+                            "example": "123456"
+                          },
+                          "total": {
+                            "description": "Order subtotal, excluding tax and shipping in the currency specified by currencyCode",
+                            "type": "string",
+                            "example": "100"
+                          },
+                          "currencyCode": {
+                            "description": "3 letter currency code for the currency in which the transaction took place",
+                            "type": "string",
+                            "example": "GBP"
+                          },
+                          "dateString": {
+                            "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
+                            "type": "string",
+                            "example": "2024-06-18T16:31:06+00:00"
+                          },
+                          "couponCode": {
+                            "description": "If a coupon was used in the transaction, the coupon code the consumer used",
+                            "type": "string",
+                            "example": "ABC23252"
+                          },
+                          "discountAmount": {
+                            "description": "The discount amount. Our assumption is this has already been taken off the order subtotal provided. This allows us to calculate the Cost Per Acquisition for referral.",
+                            "type": "string",
+                            "example": "12.44"
+                          },
+                          "orderItemCount": {
+                            "description": "The number of items in the order/cart (if applicable). This helps us understand the type of purchase and can be a signal of advocacy.",
+                            "type": "string",
+                            "example": "3"
+                          },
+                          "isSubscription": {
+                            "description": "Whether this order is for a subscription (recurring). This helps us qualify and categorise the revenue.",
+                            "type": "boolean",
+                            "example": ""
+                          },
+                          "isGift": {
+                            "description": "Whether this order is a gift (being bought for someone else). Gifts can be signals of advocacy.",
+                            "type": "boolean",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "OrderType",
+                        "x-readme-ref-name": "OrderType"
+                      }
+                    ]
+                  },
+                  "address": {
+                    "title": "Address",
+                    "description": "Information about the address of the customer (used for segmentation)",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "addressCountry": {
+                            "description": "Country of address e.g. UK or France",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "AddressForSegmentationType",
+                        "x-readme-ref-name": "AddressForSegmentationType"
+                      }
+                    ]
+                  },
+                  "implementation": {
+                    "title": "Implementation",
+                    "description": "Options for the implementation",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "wrapContentWithBranding": {
+                            "description": "If true (default), serve content in the URLs with customisable branding wrapper (normally a logo and padding). If false, serve content without any wrapping. ",
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "showCloseIcon": {
+                            "description": "If true, show close icon in the pages (so they can be included in an iframe). You need to listen for postMessages to close and fulfill the flow if you do open this flow in an iframe. ",
+                            "type": "boolean",
+                            "example": false
+                          }
+                        },
+                        "type": "object",
+                        "title": "ImplementationType",
+                        "x-readme-ref-name": "ImplementationType"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "EntryPointForReferrerType",
+                "x-readme-ref-name": "EntryPointForReferrerType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "url": {
+                      "title": "The url to include in the share",
+                      "type": "string"
+                    },
+                    "defaultCallToAction": {
+                      "title": "The default message to include as the CTA",
+                      "type": "string"
+                    },
+                    "localeCode": {
+                      "title": "The locale code of the Offer - the locale in which the content is presented",
+                      "type": "string"
+                    },
+                    "headline": {
+                      "title": "The headline description for the Offer.",
+                      "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                      "type": "string"
+                    },
+                    "description": {
+                      "title": "The details of the Offer.",
+                      "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                      "type": "string"
+                    },
+                    "privacyNotice": {
+                      "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                      "description": "e.g. \"Get a £20 gift card\"",
+                      "type": "string"
+                    },
+                    "privacyNoticeUrl": {
+                      "title": "The Mention Me privacy policy URL.",
+                      "type": "string"
+                    },
+                    "privacyNoticeLinkText": {
+                      "title": "The text to use for linking to $privacyNoticeUrl.",
+                      "type": "string"
+                    },
+                    "imageUrl": {
+                      "title": "The URL to an image for the Offer.",
+                      "type": "string"
+                    },
+                    "offerCode": {
+                      "title": "The code which identifies the offer we picked (which could be used for the client to style the placement differently). It is the QuickLinkCode of the Offer.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "title": "EntryPointOfferAndLink",
+                  "x-readme-ref-name": "EntryPointOfferAndLink"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when this specific integration point has been disabled"
+          },
+          "422": {
+            "description": "The data presented contains validation errors, please correct and try again"
+          },
+          "500": {
+            "description": "Internal server error, unable to complete the request"
+          }
+        }
+      }
+    },
+    "/api/entry-point/{version}/referee": {
+      "post": {
+        "tags": [
+          "Referee"
+        ],
+        "summary": "Find a friend by name",
+        "description": "Provide some details of a referee (optional - if you have them) and some context (such as locale) so we can tell you if we can serve a name finder journey. We'll provide the URL to the web-view for their journey.\n\nGiven a set of input parameters about the referee (and segment etc), decide if we could serve them a referee\nname finder journey and give them a link to the web view for doing that.\n\nIf you choose to direct the consumer to the URL via an iframe, the closing of the journey and the fulfillment of any coupon is done via postMessage. If you send the consumer to the URL they will close the flow using the browser itself and the CTA at the end is the defined CTA URL to take them to the next step of their journey.",
+        "operationId": "post_api_entry_point_referee",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "v2|v1",
+              "enum": [
+                "v2",
+                "v1"
+              ]
+            },
+            "example": "v2"
+          }
+        ],
+        "requestBody": {
+          "description": "Information to retrieve a referee entry point URL",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "request"
+                ],
+                "properties": {
+                  "customer": {
+                    "title": "Referee",
+                    "description": "Information about the referee (if you have any)",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "emailAddress": {
+                            "description": "Customer email address",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "title": {
+                            "description": "Customer title such as Mr, Miss, Dr or Sir",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "firstname": {
+                            "description": "Customer firstname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "surname": {
+                            "description": "Customer surname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "uniqueIdentifier": {
+                            "description": "Your unique identifier for this customer e.g. CustomerId",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "RefereeCustomerType",
+                        "x-readme-ref-name": "RefereeCustomerType"
+                      }
+                    ]
+                  },
+                  "request": {
+                    "title": "Request",
+                    "description": "Information about the request",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "partnerCode",
+                          "situation"
+                        ],
+                        "properties": {
+                          "partnerCode": {
+                            "description": "Your partner code, used to link to your users and offers",
+                            "type": "string",
+                            "example": "[YOUR-PARTNER-CODE]"
+                          },
+                          "situation": {
+                            "description": "Situation - a string representing where in the application you are making this request",
+                            "type": "string",
+                            "example": "mobile-app"
+                          },
+                          "localeCode": {
+                            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                            "type": "string",
+                            "example": "en_GB"
+                          },
+                          "ipAddress": {
+                            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                            "type": "string",
+                            "example": "127.0.0.1"
+                          },
+                          "userDeviceIdentifier": {
+                            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "deviceType": {
+                            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appName": {
+                            "description": "Your application name. Used for reporting.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appVersion": {
+                            "description": "Your application version reference. Used for reporting and troubleshooting.",
+                            "type": "string",
+                            "example": "v1.73"
+                          },
+                          "authenticationToken": {
+                            "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "variation": {
+                            "description": "Variation - an index (0,1,2...) specifying which of the currently running AB tests to choose (if available)",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "RequestWithVariationType",
+                        "x-readme-ref-name": "RequestWithVariationType"
+                      }
+                    ]
+                  },
+                  "implementation": {
+                    "title": "Implementation",
+                    "description": "Options for the implementation",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "wrapContentWithBranding": {
+                            "description": "If true (default), serve content in the URLs with customisable branding wrapper (normally a logo and padding). If false, serve content without any wrapping. ",
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "showCloseIcon": {
+                            "description": "If true, show close icon in the pages (so they can be included in an iframe). You need to listen for postMessages to close and fulfill the flow if you do open this flow in an iframe. ",
+                            "type": "boolean",
+                            "example": false
+                          }
+                        },
+                        "type": "object",
+                        "title": "ImplementationType",
+                        "x-readme-ref-name": "ImplementationType"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "EntryPointForRefereeType",
+                "x-readme-ref-name": "EntryPointForRefereeType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "url": {
+                      "title": "The url to include in the share",
+                      "type": "string"
+                    },
+                    "defaultCallToAction": {
+                      "title": "The default message to include as the CTA",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "title": "EntryPointLink",
+                  "x-readme-ref-name": "EntryPointLink"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when this specific integration point has been disabled"
+          },
+          "422": {
+            "description": "Data had validation errors"
+          },
+          "500": {
+            "description": "Internal server error, unable to complete the request"
+          }
+        }
+      }
+    },
+    "/api/entry-point/{version}/dashboard": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get dashboard",
+        "description": "Provide a customers' details so we can tell you if we could show them a dashboard (or offer). We'll provide the URL to the web-view for their dashboard.\n\nProvide their full details (name, email, customerId) if you want us to optionally register them if they're not yet a referrer.",
+        "operationId": "post_api_entry_point_dashboard",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "v2|v1",
+              "enum": [
+                "v2",
+                "v1"
+              ]
+            },
+            "example": "v2"
+          }
+        ],
+        "requestBody": {
+          "description": "Information to retrieve a referrer dashboard entry point URL",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "customer",
+                  "request"
+                ],
+                "properties": {
+                  "customer": {
+                    "title": "Customer",
+                    "description": "Information about the referrer",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "emailAddress",
+                          "firstname",
+                          "surname"
+                        ],
+                        "properties": {
+                          "emailAddress": {
+                            "description": "Customer email address",
+                            "type": "string",
+                            "example": "jane.doe@example.com"
+                          },
+                          "title": {
+                            "description": "Customer title such as Mr, Miss, Dr or Sir",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "firstname": {
+                            "description": "Customer firstname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "surname": {
+                            "description": "Customer surname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "uniqueIdentifier": {
+                            "description": "Your unique identifier for this customer e.g. CustomerId",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "segment": {
+                            "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "customField": {
+                            "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "CustomerType",
+                        "x-readme-ref-name": "CustomerType"
+                      }
+                    ]
+                  },
+                  "request": {
+                    "title": "Request",
+                    "description": "Information about the request, including authentication",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "partnerCode",
+                          "situation",
+                          "authenticationToken"
+                        ],
+                        "properties": {
+                          "partnerCode": {
+                            "description": "Your partner code, used to link to your users and offers",
+                            "type": "string",
+                            "example": "[YOUR-PARTNER-CODE]"
+                          },
+                          "situation": {
+                            "description": "Situation - a string representing where in the application you are making this request",
+                            "type": "string",
+                            "example": "mobile-app"
+                          },
+                          "localeCode": {
+                            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                            "type": "string",
+                            "example": "en_GB"
+                          },
+                          "ipAddress": {
+                            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                            "type": "string",
+                            "example": "127.0.0.1"
+                          },
+                          "userDeviceIdentifier": {
+                            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "deviceType": {
+                            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appName": {
+                            "description": "Your application name. Used for reporting.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appVersion": {
+                            "description": "Your application version reference. Used for reporting and troubleshooting.",
+                            "type": "string",
+                            "example": "v1.73"
+                          },
+                          "authenticationToken": {
+                            "description": "This is a hash signature for the request which authenticates it. Ask us for details of the mechanism for generating this token.",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "RequestWithAuthenticationType",
+                        "x-readme-ref-name": "RequestWithAuthenticationType"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "EntryPointForDashboardType",
+                "x-readme-ref-name": "EntryPointForDashboardType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "url": {
+                      "title": "The url to include in the share",
+                      "type": "string"
+                    },
+                    "defaultCallToAction": {
+                      "title": "The default message to include as the CTA",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "title": "EntryPointLink",
+                  "x-readme-ref-name": "EntryPointLink"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when this specific integration point has been disabled"
+          },
+          "422": {
+            "description": "The data presented contains validation errors, please correct and try again"
+          },
+          "500": {
+            "description": "Internal server error, unable to complete the request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EntryPointForReferrerType": {
+        "required": [
+          "customer",
+          "request"
+        ],
+        "properties": {
+          "customer": {
+            "title": "Customer",
+            "description": "Information about the referrer",
+            "oneOf": [
+              {
+                "required": [
+                  "emailAddress",
+                  "firstname",
+                  "surname"
+                ],
+                "properties": {
+                  "emailAddress": {
+                    "description": "Customer email address",
+                    "type": "string",
+                    "example": "jane.doe@example.com"
+                  },
+                  "title": {
+                    "description": "Customer title such as Mr, Miss, Dr or Sir",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "firstname": {
+                    "description": "Customer firstname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "surname": {
+                    "description": "Customer surname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "uniqueIdentifier": {
+                    "description": "Your unique identifier for this customer e.g. CustomerId",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "segment": {
+                    "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "customField": {
+                    "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "CustomerType",
+                "x-readme-ref-name": "CustomerType"
+              }
+            ]
+          },
+          "request": {
+            "title": "Request",
+            "description": "Information about the request",
+            "oneOf": [
+              {
+                "required": [
+                  "partnerCode",
+                  "situation"
+                ],
+                "properties": {
+                  "partnerCode": {
+                    "description": "Your partner code, used to link to your users and offers",
+                    "type": "string",
+                    "example": "[YOUR-PARTNER-CODE]"
+                  },
+                  "situation": {
+                    "description": "Situation - a string representing where in the application you are making this request",
+                    "type": "string",
+                    "example": "mobile-app"
+                  },
+                  "localeCode": {
+                    "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                    "type": "string",
+                    "example": "en_GB"
+                  },
+                  "ipAddress": {
+                    "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                    "type": "string",
+                    "example": "127.0.0.1"
+                  },
+                  "userDeviceIdentifier": {
+                    "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "deviceType": {
+                    "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appName": {
+                    "description": "Your application name. Used for reporting.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appVersion": {
+                    "description": "Your application version reference. Used for reporting and troubleshooting.",
+                    "type": "string",
+                    "example": "v1.73"
+                  },
+                  "authenticationToken": {
+                    "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "variation": {
+                    "description": "Variation - an index (0,1,2...) specifying which of the currently running AB tests to choose (if available)",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "RequestWithVariationType",
+                "x-readme-ref-name": "RequestWithVariationType"
+              }
+            ]
+          },
+          "order": {
+            "title": "Order",
+            "description": "Information about the order (used for recording order events AND segmentation)",
+            "oneOf": [
+              {
+                "required": [
+                  "orderIdentifier",
+                  "total",
+                  "currencyCode",
+                  "dateString"
+                ],
+                "properties": {
+                  "orderIdentifier": {
+                    "description": "Your Order Identifier for the transaction that has taken place",
+                    "type": "string",
+                    "example": "123456"
+                  },
+                  "total": {
+                    "description": "Order subtotal, excluding tax and shipping in the currency specified by currencyCode",
+                    "type": "string",
+                    "example": "100"
+                  },
+                  "currencyCode": {
+                    "description": "3 letter currency code for the currency in which the transaction took place",
+                    "type": "string",
+                    "example": "GBP"
+                  },
+                  "dateString": {
+                    "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
+                    "type": "string",
+                    "example": "2024-06-18T16:31:06+00:00"
+                  },
+                  "couponCode": {
+                    "description": "If a coupon was used in the transaction, the coupon code the consumer used",
+                    "type": "string",
+                    "example": "ABC23252"
+                  },
+                  "discountAmount": {
+                    "description": "The discount amount. Our assumption is this has already been taken off the order subtotal provided. This allows us to calculate the Cost Per Acquisition for referral.",
+                    "type": "string",
+                    "example": "12.44"
+                  },
+                  "orderItemCount": {
+                    "description": "The number of items in the order/cart (if applicable). This helps us understand the type of purchase and can be a signal of advocacy.",
+                    "type": "string",
+                    "example": "3"
+                  },
+                  "isSubscription": {
+                    "description": "Whether this order is for a subscription (recurring). This helps us qualify and categorise the revenue.",
+                    "type": "boolean",
+                    "example": ""
+                  },
+                  "isGift": {
+                    "description": "Whether this order is a gift (being bought for someone else). Gifts can be signals of advocacy.",
+                    "type": "boolean",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "OrderType",
+                "x-readme-ref-name": "OrderType"
+              }
+            ]
+          },
+          "address": {
+            "title": "Address",
+            "description": "Information about the address of the customer (used for segmentation)",
+            "oneOf": [
+              {
+                "properties": {
+                  "addressCountry": {
+                    "description": "Country of address e.g. UK or France",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "AddressForSegmentationType",
+                "x-readme-ref-name": "AddressForSegmentationType"
+              }
+            ]
+          },
+          "implementation": {
+            "title": "Implementation",
+            "description": "Options for the implementation",
+            "oneOf": [
+              {
+                "properties": {
+                  "wrapContentWithBranding": {
+                    "description": "If true (default), serve content in the URLs with customisable branding wrapper (normally a logo and padding). If false, serve content without any wrapping. ",
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "showCloseIcon": {
+                    "description": "If true, show close icon in the pages (so they can be included in an iframe). You need to listen for postMessages to close and fulfill the flow if you do open this flow in an iframe. ",
+                    "type": "boolean",
+                    "example": false
+                  }
+                },
+                "type": "object",
+                "title": "ImplementationType",
+                "x-readme-ref-name": "ImplementationType"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "EntryPointForReferrerType",
+        "x-readme-ref-name": "EntryPointForReferrerType"
+      },
+      "EntryPointOfferAndLink": {
+        "properties": {
+          "url": {
+            "title": "The url to include in the share",
+            "type": "string"
+          },
+          "defaultCallToAction": {
+            "title": "The default message to include as the CTA",
+            "type": "string"
+          },
+          "localeCode": {
+            "title": "The locale code of the Offer - the locale in which the content is presented",
+            "type": "string"
+          },
+          "headline": {
+            "title": "The headline description for the Offer.",
+            "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+            "type": "string"
+          },
+          "description": {
+            "title": "The details of the Offer.",
+            "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+            "type": "string"
+          },
+          "privacyNotice": {
+            "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+            "description": "e.g. \"Get a £20 gift card\"",
+            "type": "string"
+          },
+          "privacyNoticeUrl": {
+            "title": "The Mention Me privacy policy URL.",
+            "type": "string"
+          },
+          "privacyNoticeLinkText": {
+            "title": "The text to use for linking to $privacyNoticeUrl.",
+            "type": "string"
+          },
+          "imageUrl": {
+            "title": "The URL to an image for the Offer.",
+            "type": "string"
+          },
+          "offerCode": {
+            "title": "The code which identifies the offer we picked (which could be used for the client to style the placement differently). It is the QuickLinkCode of the Offer.",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "title": "EntryPointOfferAndLink",
+        "x-readme-ref-name": "EntryPointOfferAndLink"
+      },
+      "EntryPointForRefereeType": {
+        "required": [
+          "request"
+        ],
+        "properties": {
+          "customer": {
+            "title": "Referee",
+            "description": "Information about the referee (if you have any)",
+            "oneOf": [
+              {
+                "properties": {
+                  "emailAddress": {
+                    "description": "Customer email address",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "title": {
+                    "description": "Customer title such as Mr, Miss, Dr or Sir",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "firstname": {
+                    "description": "Customer firstname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "surname": {
+                    "description": "Customer surname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "uniqueIdentifier": {
+                    "description": "Your unique identifier for this customer e.g. CustomerId",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "RefereeCustomerType",
+                "x-readme-ref-name": "RefereeCustomerType"
+              }
+            ]
+          },
+          "request": {
+            "title": "Request",
+            "description": "Information about the request",
+            "oneOf": [
+              {
+                "required": [
+                  "partnerCode",
+                  "situation"
+                ],
+                "properties": {
+                  "partnerCode": {
+                    "description": "Your partner code, used to link to your users and offers",
+                    "type": "string",
+                    "example": "[YOUR-PARTNER-CODE]"
+                  },
+                  "situation": {
+                    "description": "Situation - a string representing where in the application you are making this request",
+                    "type": "string",
+                    "example": "mobile-app"
+                  },
+                  "localeCode": {
+                    "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                    "type": "string",
+                    "example": "en_GB"
+                  },
+                  "ipAddress": {
+                    "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                    "type": "string",
+                    "example": "127.0.0.1"
+                  },
+                  "userDeviceIdentifier": {
+                    "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "deviceType": {
+                    "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appName": {
+                    "description": "Your application name. Used for reporting.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appVersion": {
+                    "description": "Your application version reference. Used for reporting and troubleshooting.",
+                    "type": "string",
+                    "example": "v1.73"
+                  },
+                  "authenticationToken": {
+                    "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "variation": {
+                    "description": "Variation - an index (0,1,2...) specifying which of the currently running AB tests to choose (if available)",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "RequestWithVariationType",
+                "x-readme-ref-name": "RequestWithVariationType"
+              }
+            ]
+          },
+          "implementation": {
+            "title": "Implementation",
+            "description": "Options for the implementation",
+            "oneOf": [
+              {
+                "properties": {
+                  "wrapContentWithBranding": {
+                    "description": "If true (default), serve content in the URLs with customisable branding wrapper (normally a logo and padding). If false, serve content without any wrapping. ",
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "showCloseIcon": {
+                    "description": "If true, show close icon in the pages (so they can be included in an iframe). You need to listen for postMessages to close and fulfill the flow if you do open this flow in an iframe. ",
+                    "type": "boolean",
+                    "example": false
+                  }
+                },
+                "type": "object",
+                "title": "ImplementationType",
+                "x-readme-ref-name": "ImplementationType"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "EntryPointForRefereeType",
+        "x-readme-ref-name": "EntryPointForRefereeType"
+      },
+      "EntryPointLink": {
+        "properties": {
+          "url": {
+            "title": "The url to include in the share",
+            "type": "string"
+          },
+          "defaultCallToAction": {
+            "title": "The default message to include as the CTA",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "title": "EntryPointLink",
+        "x-readme-ref-name": "EntryPointLink"
+      },
+      "EntryPointForDashboardType": {
+        "required": [
+          "customer",
+          "request"
+        ],
+        "properties": {
+          "customer": {
+            "title": "Customer",
+            "description": "Information about the referrer",
+            "oneOf": [
+              {
+                "required": [
+                  "emailAddress",
+                  "firstname",
+                  "surname"
+                ],
+                "properties": {
+                  "emailAddress": {
+                    "description": "Customer email address",
+                    "type": "string",
+                    "example": "jane.doe@example.com"
+                  },
+                  "title": {
+                    "description": "Customer title such as Mr, Miss, Dr or Sir",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "firstname": {
+                    "description": "Customer firstname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "surname": {
+                    "description": "Customer surname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "uniqueIdentifier": {
+                    "description": "Your unique identifier for this customer e.g. CustomerId",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "segment": {
+                    "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "customField": {
+                    "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "CustomerType",
+                "x-readme-ref-name": "CustomerType"
+              }
+            ]
+          },
+          "request": {
+            "title": "Request",
+            "description": "Information about the request, including authentication",
+            "oneOf": [
+              {
+                "required": [
+                  "partnerCode",
+                  "situation",
+                  "authenticationToken"
+                ],
+                "properties": {
+                  "partnerCode": {
+                    "description": "Your partner code, used to link to your users and offers",
+                    "type": "string",
+                    "example": "[YOUR-PARTNER-CODE]"
+                  },
+                  "situation": {
+                    "description": "Situation - a string representing where in the application you are making this request",
+                    "type": "string",
+                    "example": "mobile-app"
+                  },
+                  "localeCode": {
+                    "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                    "type": "string",
+                    "example": "en_GB"
+                  },
+                  "ipAddress": {
+                    "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                    "type": "string",
+                    "example": "127.0.0.1"
+                  },
+                  "userDeviceIdentifier": {
+                    "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "deviceType": {
+                    "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appName": {
+                    "description": "Your application name. Used for reporting.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appVersion": {
+                    "description": "Your application version reference. Used for reporting and troubleshooting.",
+                    "type": "string",
+                    "example": "v1.73"
+                  },
+                  "authenticationToken": {
+                    "description": "This is a hash signature for the request which authenticates it. Ask us for details of the mechanism for generating this token.",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "RequestWithAuthenticationType",
+                "x-readme-ref-name": "RequestWithAuthenticationType"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "EntryPointForDashboardType",
+        "x-readme-ref-name": "EntryPointForDashboardType"
+      },
+      "CustomerType": {
+        "required": [
+          "emailAddress",
+          "firstname",
+          "surname"
+        ],
+        "properties": {
+          "emailAddress": {
+            "description": "Customer email address",
+            "type": "string",
+            "example": "jane.doe@example.com"
+          },
+          "title": {
+            "description": "Customer title such as Mr, Miss, Dr or Sir",
+            "type": "string",
+            "example": ""
+          },
+          "firstname": {
+            "description": "Customer firstname",
+            "type": "string",
+            "example": ""
+          },
+          "surname": {
+            "description": "Customer surname",
+            "type": "string",
+            "example": ""
+          },
+          "uniqueIdentifier": {
+            "description": "Your unique identifier for this customer e.g. CustomerId",
+            "type": "string",
+            "example": ""
+          },
+          "segment": {
+            "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+            "type": "string",
+            "example": ""
+          },
+          "customField": {
+            "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "CustomerType",
+        "x-readme-ref-name": "CustomerType"
+      },
+      "RequestWithVariationType": {
+        "required": [
+          "partnerCode",
+          "situation"
+        ],
+        "properties": {
+          "partnerCode": {
+            "description": "Your partner code, used to link to your users and offers",
+            "type": "string",
+            "example": "[YOUR-PARTNER-CODE]"
+          },
+          "situation": {
+            "description": "Situation - a string representing where in the application you are making this request",
+            "type": "string",
+            "example": "mobile-app"
+          },
+          "localeCode": {
+            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+            "type": "string",
+            "example": "en_GB"
+          },
+          "ipAddress": {
+            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+            "type": "string",
+            "example": "127.0.0.1"
+          },
+          "userDeviceIdentifier": {
+            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+            "type": "string",
+            "example": ""
+          },
+          "deviceType": {
+            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+            "type": "string",
+            "example": ""
+          },
+          "appName": {
+            "description": "Your application name. Used for reporting.",
+            "type": "string",
+            "example": ""
+          },
+          "appVersion": {
+            "description": "Your application version reference. Used for reporting and troubleshooting.",
+            "type": "string",
+            "example": "v1.73"
+          },
+          "authenticationToken": {
+            "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+            "type": "string",
+            "example": ""
+          },
+          "variation": {
+            "description": "Variation - an index (0,1,2...) specifying which of the currently running AB tests to choose (if available)",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "RequestWithVariationType",
+        "x-readme-ref-name": "RequestWithVariationType"
+      },
+      "OrderType": {
+        "required": [
+          "orderIdentifier",
+          "total",
+          "currencyCode",
+          "dateString"
+        ],
+        "properties": {
+          "orderIdentifier": {
+            "description": "Your Order Identifier for the transaction that has taken place",
+            "type": "string",
+            "example": "123456"
+          },
+          "total": {
+            "description": "Order subtotal, excluding tax and shipping in the currency specified by currencyCode",
+            "type": "string",
+            "example": "100"
+          },
+          "currencyCode": {
+            "description": "3 letter currency code for the currency in which the transaction took place",
+            "type": "string",
+            "example": "GBP"
+          },
+          "dateString": {
+            "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
+            "type": "string",
+            "example": "2024-06-18T16:31:06+00:00"
+          },
+          "couponCode": {
+            "description": "If a coupon was used in the transaction, the coupon code the consumer used",
+            "type": "string",
+            "example": "ABC23252"
+          },
+          "discountAmount": {
+            "description": "The discount amount. Our assumption is this has already been taken off the order subtotal provided. This allows us to calculate the Cost Per Acquisition for referral.",
+            "type": "string",
+            "example": "12.44"
+          },
+          "orderItemCount": {
+            "description": "The number of items in the order/cart (if applicable). This helps us understand the type of purchase and can be a signal of advocacy.",
+            "type": "string",
+            "example": "3"
+          },
+          "isSubscription": {
+            "description": "Whether this order is for a subscription (recurring). This helps us qualify and categorise the revenue.",
+            "type": "boolean",
+            "example": ""
+          },
+          "isGift": {
+            "description": "Whether this order is a gift (being bought for someone else). Gifts can be signals of advocacy.",
+            "type": "boolean",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "OrderType",
+        "x-readme-ref-name": "OrderType"
+      },
+      "AddressForSegmentationType": {
+        "properties": {
+          "addressCountry": {
+            "description": "Country of address e.g. UK or France",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "AddressForSegmentationType",
+        "x-readme-ref-name": "AddressForSegmentationType"
+      },
+      "ImplementationType": {
+        "properties": {
+          "wrapContentWithBranding": {
+            "description": "If true (default), serve content in the URLs with customisable branding wrapper (normally a logo and padding). If false, serve content without any wrapping. ",
+            "type": "boolean",
+            "example": true
+          },
+          "showCloseIcon": {
+            "description": "If true, show close icon in the pages (so they can be included in an iframe). You need to listen for postMessages to close and fulfill the flow if you do open this flow in an iframe. ",
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "type": "object",
+        "title": "ImplementationType",
+        "x-readme-ref-name": "ImplementationType"
+      },
+      "RefereeCustomerType": {
+        "properties": {
+          "emailAddress": {
+            "description": "Customer email address",
+            "type": "string",
+            "example": ""
+          },
+          "title": {
+            "description": "Customer title such as Mr, Miss, Dr or Sir",
+            "type": "string",
+            "example": ""
+          },
+          "firstname": {
+            "description": "Customer firstname",
+            "type": "string",
+            "example": ""
+          },
+          "surname": {
+            "description": "Customer surname",
+            "type": "string",
+            "example": ""
+          },
+          "uniqueIdentifier": {
+            "description": "Your unique identifier for this customer e.g. CustomerId",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "RefereeCustomerType",
+        "x-readme-ref-name": "RefereeCustomerType"
+      },
+      "RequestWithAuthenticationType": {
+        "required": [
+          "partnerCode",
+          "situation",
+          "authenticationToken"
+        ],
+        "properties": {
+          "partnerCode": {
+            "description": "Your partner code, used to link to your users and offers",
+            "type": "string",
+            "example": "[YOUR-PARTNER-CODE]"
+          },
+          "situation": {
+            "description": "Situation - a string representing where in the application you are making this request",
+            "type": "string",
+            "example": "mobile-app"
+          },
+          "localeCode": {
+            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+            "type": "string",
+            "example": "en_GB"
+          },
+          "ipAddress": {
+            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+            "type": "string",
+            "example": "127.0.0.1"
+          },
+          "userDeviceIdentifier": {
+            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+            "type": "string",
+            "example": ""
+          },
+          "deviceType": {
+            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+            "type": "string",
+            "example": ""
+          },
+          "appName": {
+            "description": "Your application name. Used for reporting.",
+            "type": "string",
+            "example": ""
+          },
+          "appVersion": {
+            "description": "Your application version reference. Used for reporting and troubleshooting.",
+            "type": "string",
+            "example": "v1.73"
+          },
+          "authenticationToken": {
+            "description": "This is a hash signature for the request which authenticates it. Ask us for details of the mechanism for generating this token.",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "RequestWithAuthenticationType",
+        "x-readme-ref-name": "RequestWithAuthenticationType"
+      }
+    }
+  },
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  }
+}

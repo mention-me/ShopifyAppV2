@@ -17,6 +17,7 @@ handle = "checkout-journey"
 [[extensions.targeting]]
 module = "./src/Checkout.tsx"
 target = "purchase.checkout.block.render"
+default_placement = "ORDER_SUMMARY3"
 
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.
@@ -44,6 +45,16 @@ network_access = true
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#settings-definition
 
 [extensions.settings]
+[[extensions.settings.fields]]
+key = "environment"
+type = "single_line_text_field"
+name = "Environment"
+description = "Which Mention Me environment do you wish to use?"
+
+[[extensions.settings.fields.validations]]
+name = "choices"
+value = "[\"production\", \"demo\", \"local\"]"
+
 [[extensions.settings.fields]]
 key = "mmPartnerCode"
 type = "single_line_text_field"

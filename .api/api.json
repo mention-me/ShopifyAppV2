@@ -3,12 +3,21 @@
   "apis": [
     {
       "private": true,
-      "identifier": "mention-me",
-      "source": "@mention-me/v2.0#jyriq1clxerzls0",
-      "integrity": "sha512-QDfmMtmDuXbRI/mhV9VlbWud3wKwmeydnctFrPyhz4elzd2tlZPTcsUt/MSFe1X+Mdz3eFj0dz04XpMf2Yngwg==",
+      "identifier": "entry-point-api",
+      "source": "https://developers.mention-me.com/openapi/65b2cd4272c67300721386c6",
+      "integrity": "sha512-vdaBl3mdKuTS9DpyQy1ec78sj2zoKumhLttFoD09eXaMKj3B9NKEbLwHZasTfcmA87hGfSIszIjHMkV8obhYGQ==",
       "installerVersion": "7.0.0-beta.7",
       "language": "js",
-      "createdAt": "2024-06-15T13:03:22.646Z"
+      "createdAt": "2024-06-18T20:30:18.591Z"
+    },
+    {
+      "private": true,
+      "identifier": "consumer-api",
+      "source": "@mention-me/v2.0#15d5t3klxkmgofm",
+      "integrity": "sha512-qKw75ljOCc6hj5BUpsZPKBn+R84FYYa6HpkNfxotIzwCmPpGgFba/Hbrd4eGTVzpwExWWt/jWSgpnZfzSghN8g==",
+      "installerVersion": "7.0.0-beta.7",
+      "language": "js",
+      "createdAt": "2024-06-18T20:33:10.849Z"
     }
   ]
 }
