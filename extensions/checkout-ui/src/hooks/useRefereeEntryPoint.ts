@@ -1,9 +1,10 @@
 import { SITUATION } from "../Checkout";
 import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
-import { Environment, getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
+import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
 import { EntryPointForRefereeType, EntryPointLink } from "@api/entry-point-api/src/types";
 import { useContext, useEffect } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
+import { useShop } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
 
 export type RefereeEntryPointResponse = {
 	error?: string;
@@ -18,7 +19,7 @@ export type RefereeEntryPointResponse = {
  * It will also return a URL, but we will ignore this as we will use the Consumer API to build our own fully fledged UI
  * using Shopify components.
  */
-export const useRefereeEntryPoint = async () => {
+export const useRefereeEntryPoint = () => {
 	console.debug("useRefereeEntryPoint");
 	const {
 		mmPartnerCode,
@@ -26,6 +27,8 @@ export const useRefereeEntryPoint = async () => {
 		setLoadingEntryPointApi,
 		setRefereeEntryPointResponse,
 	} = useContext(RefereeJourneyContext);
+
+	const { myshopifyDomain } = useShop();
 
 	useEffect(() => {
 		const fetchRefereeEntryPoint = async () => {
@@ -36,7 +39,7 @@ export const useRefereeEntryPoint = async () => {
 				request: {
 					partnerCode: mmPartnerCode,
 					situation: SITUATION,
-					appVersion: APP_VERSION,
+					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
 					appName: APP_NAME,
 					// TODO(EHG): Figure out locales
 					localeCode: "en_GB",

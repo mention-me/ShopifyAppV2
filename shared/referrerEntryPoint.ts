@@ -1,10 +1,10 @@
-import { Environment } from "./utils";
-import { EntryPointForReferrerType } from "@api/mention-me/src/types";
+import { Environment, getDomainForEnvironment } from "./utils";
+import { EntryPointForReferrerType, EntryPointOfferAndLink } from "@api/entry-point-api/src/types";
 
 export interface ReferrerEntryPointArgs {
 	environment: Environment,
 	body: EntryPointForReferrerType,
-	setJson: React.Dispatch<any>
+	setJson: React.Dispatch<EntryPointOfferAndLink>
 }
 
 
@@ -13,12 +13,7 @@ export const fetchReferrerEntryPoint = async (args: ReferrerEntryPointArgs) => {
 
 	// TODO(EHG): Should we override the behaviour to demo when in the editor?
 	// Or perhaps just remove the order data? Or set the order value to 0 when set to production?
-	let url = "demo.mention-me.com";
-	if (environment === "production") {
-		url = "mention-me.com";
-	} else if (environment === "local") {
-		url = "mentionme.dev";
-	}
+	const url = getDomainForEnvironment(environment);
 
 	try {
 		const response = await fetch(`https://${url}/api/entry-point/v2/offer`,

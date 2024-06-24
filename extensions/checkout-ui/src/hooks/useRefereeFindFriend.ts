@@ -4,6 +4,7 @@ import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { SITUATION } from "../Checkout";
 import { ReferrerFound } from "@api/consumer-api/dist/types";
+import { useShop } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout/hooks";
 
 export const useRefereeFindFriend = () => {
 	const {
@@ -14,6 +15,8 @@ export const useRefereeFindFriend = () => {
 		setStep,
 		search,
 	} = useContext(RefereeJourneyContext);
+
+	const { myshopifyDomain } = useShop()
 
 	return useCallback(async () => {
 		console.debug("fetchRefereeFindFriend");
@@ -37,7 +40,7 @@ export const useRefereeFindFriend = () => {
 			"request[partnerCode]": mmPartnerCode,
 			"request[situation]": SITUATION,
 			"request[appName]": APP_NAME,
-			"request[appVersion]": APP_VERSION,
+			"request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
 		});
 
 		if (name) {
@@ -78,7 +81,7 @@ export const useRefereeFindFriend = () => {
 						setNameSearchResult({
 							type: "duplicate-match",
 							result: json,
-							content
+							content,
 						});
 						return;
 					}
@@ -86,7 +89,7 @@ export const useRefereeFindFriend = () => {
 					setNameSearchResult({
 						type: "no-match",
 						result: json,
-						content
+						content,
 					});
 					return;
 				}
@@ -94,7 +97,7 @@ export const useRefereeFindFriend = () => {
 				setNameSearchResult({
 					type: "error",
 					result: json,
-					content
+					content,
 				});
 				return;
 			}
@@ -108,7 +111,7 @@ export const useRefereeFindFriend = () => {
 					{
 						type: "single-match",
 						result: json,
-						content
+						content,
 					},
 				);
 
@@ -122,7 +125,7 @@ export const useRefereeFindFriend = () => {
 				{
 					type: "error",
 					result: json,
-					content
+					content,
 				},
 			);
 			return;

@@ -1,10 +1,11 @@
-import { isValidEnvironment } from "../../../../shared/utils";
+import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
 import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
 import { SITUATION } from "../Checkout";
 import { EnrolRefereeType } from "@api/consumer-api/src/types";
 import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { RefereeRegister } from "@api/consumer-api/dist/types";
+import { useShop } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
 
 export const useRefereeRegister = () => {
 	const {
@@ -15,6 +16,8 @@ export const useRefereeRegister = () => {
 		nameSearchResult,
 		setRegisterResult,
 	} = useContext(RefereeJourneyContext);
+
+	const { myshopifyDomain } = useShop();
 
 	return useCallback(async (email: string) => {
 		console.debug("useRefereeRegister");
@@ -31,12 +34,7 @@ export const useRefereeRegister = () => {
 
 		setLoadingConsumerApi(true);
 
-		let url = "demo.mention-me.com";
-		if (environment === "production") {
-			url = "mention-me.com";
-		} else if (environment === "local") {
-			url = "mentionme.dev";
-		}
+		let url = getDomainForEnvironment(environment);
 
 		if (!nameSearchResult.result) {
 			throw new Error("Expected nameSearchResult result to be defined");
@@ -48,7 +46,7 @@ export const useRefereeRegister = () => {
 					partnerCode: mmPartnerCode,
 					situation: SITUATION,
 					appName: APP_NAME,
-					appVersion: APP_VERSION,
+					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
 				},
 				customer: {
 					emailAddress: email,
