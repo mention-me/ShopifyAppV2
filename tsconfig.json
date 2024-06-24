@@ -5,6 +5,5 @@
     "compilerOptions": {
         "jsx": "react-jsx"
     },
-    "include": ["./src"],
-	"exclude": ["./dist"]
+    "include": ["./shared"],
 }

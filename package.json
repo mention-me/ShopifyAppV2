@@ -8,9 +8,12 @@
         "dev": "shopify app dev",
         "info": "shopify app info",
         "generate": "shopify app generate",
-        "deploy": "shopify app deploy"
+        "deploy": "shopify app deploy",
+        "lint": "eslint ."
     },
     "dependencies": {
+        "@api/consumer-api": "file:.api/apis/consumer-api",
+        "@api/entry-point-api": "file:.api/apis/entry-point-api",
         "@shopify/app": "^3.58.2",
         "@shopify/cli": "^3.60.1",
         "react": "^18"
@@ -24,6 +27,15 @@
         "extensions/*"
     ],
     "devDependencies": {
-        "prettier": "3.2.5"
+        "@eslint/compat": "^1.1.0",
+        "@eslint/js": "^9.5.0",
+        "@shopify/eslint-plugin": "^45.0.0",
+        "@types/eslint__js": "^8.42.3",
+        "eslint": "^9.5.0",
+        "eslint-plugin-react": "^7.34.3",
+        "eslint-plugin-react-hooks": "^4.6.2",
+        "prettier": "3.2.5",
+        "typescript": "^5.4.5",
+        "typescript-eslint": "^7.13.1"
     }
 }

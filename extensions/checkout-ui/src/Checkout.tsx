@@ -1,83 +1,67 @@
 import {
-    Link,
-    useApi,
-    useLanguage,
-    useLocalizationCountry,
-    useSettings,
-    reactExtension,
+	Banner,
+	reactExtension,
+	useExtensionEditor,
+	useLanguage,
+	useLocalizationCountry,
+	useSettings,
 } from "@shopify/ui-extensions-react/checkout";
+import { isValidEnvironment } from "../../../shared/utils";
 
-import { useEffect, useState } from "react";
+import { RefereeJourneyProvider } from "./context/RefereeJourneyContext";
+import CheckoutUI from "./CheckoutUI";
+
+export const SITUATION = "shopify-checkout";
+
+export interface FoundReferrerState {
+	referrerMentionMeIdentifier: string;
+	referrerToken: string;
+}
+
+const Extension = () => {
+	const editor = useExtensionEditor();
+
+	let { mmPartnerCode, environment } = useSettings();
+
+	// TODO(EHG): Remove. Useful for testing.
+	if (!mmPartnerCode) {
+		mmPartnerCode = "mmf1c1195b";
+	}
+
+	if (!environment || typeof environment !== "string") {
+		environment = "demo";
+	}
+
+	if (!isValidEnvironment(environment)) {
+		console.error("Mention Me environment not set");
+
+		if (editor) {
+			return <Banner
+				status="critical"
+				title="Mention Me environment not set. Choose demo for testing, production for live customers." />;
+		}
+
+		return null;
+	}
+
+	if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
+		console.error("Mention Me partner code not set");
+
+		if (editor) {
+			return <Banner
+				status="critical"
+				title="Mention Me partner code needs to be set to show Mention Me journey. Click the Mention Me app on the left to add it." />;
+		}
+
+		return null;
+	}
+
+	return <RefereeJourneyProvider
+		environment={environment}
+		mmPartnerCode={mmPartnerCode}>
+		<CheckoutUI />
+	</RefereeJourneyProvider>;
+
+};
 
 export default reactExtension("purchase.checkout.block.render", () => <Extension />);
-
-function Extension() {
-    const { extension } = useApi();
-
-    const [apiResponse, setApiResponse] = useState();
-
-    /*
-     * This will only be set when in real deployment
-     * TODO(EHG): Figure out what to do when we don't
-     * have this - i.e. can we check "if dev?"
-     */
-    const { mmPartnerCode } = useSettings();
-
-    const language = useLanguage();
-    // const country = useLocalizationCountry();
-
-    // console.log("language", language);
-    // console.log("country", country);
-
-    useEffect(() => {
-        if (!mmPartnerCode) {
-            console.log("Partner code not set");
-            return;
-        }
-
-        fetchRefereeEntryPoint(mmPartnerCode, language.isoCode.replace("-", "_"), setApiResponse);
-    }, [fetchRefereeEntryPoint, mmPartnerCode, language, setApiResponse]);
-
-    const [visible, setVisible] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (apiResponse && apiResponse.url && apiResponse.defaultCallToAction) {
-            setVisible(true);
-        }
-    }, [setVisible, apiResponse]);
-
-    return (
-        visible && (
-            <Link external={true} to={apiResponse.url}>
-                {apiResponse.defaultCallToAction}
-            </Link>
-        )
-    );
-}
-
-function fetchRefereeEntryPoint(mmPartnerCode: string, locale: string, setApiResponse: React.Dispatch) {
-    const options = {
-        method: "POST",
-        headers: {
-            accept: "application/json",
-            "content-type": "application/json",
-        },
-        body: JSON.stringify({
-            request: {
-                partnerCode: mmPartnerCode,
-                situation: "shopify-checkout",
-                appVersion: "v0.1",
-                appName: "mention-me-shopify-app",
-                localeCode: locale,
-            },
-            implementation: {
-                wrapContentWithBranding: true,
-                showCloseIcon: false,
-            },
-        }),
-    };
-
-    fetch("https://demo.mention-me.com/api/entry-point/v2/referee", options)
-        .then((response) => response.json())
-        .then((json) => setApiResponse(json));
-}

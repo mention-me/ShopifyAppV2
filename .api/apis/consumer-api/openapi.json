@@ -1,0 +1,3793 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Consumer API",
+    "description": "Create your own front end for the referral journey using our Consumer API.",
+    "termsOfService": "https://mention-me.com/help/tnc_f/site",
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "https://mention-me.com",
+      "description": "Production"
+    },
+    {
+      "url": "https://demo.mention-me.com",
+      "description": "Demo"
+    }
+  ],
+  "paths": {
+    "/api/consumer/{version}/order": {
+      "post": {
+        "tags": [
+          "Record Order"
+        ],
+        "summary": "Record order",
+        "description": "Tell us that an order took place so that we can reward any appropriate referrer, track the order and optimise the performance of the referral scheme.\n\n\nWe'll transform the request in to something that the existing tag persister can understand.",
+        "operationId": "post_api_order",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "v2|v1",
+              "enum": [
+                "v2",
+                "v1"
+              ]
+            },
+            "example": "v2"
+          }
+        ],
+        "requestBody": {
+          "description": "About the order",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "order",
+                  "customer",
+                  "request"
+                ],
+                "properties": {
+                  "order": {
+                    "title": "Order",
+                    "description": "Information about the order which took place",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "orderIdentifier",
+                          "total",
+                          "currencyCode",
+                          "dateString"
+                        ],
+                        "properties": {
+                          "orderIdentifier": {
+                            "description": "Your Order Identifier for the transaction that has taken place",
+                            "type": "string",
+                            "example": "123456"
+                          },
+                          "total": {
+                            "description": "Order subtotal, excluding tax and shipping in the currency specified by currencyCode",
+                            "type": "string",
+                            "example": "100"
+                          },
+                          "currencyCode": {
+                            "description": "3 letter currency code for the currency in which the transaction took place",
+                            "type": "string",
+                            "example": "GBP"
+                          },
+                          "dateString": {
+                            "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
+                            "type": "string",
+                            "example": "2024-06-18T16:31:06+00:00"
+                          },
+                          "couponCode": {
+                            "description": "If a coupon was used in the transaction, the coupon code the consumer used",
+                            "type": "string",
+                            "example": "ABC23252"
+                          },
+                          "discountAmount": {
+                            "description": "The discount amount. Our assumption is this has already been taken off the order subtotal provided. This allows us to calculate the Cost Per Acquisition for referral.",
+                            "type": "string",
+                            "example": "12.44"
+                          },
+                          "orderItemCount": {
+                            "description": "The number of items in the order/cart (if applicable). This helps us understand the type of purchase and can be a signal of advocacy.",
+                            "type": "string",
+                            "example": "3"
+                          },
+                          "isSubscription": {
+                            "description": "Whether this order is for a subscription (recurring). This helps us qualify and categorise the revenue.",
+                            "type": "boolean",
+                            "example": ""
+                          },
+                          "isGift": {
+                            "description": "Whether this order is a gift (being bought for someone else). Gifts can be signals of advocacy.",
+                            "type": "boolean",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "OrderType",
+                        "x-readme-ref-name": "OrderType"
+                      }
+                    ]
+                  },
+                  "customer": {
+                    "title": "Customer",
+                    "description": "Information about the customer who placed the order",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "emailAddress",
+                          "firstname",
+                          "surname"
+                        ],
+                        "properties": {
+                          "emailAddress": {
+                            "description": "Customer email address",
+                            "type": "string",
+                            "example": "jane.doe@example.com"
+                          },
+                          "title": {
+                            "description": "Customer title such as Mr, Miss, Dr or Sir",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "firstname": {
+                            "description": "Customer firstname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "surname": {
+                            "description": "Customer surname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "uniqueIdentifier": {
+                            "description": "Your unique identifier for this customer e.g. CustomerId",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "segment": {
+                            "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "customField": {
+                            "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "CustomerType",
+                        "x-readme-ref-name": "CustomerType"
+                      }
+                    ]
+                  },
+                  "request": {
+                    "title": "Request",
+                    "description": "Information about the request",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "partnerCode",
+                          "situation"
+                        ],
+                        "properties": {
+                          "partnerCode": {
+                            "description": "Your partner code, used to link to your users and offers",
+                            "type": "string",
+                            "example": "[YOUR-PARTNER-CODE]"
+                          },
+                          "situation": {
+                            "description": "Situation - a string representing where in the application you are making this request",
+                            "type": "string",
+                            "example": "mobile-app"
+                          },
+                          "localeCode": {
+                            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                            "type": "string",
+                            "example": "en_GB"
+                          },
+                          "ipAddress": {
+                            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                            "type": "string",
+                            "example": "127.0.0.1"
+                          },
+                          "userDeviceIdentifier": {
+                            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "deviceType": {
+                            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appName": {
+                            "description": "Your application name. Used for reporting.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appVersion": {
+                            "description": "Your application version reference. Used for reporting and troubleshooting.",
+                            "type": "string",
+                            "example": "v1.73"
+                          },
+                          "authenticationToken": {
+                            "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "RequestType",
+                        "x-readme-ref-name": "RequestType"
+                      }
+                    ]
+                  },
+                  "address": {
+                    "title": "Address",
+                    "description": "Information about the address of the customer who placed the order",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "addressLine1": {
+                            "description": "First line of address",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "addressLine2": {
+                            "description": "Second line of address",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "addressCity": {
+                            "description": "City part of address",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "addressCounty": {
+                            "description": "County or state part of address",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "addressPostCode": {
+                            "description": "Post or ZIP code",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "addressCountry": {
+                            "description": "Country of address",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "AddressType",
+                        "x-readme-ref-name": "AddressType"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "ConfirmOrderType",
+                "x-readme-ref-name": "ConfirmOrderType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Returned when successful"
+          },
+          "400": {
+            "description": "The request contains errors"
+          },
+          "403": {
+            "description": "Returned when the integration for this merchant is not enabled"
+          },
+          "404": {
+            "description": "Returned when it is not possible to confirm an order took place with these details"
+          },
+          "422": {
+            "description": "The request cannot be processed because of validation errors"
+          },
+          "500": {
+            "description": "Internal server error, unable to complete the request"
+          }
+        }
+      }
+    },
+    "/api/consumer/{version}/referrer/enrol": {
+      "post": {
+        "tags": [
+          "Enrol Referrer"
+        ],
+        "summary": "Enrol referrer",
+        "description": "Tell us about a customer (and any related order and segmentation details) to enrol them as a referrer and receive an offer to share with them",
+        "operationId": "post_api_referrer_enrol",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "v2|v1",
+              "enum": [
+                "v2",
+                "v1"
+              ]
+            },
+            "example": "v2"
+          }
+        ],
+        "requestBody": {
+          "description": "Details of the customer to enrol",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "customer",
+                  "request"
+                ],
+                "properties": {
+                  "customer": {
+                    "title": "Customer",
+                    "description": "Information about the referrer to enrol",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "emailAddress",
+                          "firstname",
+                          "surname"
+                        ],
+                        "properties": {
+                          "emailAddress": {
+                            "description": "Customer email address",
+                            "type": "string",
+                            "example": "jane.doe@example.com"
+                          },
+                          "title": {
+                            "description": "Customer title such as Mr, Miss, Dr or Sir",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "firstname": {
+                            "description": "Customer firstname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "surname": {
+                            "description": "Customer surname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "uniqueIdentifier": {
+                            "description": "Your unique identifier for this customer e.g. CustomerId",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "segment": {
+                            "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "customField": {
+                            "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "CustomerType",
+                        "x-readme-ref-name": "CustomerType"
+                      }
+                    ]
+                  },
+                  "request": {
+                    "title": "Request",
+                    "description": "Information about the request",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "partnerCode",
+                          "situation"
+                        ],
+                        "properties": {
+                          "partnerCode": {
+                            "description": "Your partner code, used to link to your users and offers",
+                            "type": "string",
+                            "example": "[YOUR-PARTNER-CODE]"
+                          },
+                          "situation": {
+                            "description": "Situation - a string representing where in the application you are making this request",
+                            "type": "string",
+                            "example": "mobile-app"
+                          },
+                          "localeCode": {
+                            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                            "type": "string",
+                            "example": "en_GB"
+                          },
+                          "ipAddress": {
+                            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                            "type": "string",
+                            "example": "127.0.0.1"
+                          },
+                          "userDeviceIdentifier": {
+                            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "deviceType": {
+                            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appName": {
+                            "description": "Your application name. Used for reporting.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appVersion": {
+                            "description": "Your application version reference. Used for reporting and troubleshooting.",
+                            "type": "string",
+                            "example": "v1.73"
+                          },
+                          "authenticationToken": {
+                            "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "variation": {
+                            "description": "Variation - an index (0,1,2...) specifying which of the currently running AB tests to choose (if available)",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "RequestWithVariationType",
+                        "x-readme-ref-name": "RequestWithVariationType"
+                      }
+                    ]
+                  },
+                  "order": {
+                    "title": "Order",
+                    "description": "Information about the order (used for recording order events AND segmentation)",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "orderIdentifier",
+                          "total",
+                          "currencyCode",
+                          "dateString"
+                        ],
+                        "properties": {
+                          "orderIdentifier": {
+                            "description": "Your Order Identifier for the transaction that has taken place",
+                            "type": "string",
+                            "example": "123456"
+                          },
+                          "total": {
+                            "description": "Order subtotal, excluding tax and shipping in the currency specified by currencyCode",
+                            "type": "string",
+                            "example": "100"
+                          },
+                          "currencyCode": {
+                            "description": "3 letter currency code for the currency in which the transaction took place",
+                            "type": "string",
+                            "example": "GBP"
+                          },
+                          "dateString": {
+                            "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
+                            "type": "string",
+                            "example": "2024-06-18T16:31:06+00:00"
+                          },
+                          "couponCode": {
+                            "description": "If a coupon was used in the transaction, the coupon code the consumer used",
+                            "type": "string",
+                            "example": "ABC23252"
+                          },
+                          "discountAmount": {
+                            "description": "The discount amount. Our assumption is this has already been taken off the order subtotal provided. This allows us to calculate the Cost Per Acquisition for referral.",
+                            "type": "string",
+                            "example": "12.44"
+                          },
+                          "orderItemCount": {
+                            "description": "The number of items in the order/cart (if applicable). This helps us understand the type of purchase and can be a signal of advocacy.",
+                            "type": "string",
+                            "example": "3"
+                          },
+                          "isSubscription": {
+                            "description": "Whether this order is for a subscription (recurring). This helps us qualify and categorise the revenue.",
+                            "type": "boolean",
+                            "example": ""
+                          },
+                          "isGift": {
+                            "description": "Whether this order is a gift (being bought for someone else). Gifts can be signals of advocacy.",
+                            "type": "boolean",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "OrderType",
+                        "x-readme-ref-name": "OrderType"
+                      }
+                    ]
+                  },
+                  "address": {
+                    "title": "Address",
+                    "description": "Information about the address of the customer (used for segmentation)",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "addressCountry": {
+                            "description": "Country of address e.g. UK or France",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "AddressForSegmentationType",
+                        "x-readme-ref-name": "AddressForSegmentationType"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "EnrolReferrerType",
+                "x-readme-ref-name": "EnrolReferrerType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "offer": {
+                      "title": "Description of the offer and rewards.",
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "id": {
+                              "title": "The identifier of the offer.",
+                              "type": "integer"
+                            },
+                            "localeCode": {
+                              "title": "The locale code of the Offer.",
+                              "type": "string"
+                            },
+                            "headline": {
+                              "title": "The headline description for the Offer.",
+                              "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                              "type": "string"
+                            },
+                            "description": {
+                              "title": "The details of the Offer.",
+                              "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                              "type": "string"
+                            },
+                            "callToAction": {
+                              "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+                              "description": "e.g. \"Get a £20 gift card\"",
+                              "type": "string"
+                            },
+                            "privacyNotice": {
+                              "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                              "description": "e.g. \"Get a £20 gift card\"",
+                              "type": "string"
+                            },
+                            "privacyLink": {
+                              "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+                              "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+                              "type": "string"
+                            },
+                            "referrerReward": {
+                              "title": "The explicit description of the Referrer Reward for the Referrer.",
+                              "oneOf": [
+                                {
+                                  "properties": {
+                                    "description": {
+                                      "title": "Friendly description of a reward for the intended recipient.",
+                                      "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                      "type": "string"
+                                    },
+                                    "summary": {
+                                      "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                      "type": "string"
+                                    },
+                                    "amount": {
+                                      "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object",
+                                  "title": "Reward",
+                                  "x-readme-ref-name": "Reward"
+                                }
+                              ]
+                            },
+                            "refereeReward": {
+                              "title": "The explicit description of the Referee reward for the Referrer.",
+                              "oneOf": [
+                                {
+                                  "properties": {
+                                    "description": {
+                                      "title": "Friendly description of a reward for the intended recipient.",
+                                      "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                      "type": "string"
+                                    },
+                                    "summary": {
+                                      "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                      "type": "string"
+                                    },
+                                    "amount": {
+                                      "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object",
+                                  "title": "Reward",
+                                  "x-readme-ref-name": "Reward"
+                                }
+                              ]
+                            }
+                          },
+                          "type": "object",
+                          "title": "Offer",
+                          "x-readme-ref-name": "Offer"
+                        }
+                      ]
+                    },
+                    "shareLinks": {
+                      "title": "List of share links for different share mechanisms.",
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "type": {
+                            "title": "The type of share mechanism (e.g. Facebook, Twitter, Open link, Email link)",
+                            "type": "string"
+                          },
+                          "protocol": {
+                            "title": "The protocol (if available) for the share",
+                            "type": "string"
+                          },
+                          "url": {
+                            "title": "The url to include in the share",
+                            "type": "string"
+                          },
+                          "defaultShareMessage": {
+                            "title": "The default message to include in the share",
+                            "type": "string"
+                          },
+                          "exampleImplementation": {
+                            "title": "An example of the share URL you could use to initiate this share.",
+                            "description": "You are free to implement this your own way if you wish",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object",
+                        "title": "ShareLink",
+                        "x-readme-ref-name": "ShareLink"
+                      }
+                    },
+                    "termsLinks": {
+                      "title": "Links to the terms and conditions for this offer.",
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "localeCode": {
+                              "title": "The locale code of the terms link",
+                              "type": "string"
+                            },
+                            "linkToTermsInLocale": {
+                              "title": "Link to the terms and conditions in the locale stated",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object",
+                          "title": "TermsLinks",
+                          "x-readme-ref-name": "TermsLinks"
+                        }
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "title": "ReferralShareOffer",
+                  "x-readme-ref-name": "ReferralShareOffer"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when there is no suitable offer to serve this customer"
+          },
+          "422": {
+            "description": "The referrer could not be enrolled due to validation errors"
+          },
+          "500": {
+            "description": "Internal server error, unable to complete the request"
+          }
+        }
+      }
+    },
+    "/api/consumer/{version}/referrer/dashboard": {
+      "get": {
+        "tags": [
+          "Get referrer dashboard"
+        ],
+        "summary": "Get dashboard",
+        "description": "Get a referrer's dashboard (given a referrer identity, get their dashboard data).\n\nIf we respond with a 404 they are not a referrer. Instead, you should Enrol them as a referrer first, then call this endpoint again.",
+        "operationId": "get_api_referrer_dashboard",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "v2|v1",
+              "enum": [
+                "v2",
+                "v1"
+              ]
+            },
+            "example": "v2"
+          },
+          {
+            "name": "emailAddress",
+            "in": "query",
+            "description": "Email address of the referrer whose dashboard you require",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "jane.doe@example.com"
+          },
+          {
+            "name": "request[authenticationToken]",
+            "in": "query",
+            "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "[AUTHENTICATION-TOKEN]"
+          },
+          {
+            "name": "request[partnerCode]",
+            "in": "query",
+            "description": "Your partner code, used to link to your users and offers",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "[YOUR-PARTNER-CODE]"
+          },
+          {
+            "name": "request[situation]",
+            "in": "query",
+            "description": "Situation - a string representing where in the application you are making this request",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "mobile-app"
+          },
+          {
+            "name": "request[ipAddress]",
+            "in": "query",
+            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[localeCode]",
+            "in": "query",
+            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "segment",
+            "in": "query",
+            "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uniqueCustomerIdentifier",
+            "in": "query",
+            "description": "Customer Id - your unique identifier for this customer",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[userDeviceIdentifier]",
+            "in": "query",
+            "description": "User Device Identifier should be a unique reference to this combination of app + user.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[deviceType]",
+            "in": "query",
+            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[appName]",
+            "in": "query",
+            "description": "Your application name. Used for reporting.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[appVersion]",
+            "in": "query",
+            "description": "Your application version reference. Used for reporting and troubleshooting.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "offer": {
+                      "title": "Description of the offer and rewards.",
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "id": {
+                              "title": "The identifier of the offer.",
+                              "type": "integer"
+                            },
+                            "localeCode": {
+                              "title": "The locale code of the Offer.",
+                              "type": "string"
+                            },
+                            "headline": {
+                              "title": "The headline description for the Offer.",
+                              "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                              "type": "string"
+                            },
+                            "description": {
+                              "title": "The details of the Offer.",
+                              "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                              "type": "string"
+                            },
+                            "callToAction": {
+                              "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+                              "description": "e.g. \"Get a £20 gift card\"",
+                              "type": "string"
+                            },
+                            "privacyNotice": {
+                              "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                              "description": "e.g. \"Get a £20 gift card\"",
+                              "type": "string"
+                            },
+                            "privacyLink": {
+                              "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+                              "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+                              "type": "string"
+                            },
+                            "referrerReward": {
+                              "title": "The explicit description of the Referrer Reward for the Referrer.",
+                              "oneOf": [
+                                {
+                                  "properties": {
+                                    "description": {
+                                      "title": "Friendly description of a reward for the intended recipient.",
+                                      "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                      "type": "string"
+                                    },
+                                    "summary": {
+                                      "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                      "type": "string"
+                                    },
+                                    "amount": {
+                                      "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object",
+                                  "title": "Reward",
+                                  "x-readme-ref-name": "Reward"
+                                }
+                              ]
+                            },
+                            "refereeReward": {
+                              "title": "The explicit description of the Referee reward for the Referrer.",
+                              "oneOf": [
+                                {
+                                  "properties": {
+                                    "description": {
+                                      "title": "Friendly description of a reward for the intended recipient.",
+                                      "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                      "type": "string"
+                                    },
+                                    "summary": {
+                                      "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                      "type": "string"
+                                    },
+                                    "amount": {
+                                      "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object",
+                                  "title": "Reward",
+                                  "x-readme-ref-name": "Reward"
+                                }
+                              ]
+                            }
+                          },
+                          "type": "object",
+                          "title": "Offer",
+                          "x-readme-ref-name": "Offer"
+                        }
+                      ]
+                    },
+                    "shareLinks": {
+                      "title": "List of share links for different share mechanisms.",
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "type": {
+                            "title": "The type of share mechanism (e.g. Facebook, Twitter, Open link, Email link)",
+                            "type": "string"
+                          },
+                          "protocol": {
+                            "title": "The protocol (if available) for the share",
+                            "type": "string"
+                          },
+                          "url": {
+                            "title": "The url to include in the share",
+                            "type": "string"
+                          },
+                          "defaultShareMessage": {
+                            "title": "The default message to include in the share",
+                            "type": "string"
+                          },
+                          "exampleImplementation": {
+                            "title": "An example of the share URL you could use to initiate this share.",
+                            "description": "You are free to implement this your own way if you wish",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object",
+                        "title": "ShareLink",
+                        "x-readme-ref-name": "ShareLink"
+                      }
+                    },
+                    "termsLinks": {
+                      "title": "Links to the terms and conditions for this offer.",
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "localeCode": {
+                              "title": "The locale code of the terms link",
+                              "type": "string"
+                            },
+                            "linkToTermsInLocale": {
+                              "title": "Link to the terms and conditions in the locale stated",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object",
+                          "title": "TermsLinks",
+                          "x-readme-ref-name": "TermsLinks"
+                        }
+                      ]
+                    },
+                    "referralStats": {
+                      "title": "Referral Stats.",
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "successfulReferrals": {
+                              "title": "Number of successful referrals",
+                              "type": "integer"
+                            },
+                            "invitations": {
+                              "title": "Number of invitations made",
+                              "type": "integer"
+                            },
+                            "clicksOnInvites": {
+                              "title": "Number of clicks on invites",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object",
+                          "title": "ReferralStats",
+                          "x-readme-ref-name": "ReferralStats"
+                        }
+                      ]
+                    },
+                    "referralRewards": {
+                      "title": "Referral rewards - list of potential rewards they are due for introducing customers.",
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "description": {
+                            "title": "Friendly description of a reward for the intended recipient.",
+                            "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                            "type": "string"
+                          },
+                          "summary": {
+                            "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                            "type": "string"
+                          },
+                          "amount": {
+                            "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                            "type": "string"
+                          },
+                          "status": {
+                            "title": "Status of the reward eg Pending, Cancelled, Given by email",
+                            "type": "string"
+                          },
+                          "forReferring": {
+                            "title": "Description of who they referred to get the reward. As this could be multiple people, it's an array.",
+                            "type": "object",
+                            "additionalProperties": true
+                          }
+                        },
+                        "type": "object",
+                        "title": "DashboardReward",
+                        "x-readme-ref-name": "DashboardReward"
+                      }
+                    }
+                  },
+                  "type": "object",
+                  "title": "ReferralDashboardOffer",
+                  "x-readme-ref-name": "ReferralDashboardOffer"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No content, when the customer does not have a dashboard to show. Try enrolling them as a referrer first."
+          },
+          "400": {
+            "description": "The request contains errors"
+          },
+          "403": {
+            "description": "Returned when the integration for this merchant is not enabled"
+          },
+          "404": {
+            "description": "Returned when it is not possible to serve a dashboard for this request"
+          },
+          "500": {
+            "description": "Internal server error, unable to complete the request"
+          }
+        }
+      }
+    },
+    "/api/consumer/{version}/referrer/search": {
+      "get": {
+        "tags": [
+          "Find referrer by name"
+        ],
+        "summary": "Find a friend",
+        "description": "Search for a referrer to connect to a referee, just using the referrer's name, entered by the referee. If we don't have an exact match for the referrer's name we'll respond with a 404 or 400. The referee can change the name and/or enter an email address of the referrer to find an exact match.\n\nIn a non-exact match we will not return a payload response and we'll also set the `foundMultipleReferrers` parameter in the root of the response, to indicate that the search needs to be narrowed (i.e. ask for an email address or possibly prompt for a more verbose name). The exact narrowing strategy is up to the client.\n\nIf there is no payload and no foundMultipleReferrers set, the client should prompt for a fresh search.\n\nWhen an exact match is found, the payload contains the customer ID, flow token and the offer.",
+        "operationId": "get_api_name_search",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "v2|v1",
+              "enum": [
+                "v2",
+                "v1"
+              ]
+            },
+            "example": "v2"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name of a referrer to search for (entered by the new customer)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "[REFERRERS-NAME]"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Optionally ask the new customer to qualify the name with an email address belonging to the referrer. We typically ask for a Name first and then if no matches found, offer Name + Email address.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[partnerCode]",
+            "in": "query",
+            "description": "Your partner code, used to link to your users and offers",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "[YOUR-PARTNER-CODE]"
+          },
+          {
+            "name": "request[situation]",
+            "in": "query",
+            "description": "Situation - a string representing where in the application you are making this request",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "mobile-app"
+          },
+          {
+            "name": "request[ipAddress]",
+            "in": "query",
+            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[localeCode]",
+            "in": "query",
+            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[userDeviceIdentifier]",
+            "in": "query",
+            "description": "User Device Identifier should be a unique reference to this combination of app + user.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[deviceType]",
+            "in": "query",
+            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[appName]",
+            "in": "query",
+            "description": "Your application name. Used for reporting.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[appVersion]",
+            "in": "query",
+            "description": "Your application version reference. Used for reporting and troubleshooting.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "referrer": {
+                      "title": "The primary payload of the response, assuming we found the referrer successfully. If we didn't this will be empty.",
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "referrerMentionMeIdentifier": {
+                              "title": "Our identifier for the referrer identified, the customer ID",
+                              "type": "integer"
+                            },
+                            "referrerToken": {
+                              "title": "Token used to identify the referrer uniquely\n(flowId)",
+                              "type": "string"
+                            },
+                            "referrerOfferIdentifier": {
+                              "title": "Identify the Offer (i.e. this is an Offer Id)",
+                              "type": "integer"
+                            },
+                            "offer": {
+                              "title": "Description of the offer and rewards which this referrer is able to offer",
+                              "oneOf": [
+                                {
+                                  "properties": {
+                                    "id": {
+                                      "title": "The identifier of the offer.",
+                                      "type": "integer"
+                                    },
+                                    "localeCode": {
+                                      "title": "The locale code of the Offer.",
+                                      "type": "string"
+                                    },
+                                    "headline": {
+                                      "title": "The headline description for the Offer.",
+                                      "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                                      "type": "string"
+                                    },
+                                    "description": {
+                                      "title": "The details of the Offer.",
+                                      "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                                      "type": "string"
+                                    },
+                                    "callToAction": {
+                                      "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+                                      "description": "e.g. \"Get a £20 gift card\"",
+                                      "type": "string"
+                                    },
+                                    "privacyNotice": {
+                                      "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                                      "description": "e.g. \"Get a £20 gift card\"",
+                                      "type": "string"
+                                    },
+                                    "privacyLink": {
+                                      "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+                                      "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+                                      "type": "string"
+                                    },
+                                    "referrerReward": {
+                                      "title": "The explicit description of the Referrer Reward for the Referrer.",
+                                      "oneOf": [
+                                        {
+                                          "properties": {
+                                            "description": {
+                                              "title": "Friendly description of a reward for the intended recipient.",
+                                              "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                              "type": "string"
+                                            },
+                                            "summary": {
+                                              "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                              "type": "string"
+                                            },
+                                            "amount": {
+                                              "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                              "type": "string"
+                                            }
+                                          },
+                                          "type": "object",
+                                          "title": "Reward",
+                                          "x-readme-ref-name": "Reward"
+                                        }
+                                      ]
+                                    },
+                                    "refereeReward": {
+                                      "title": "The explicit description of the Referee reward for the Referrer.",
+                                      "oneOf": [
+                                        {
+                                          "properties": {
+                                            "description": {
+                                              "title": "Friendly description of a reward for the intended recipient.",
+                                              "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                              "type": "string"
+                                            },
+                                            "summary": {
+                                              "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                              "type": "string"
+                                            },
+                                            "amount": {
+                                              "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                              "type": "string"
+                                            }
+                                          },
+                                          "type": "object",
+                                          "title": "Reward",
+                                          "x-readme-ref-name": "Reward"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "type": "object",
+                                  "title": "Offer",
+                                  "x-readme-ref-name": "Offer"
+                                }
+                              ]
+                            }
+                          },
+                          "type": "object",
+                          "title": "ReferrerIdentifier",
+                          "x-readme-ref-name": "ReferrerIdentifier"
+                        }
+                      ]
+                    },
+                    "foundMultipleReferrers": {
+                      "title": "Whether the user should be prompted to narrow the search (by entering an email address for example)",
+                      "type": "boolean"
+                    },
+                    "links": {
+                      "title": "Pagination of output and links to associated resources, including content-collection items",
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "relationship": {
+                            "title": "Relationship of the link between the two resources",
+                            "type": "string"
+                          },
+                          "resource": {
+                            "title": "The target resource being linked",
+                            "type": "array",
+                            "items": {
+                              "properties": {
+                                "key": {
+                                  "title": "The content key",
+                                  "type": "string"
+                                },
+                                "content": {
+                                  "title": "The content string",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object",
+                              "title": "Content",
+                              "x-readme-ref-name": "Content"
+                            }
+                          }
+                        },
+                        "type": "object",
+                        "title": "ContentCollectionLink",
+                        "x-readme-ref-name": "ContentCollectionLink"
+                      }
+                    },
+                    "termsLinks": {
+                      "title": "Links to the terms and conditions for this offer.",
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "localeCode": {
+                              "title": "The locale code of the terms link",
+                              "type": "string"
+                            },
+                            "linkToTermsInLocale": {
+                              "title": "Link to the terms and conditions in the locale stated",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object",
+                          "title": "TermsLinks",
+                          "x-readme-ref-name": "TermsLinks"
+                        }
+                      ]
+                    },
+                    "meta": {
+                      "title": "This is used to hold a meta status code which is then used to pass a response back to the actual response later.",
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "type": "object",
+                  "title": "ReferrerFound",
+                  "x-readme-ref-name": "ReferrerFound"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when the integration for this merchant is not enabled"
+          },
+          "404": {
+            "description": "Returned when it is not possible to find a match for this search"
+          },
+          "500": {
+            "description": "The request contains errors"
+          },
+          "503": {
+            "description": "The service was unavailable, try again shortly"
+          }
+        }
+      }
+    },
+    "/api/consumer/{version}/referee/register": {
+      "post": {
+        "tags": [
+          "Link new customer to referrer"
+        ],
+        "summary": "Register referee",
+        "description": "Post a referee's details to register them as a referee after successfully finding a referrer to link them to.",
+        "operationId": "post_api_register_referee",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "v2|v1",
+              "enum": [
+                "v2",
+                "v1"
+              ]
+            },
+            "example": "v2"
+          }
+        ],
+        "requestBody": {
+          "description": "Details of the new customer who has been referred",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "referrerMentionMeIdentifier",
+                  "referrerToken",
+                  "customer",
+                  "request"
+                ],
+                "properties": {
+                  "referrerMentionMeIdentifier": {
+                    "description": "Id representing the referrer returned by a successful name search",
+                    "type": "integer",
+                    "example": ""
+                  },
+                  "referrerToken": {
+                    "description": "Token representing the referrer returned by a successful name search",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "customer": {
+                    "title": "Customer",
+                    "description": "Information about the referrer to enrol",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "emailAddress",
+                          "firstname",
+                          "surname"
+                        ],
+                        "properties": {
+                          "emailAddress": {
+                            "description": "Customer email address",
+                            "type": "string",
+                            "example": "jane.doe@example.com"
+                          },
+                          "title": {
+                            "description": "Customer title such as Mr, Miss, Dr or Sir",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "firstname": {
+                            "description": "Customer firstname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "surname": {
+                            "description": "Customer surname",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "uniqueIdentifier": {
+                            "description": "Your unique identifier for this customer e.g. CustomerId",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "segment": {
+                            "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "customField": {
+                            "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "CustomerType",
+                        "x-readme-ref-name": "CustomerType"
+                      }
+                    ]
+                  },
+                  "request": {
+                    "title": "Request",
+                    "description": "Information about the request",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "partnerCode",
+                          "situation"
+                        ],
+                        "properties": {
+                          "partnerCode": {
+                            "description": "Your partner code, used to link to your users and offers",
+                            "type": "string",
+                            "example": "[YOUR-PARTNER-CODE]"
+                          },
+                          "situation": {
+                            "description": "Situation - a string representing where in the application you are making this request",
+                            "type": "string",
+                            "example": "mobile-app"
+                          },
+                          "localeCode": {
+                            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                            "type": "string",
+                            "example": "en_GB"
+                          },
+                          "ipAddress": {
+                            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                            "type": "string",
+                            "example": "127.0.0.1"
+                          },
+                          "userDeviceIdentifier": {
+                            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "deviceType": {
+                            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appName": {
+                            "description": "Your application name. Used for reporting.",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "appVersion": {
+                            "description": "Your application version reference. Used for reporting and troubleshooting.",
+                            "type": "string",
+                            "example": "v1.73"
+                          },
+                          "authenticationToken": {
+                            "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                            "type": "string",
+                            "example": ""
+                          }
+                        },
+                        "type": "object",
+                        "title": "RequestType",
+                        "x-readme-ref-name": "RequestType"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "EnrolRefereeType",
+                "x-readme-ref-name": "EnrolRefereeType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "offer": {
+                      "properties": {
+                        "id": {
+                          "title": "The identifier of the offer.",
+                          "type": "integer"
+                        },
+                        "localeCode": {
+                          "title": "The locale code of the Offer.",
+                          "type": "string"
+                        },
+                        "headline": {
+                          "title": "The headline description for the Offer.",
+                          "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                          "type": "string"
+                        },
+                        "description": {
+                          "title": "The details of the Offer.",
+                          "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                          "type": "string"
+                        },
+                        "callToAction": {
+                          "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+                          "description": "e.g. \"Get a £20 gift card\"",
+                          "type": "string"
+                        },
+                        "privacyNotice": {
+                          "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                          "description": "e.g. \"Get a £20 gift card\"",
+                          "type": "string"
+                        },
+                        "privacyLink": {
+                          "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+                          "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+                          "type": "string"
+                        },
+                        "referrerReward": {
+                          "title": "The explicit description of the Referrer Reward for the Referrer.",
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "description": {
+                                  "title": "Friendly description of a reward for the intended recipient.",
+                                  "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                  "type": "string"
+                                },
+                                "summary": {
+                                  "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                  "type": "string"
+                                },
+                                "amount": {
+                                  "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object",
+                              "title": "Reward",
+                              "x-readme-ref-name": "Reward"
+                            }
+                          ]
+                        },
+                        "refereeReward": {
+                          "title": "The explicit description of the Referee reward for the Referrer.",
+                          "oneOf": [
+                            {
+                              "properties": {
+                                "description": {
+                                  "title": "Friendly description of a reward for the intended recipient.",
+                                  "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                  "type": "string"
+                                },
+                                "summary": {
+                                  "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                  "type": "string"
+                                },
+                                "amount": {
+                                  "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object",
+                              "title": "Reward",
+                              "x-readme-ref-name": "Reward"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "object",
+                      "title": "Offer",
+                      "x-readme-ref-name": "Offer"
+                    },
+                    "refereeReward": {
+                      "title": "A description of the referee reward for the Referee",
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "description": {
+                              "title": "Description of the reward",
+                              "type": "string"
+                            },
+                            "couponCode": {
+                              "title": "Reward coupon code (if appropriate)",
+                              "type": "string"
+                            },
+                            "securityCode": {
+                              "title": "Reward security code (if appropriate)",
+                              "type": "string"
+                            },
+                            "url": {
+                              "title": "Reward link (if appropriate)",
+                              "type": "string"
+                            },
+                            "amount": {
+                              "title": "The reward amount - note this is not always a number. It can be a currency amount, a percentage, a number (of items) or a text description depending on the reward type.",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object",
+                          "title": "RefereeReward",
+                          "x-readme-ref-name": "RefereeReward"
+                        }
+                      ]
+                    },
+                    "content": {
+                      "properties": {
+                        "relationship": {
+                          "title": "Relationship of the link between the two resources",
+                          "type": "string"
+                        },
+                        "resource": {
+                          "title": "The target resource being linked",
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "key": {
+                                "title": "The content key",
+                                "type": "string"
+                              },
+                              "content": {
+                                "title": "The content string",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Content",
+                            "x-readme-ref-name": "Content"
+                          }
+                        }
+                      },
+                      "type": "object",
+                      "title": "ContentCollectionLink",
+                      "x-readme-ref-name": "ContentCollectionLink"
+                    },
+                    "termsLinks": {
+                      "title": "Links to the terms and conditions for this offer.",
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "localeCode": {
+                              "title": "The locale code of the terms link",
+                              "type": "string"
+                            },
+                            "linkToTermsInLocale": {
+                              "title": "Link to the terms and conditions in the locale stated",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object",
+                          "title": "TermsLinks",
+                          "x-readme-ref-name": "TermsLinks"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "title": "RefereeRegister",
+                  "x-readme-ref-name": "RefereeRegister"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request contains errors"
+          },
+          "403": {
+            "description": "Returned when the integration for this merchant is not enabled"
+          },
+          "404": {
+            "description": "Returned when the referrer is not found"
+          },
+          "500": {
+            "description": "Internal server error, unable to complete the request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ConfirmOrderType": {
+        "required": [
+          "order",
+          "customer",
+          "request"
+        ],
+        "properties": {
+          "order": {
+            "title": "Order",
+            "description": "Information about the order which took place",
+            "oneOf": [
+              {
+                "required": [
+                  "orderIdentifier",
+                  "total",
+                  "currencyCode",
+                  "dateString"
+                ],
+                "properties": {
+                  "orderIdentifier": {
+                    "description": "Your Order Identifier for the transaction that has taken place",
+                    "type": "string",
+                    "example": "123456"
+                  },
+                  "total": {
+                    "description": "Order subtotal, excluding tax and shipping in the currency specified by currencyCode",
+                    "type": "string",
+                    "example": "100"
+                  },
+                  "currencyCode": {
+                    "description": "3 letter currency code for the currency in which the transaction took place",
+                    "type": "string",
+                    "example": "GBP"
+                  },
+                  "dateString": {
+                    "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
+                    "type": "string",
+                    "example": "2024-06-18T16:31:06+00:00"
+                  },
+                  "couponCode": {
+                    "description": "If a coupon was used in the transaction, the coupon code the consumer used",
+                    "type": "string",
+                    "example": "ABC23252"
+                  },
+                  "discountAmount": {
+                    "description": "The discount amount. Our assumption is this has already been taken off the order subtotal provided. This allows us to calculate the Cost Per Acquisition for referral.",
+                    "type": "string",
+                    "example": "12.44"
+                  },
+                  "orderItemCount": {
+                    "description": "The number of items in the order/cart (if applicable). This helps us understand the type of purchase and can be a signal of advocacy.",
+                    "type": "string",
+                    "example": "3"
+                  },
+                  "isSubscription": {
+                    "description": "Whether this order is for a subscription (recurring). This helps us qualify and categorise the revenue.",
+                    "type": "boolean",
+                    "example": ""
+                  },
+                  "isGift": {
+                    "description": "Whether this order is a gift (being bought for someone else). Gifts can be signals of advocacy.",
+                    "type": "boolean",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "OrderType",
+                "x-readme-ref-name": "OrderType"
+              }
+            ]
+          },
+          "customer": {
+            "title": "Customer",
+            "description": "Information about the customer who placed the order",
+            "oneOf": [
+              {
+                "required": [
+                  "emailAddress",
+                  "firstname",
+                  "surname"
+                ],
+                "properties": {
+                  "emailAddress": {
+                    "description": "Customer email address",
+                    "type": "string",
+                    "example": "jane.doe@example.com"
+                  },
+                  "title": {
+                    "description": "Customer title such as Mr, Miss, Dr or Sir",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "firstname": {
+                    "description": "Customer firstname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "surname": {
+                    "description": "Customer surname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "uniqueIdentifier": {
+                    "description": "Your unique identifier for this customer e.g. CustomerId",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "segment": {
+                    "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "customField": {
+                    "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "CustomerType",
+                "x-readme-ref-name": "CustomerType"
+              }
+            ]
+          },
+          "request": {
+            "title": "Request",
+            "description": "Information about the request",
+            "oneOf": [
+              {
+                "required": [
+                  "partnerCode",
+                  "situation"
+                ],
+                "properties": {
+                  "partnerCode": {
+                    "description": "Your partner code, used to link to your users and offers",
+                    "type": "string",
+                    "example": "[YOUR-PARTNER-CODE]"
+                  },
+                  "situation": {
+                    "description": "Situation - a string representing where in the application you are making this request",
+                    "type": "string",
+                    "example": "mobile-app"
+                  },
+                  "localeCode": {
+                    "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                    "type": "string",
+                    "example": "en_GB"
+                  },
+                  "ipAddress": {
+                    "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                    "type": "string",
+                    "example": "127.0.0.1"
+                  },
+                  "userDeviceIdentifier": {
+                    "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "deviceType": {
+                    "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appName": {
+                    "description": "Your application name. Used for reporting.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appVersion": {
+                    "description": "Your application version reference. Used for reporting and troubleshooting.",
+                    "type": "string",
+                    "example": "v1.73"
+                  },
+                  "authenticationToken": {
+                    "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "RequestType",
+                "x-readme-ref-name": "RequestType"
+              }
+            ]
+          },
+          "address": {
+            "title": "Address",
+            "description": "Information about the address of the customer who placed the order",
+            "oneOf": [
+              {
+                "properties": {
+                  "addressLine1": {
+                    "description": "First line of address",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "addressLine2": {
+                    "description": "Second line of address",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "addressCity": {
+                    "description": "City part of address",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "addressCounty": {
+                    "description": "County or state part of address",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "addressPostCode": {
+                    "description": "Post or ZIP code",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "addressCountry": {
+                    "description": "Country of address",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "AddressType",
+                "x-readme-ref-name": "AddressType"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ConfirmOrderType",
+        "x-readme-ref-name": "ConfirmOrderType"
+      },
+      "EnrolReferrerType": {
+        "required": [
+          "customer",
+          "request"
+        ],
+        "properties": {
+          "customer": {
+            "title": "Customer",
+            "description": "Information about the referrer to enrol",
+            "oneOf": [
+              {
+                "required": [
+                  "emailAddress",
+                  "firstname",
+                  "surname"
+                ],
+                "properties": {
+                  "emailAddress": {
+                    "description": "Customer email address",
+                    "type": "string",
+                    "example": "jane.doe@example.com"
+                  },
+                  "title": {
+                    "description": "Customer title such as Mr, Miss, Dr or Sir",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "firstname": {
+                    "description": "Customer firstname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "surname": {
+                    "description": "Customer surname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "uniqueIdentifier": {
+                    "description": "Your unique identifier for this customer e.g. CustomerId",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "segment": {
+                    "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "customField": {
+                    "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "CustomerType",
+                "x-readme-ref-name": "CustomerType"
+              }
+            ]
+          },
+          "request": {
+            "title": "Request",
+            "description": "Information about the request",
+            "oneOf": [
+              {
+                "required": [
+                  "partnerCode",
+                  "situation"
+                ],
+                "properties": {
+                  "partnerCode": {
+                    "description": "Your partner code, used to link to your users and offers",
+                    "type": "string",
+                    "example": "[YOUR-PARTNER-CODE]"
+                  },
+                  "situation": {
+                    "description": "Situation - a string representing where in the application you are making this request",
+                    "type": "string",
+                    "example": "mobile-app"
+                  },
+                  "localeCode": {
+                    "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                    "type": "string",
+                    "example": "en_GB"
+                  },
+                  "ipAddress": {
+                    "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                    "type": "string",
+                    "example": "127.0.0.1"
+                  },
+                  "userDeviceIdentifier": {
+                    "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "deviceType": {
+                    "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appName": {
+                    "description": "Your application name. Used for reporting.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appVersion": {
+                    "description": "Your application version reference. Used for reporting and troubleshooting.",
+                    "type": "string",
+                    "example": "v1.73"
+                  },
+                  "authenticationToken": {
+                    "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "variation": {
+                    "description": "Variation - an index (0,1,2...) specifying which of the currently running AB tests to choose (if available)",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "RequestWithVariationType",
+                "x-readme-ref-name": "RequestWithVariationType"
+              }
+            ]
+          },
+          "order": {
+            "title": "Order",
+            "description": "Information about the order (used for recording order events AND segmentation)",
+            "oneOf": [
+              {
+                "required": [
+                  "orderIdentifier",
+                  "total",
+                  "currencyCode",
+                  "dateString"
+                ],
+                "properties": {
+                  "orderIdentifier": {
+                    "description": "Your Order Identifier for the transaction that has taken place",
+                    "type": "string",
+                    "example": "123456"
+                  },
+                  "total": {
+                    "description": "Order subtotal, excluding tax and shipping in the currency specified by currencyCode",
+                    "type": "string",
+                    "example": "100"
+                  },
+                  "currencyCode": {
+                    "description": "3 letter currency code for the currency in which the transaction took place",
+                    "type": "string",
+                    "example": "GBP"
+                  },
+                  "dateString": {
+                    "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
+                    "type": "string",
+                    "example": "2024-06-18T16:31:06+00:00"
+                  },
+                  "couponCode": {
+                    "description": "If a coupon was used in the transaction, the coupon code the consumer used",
+                    "type": "string",
+                    "example": "ABC23252"
+                  },
+                  "discountAmount": {
+                    "description": "The discount amount. Our assumption is this has already been taken off the order subtotal provided. This allows us to calculate the Cost Per Acquisition for referral.",
+                    "type": "string",
+                    "example": "12.44"
+                  },
+                  "orderItemCount": {
+                    "description": "The number of items in the order/cart (if applicable). This helps us understand the type of purchase and can be a signal of advocacy.",
+                    "type": "string",
+                    "example": "3"
+                  },
+                  "isSubscription": {
+                    "description": "Whether this order is for a subscription (recurring). This helps us qualify and categorise the revenue.",
+                    "type": "boolean",
+                    "example": ""
+                  },
+                  "isGift": {
+                    "description": "Whether this order is a gift (being bought for someone else). Gifts can be signals of advocacy.",
+                    "type": "boolean",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "OrderType",
+                "x-readme-ref-name": "OrderType"
+              }
+            ]
+          },
+          "address": {
+            "title": "Address",
+            "description": "Information about the address of the customer (used for segmentation)",
+            "oneOf": [
+              {
+                "properties": {
+                  "addressCountry": {
+                    "description": "Country of address e.g. UK or France",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "AddressForSegmentationType",
+                "x-readme-ref-name": "AddressForSegmentationType"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "EnrolReferrerType",
+        "x-readme-ref-name": "EnrolReferrerType"
+      },
+      "ReferralShareOffer": {
+        "properties": {
+          "offer": {
+            "title": "Description of the offer and rewards.",
+            "oneOf": [
+              {
+                "properties": {
+                  "id": {
+                    "title": "The identifier of the offer.",
+                    "type": "integer"
+                  },
+                  "localeCode": {
+                    "title": "The locale code of the Offer.",
+                    "type": "string"
+                  },
+                  "headline": {
+                    "title": "The headline description for the Offer.",
+                    "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                    "type": "string"
+                  },
+                  "description": {
+                    "title": "The details of the Offer.",
+                    "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                    "type": "string"
+                  },
+                  "callToAction": {
+                    "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+                    "description": "e.g. \"Get a £20 gift card\"",
+                    "type": "string"
+                  },
+                  "privacyNotice": {
+                    "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                    "description": "e.g. \"Get a £20 gift card\"",
+                    "type": "string"
+                  },
+                  "privacyLink": {
+                    "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+                    "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+                    "type": "string"
+                  },
+                  "referrerReward": {
+                    "title": "The explicit description of the Referrer Reward for the Referrer.",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "description": {
+                            "title": "Friendly description of a reward for the intended recipient.",
+                            "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                            "type": "string"
+                          },
+                          "summary": {
+                            "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                            "type": "string"
+                          },
+                          "amount": {
+                            "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Reward",
+                        "x-readme-ref-name": "Reward"
+                      }
+                    ]
+                  },
+                  "refereeReward": {
+                    "title": "The explicit description of the Referee reward for the Referrer.",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "description": {
+                            "title": "Friendly description of a reward for the intended recipient.",
+                            "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                            "type": "string"
+                          },
+                          "summary": {
+                            "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                            "type": "string"
+                          },
+                          "amount": {
+                            "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Reward",
+                        "x-readme-ref-name": "Reward"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "Offer",
+                "x-readme-ref-name": "Offer"
+              }
+            ]
+          },
+          "shareLinks": {
+            "title": "List of share links for different share mechanisms.",
+            "type": "array",
+            "items": {
+              "properties": {
+                "type": {
+                  "title": "The type of share mechanism (e.g. Facebook, Twitter, Open link, Email link)",
+                  "type": "string"
+                },
+                "protocol": {
+                  "title": "The protocol (if available) for the share",
+                  "type": "string"
+                },
+                "url": {
+                  "title": "The url to include in the share",
+                  "type": "string"
+                },
+                "defaultShareMessage": {
+                  "title": "The default message to include in the share",
+                  "type": "string"
+                },
+                "exampleImplementation": {
+                  "title": "An example of the share URL you could use to initiate this share.",
+                  "description": "You are free to implement this your own way if you wish",
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "title": "ShareLink",
+              "x-readme-ref-name": "ShareLink"
+            }
+          },
+          "termsLinks": {
+            "title": "Links to the terms and conditions for this offer.",
+            "oneOf": [
+              {
+                "properties": {
+                  "localeCode": {
+                    "title": "The locale code of the terms link",
+                    "type": "string"
+                  },
+                  "linkToTermsInLocale": {
+                    "title": "Link to the terms and conditions in the locale stated",
+                    "type": "string"
+                  }
+                },
+                "type": "object",
+                "title": "TermsLinks",
+                "x-readme-ref-name": "TermsLinks"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ReferralShareOffer",
+        "x-readme-ref-name": "ReferralShareOffer"
+      },
+      "ReferralDashboardOffer": {
+        "properties": {
+          "offer": {
+            "title": "Description of the offer and rewards.",
+            "oneOf": [
+              {
+                "properties": {
+                  "id": {
+                    "title": "The identifier of the offer.",
+                    "type": "integer"
+                  },
+                  "localeCode": {
+                    "title": "The locale code of the Offer.",
+                    "type": "string"
+                  },
+                  "headline": {
+                    "title": "The headline description for the Offer.",
+                    "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                    "type": "string"
+                  },
+                  "description": {
+                    "title": "The details of the Offer.",
+                    "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                    "type": "string"
+                  },
+                  "callToAction": {
+                    "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+                    "description": "e.g. \"Get a £20 gift card\"",
+                    "type": "string"
+                  },
+                  "privacyNotice": {
+                    "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                    "description": "e.g. \"Get a £20 gift card\"",
+                    "type": "string"
+                  },
+                  "privacyLink": {
+                    "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+                    "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+                    "type": "string"
+                  },
+                  "referrerReward": {
+                    "title": "The explicit description of the Referrer Reward for the Referrer.",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "description": {
+                            "title": "Friendly description of a reward for the intended recipient.",
+                            "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                            "type": "string"
+                          },
+                          "summary": {
+                            "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                            "type": "string"
+                          },
+                          "amount": {
+                            "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Reward",
+                        "x-readme-ref-name": "Reward"
+                      }
+                    ]
+                  },
+                  "refereeReward": {
+                    "title": "The explicit description of the Referee reward for the Referrer.",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "description": {
+                            "title": "Friendly description of a reward for the intended recipient.",
+                            "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                            "type": "string"
+                          },
+                          "summary": {
+                            "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                            "type": "string"
+                          },
+                          "amount": {
+                            "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Reward",
+                        "x-readme-ref-name": "Reward"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "Offer",
+                "x-readme-ref-name": "Offer"
+              }
+            ]
+          },
+          "shareLinks": {
+            "title": "List of share links for different share mechanisms.",
+            "type": "array",
+            "items": {
+              "properties": {
+                "type": {
+                  "title": "The type of share mechanism (e.g. Facebook, Twitter, Open link, Email link)",
+                  "type": "string"
+                },
+                "protocol": {
+                  "title": "The protocol (if available) for the share",
+                  "type": "string"
+                },
+                "url": {
+                  "title": "The url to include in the share",
+                  "type": "string"
+                },
+                "defaultShareMessage": {
+                  "title": "The default message to include in the share",
+                  "type": "string"
+                },
+                "exampleImplementation": {
+                  "title": "An example of the share URL you could use to initiate this share.",
+                  "description": "You are free to implement this your own way if you wish",
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "title": "ShareLink",
+              "x-readme-ref-name": "ShareLink"
+            }
+          },
+          "termsLinks": {
+            "title": "Links to the terms and conditions for this offer.",
+            "oneOf": [
+              {
+                "properties": {
+                  "localeCode": {
+                    "title": "The locale code of the terms link",
+                    "type": "string"
+                  },
+                  "linkToTermsInLocale": {
+                    "title": "Link to the terms and conditions in the locale stated",
+                    "type": "string"
+                  }
+                },
+                "type": "object",
+                "title": "TermsLinks",
+                "x-readme-ref-name": "TermsLinks"
+              }
+            ]
+          },
+          "referralStats": {
+            "title": "Referral Stats.",
+            "oneOf": [
+              {
+                "properties": {
+                  "successfulReferrals": {
+                    "title": "Number of successful referrals",
+                    "type": "integer"
+                  },
+                  "invitations": {
+                    "title": "Number of invitations made",
+                    "type": "integer"
+                  },
+                  "clicksOnInvites": {
+                    "title": "Number of clicks on invites",
+                    "type": "integer"
+                  }
+                },
+                "type": "object",
+                "title": "ReferralStats",
+                "x-readme-ref-name": "ReferralStats"
+              }
+            ]
+          },
+          "referralRewards": {
+            "title": "Referral rewards - list of potential rewards they are due for introducing customers.",
+            "type": "array",
+            "items": {
+              "properties": {
+                "description": {
+                  "title": "Friendly description of a reward for the intended recipient.",
+                  "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                  "type": "string"
+                },
+                "summary": {
+                  "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                  "type": "string"
+                },
+                "amount": {
+                  "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                  "type": "string"
+                },
+                "status": {
+                  "title": "Status of the reward eg Pending, Cancelled, Given by email",
+                  "type": "string"
+                },
+                "forReferring": {
+                  "title": "Description of who they referred to get the reward. As this could be multiple people, it's an array.",
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "type": "object",
+              "title": "DashboardReward",
+              "x-readme-ref-name": "DashboardReward"
+            }
+          }
+        },
+        "type": "object",
+        "title": "ReferralDashboardOffer",
+        "x-readme-ref-name": "ReferralDashboardOffer"
+      },
+      "ReferrerFound": {
+        "properties": {
+          "referrer": {
+            "title": "The primary payload of the response, assuming we found the referrer successfully. If we didn't this will be empty.",
+            "oneOf": [
+              {
+                "properties": {
+                  "referrerMentionMeIdentifier": {
+                    "title": "Our identifier for the referrer identified, the customer ID",
+                    "type": "integer"
+                  },
+                  "referrerToken": {
+                    "title": "Token used to identify the referrer uniquely\n(flowId)",
+                    "type": "string"
+                  },
+                  "referrerOfferIdentifier": {
+                    "title": "Identify the Offer (i.e. this is an Offer Id)",
+                    "type": "integer"
+                  },
+                  "offer": {
+                    "title": "Description of the offer and rewards which this referrer is able to offer",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "id": {
+                            "title": "The identifier of the offer.",
+                            "type": "integer"
+                          },
+                          "localeCode": {
+                            "title": "The locale code of the Offer.",
+                            "type": "string"
+                          },
+                          "headline": {
+                            "title": "The headline description for the Offer.",
+                            "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                            "type": "string"
+                          },
+                          "description": {
+                            "title": "The details of the Offer.",
+                            "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                            "type": "string"
+                          },
+                          "callToAction": {
+                            "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+                            "description": "e.g. \"Get a £20 gift card\"",
+                            "type": "string"
+                          },
+                          "privacyNotice": {
+                            "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                            "description": "e.g. \"Get a £20 gift card\"",
+                            "type": "string"
+                          },
+                          "privacyLink": {
+                            "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+                            "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+                            "type": "string"
+                          },
+                          "referrerReward": {
+                            "title": "The explicit description of the Referrer Reward for the Referrer.",
+                            "oneOf": [
+                              {
+                                "properties": {
+                                  "description": {
+                                    "title": "Friendly description of a reward for the intended recipient.",
+                                    "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                    "type": "string"
+                                  },
+                                  "summary": {
+                                    "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                    "type": "string"
+                                  },
+                                  "amount": {
+                                    "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object",
+                                "title": "Reward",
+                                "x-readme-ref-name": "Reward"
+                              }
+                            ]
+                          },
+                          "refereeReward": {
+                            "title": "The explicit description of the Referee reward for the Referrer.",
+                            "oneOf": [
+                              {
+                                "properties": {
+                                  "description": {
+                                    "title": "Friendly description of a reward for the intended recipient.",
+                                    "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                                    "type": "string"
+                                  },
+                                  "summary": {
+                                    "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                                    "type": "string"
+                                  },
+                                  "amount": {
+                                    "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object",
+                                "title": "Reward",
+                                "x-readme-ref-name": "Reward"
+                              }
+                            ]
+                          }
+                        },
+                        "type": "object",
+                        "title": "Offer",
+                        "x-readme-ref-name": "Offer"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "ReferrerIdentifier",
+                "x-readme-ref-name": "ReferrerIdentifier"
+              }
+            ]
+          },
+          "foundMultipleReferrers": {
+            "title": "Whether the user should be prompted to narrow the search (by entering an email address for example)",
+            "type": "boolean"
+          },
+          "links": {
+            "title": "Pagination of output and links to associated resources, including content-collection items",
+            "type": "array",
+            "items": {
+              "properties": {
+                "relationship": {
+                  "title": "Relationship of the link between the two resources",
+                  "type": "string"
+                },
+                "resource": {
+                  "title": "The target resource being linked",
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "key": {
+                        "title": "The content key",
+                        "type": "string"
+                      },
+                      "content": {
+                        "title": "The content string",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object",
+                    "title": "Content",
+                    "x-readme-ref-name": "Content"
+                  }
+                }
+              },
+              "type": "object",
+              "title": "ContentCollectionLink",
+              "x-readme-ref-name": "ContentCollectionLink"
+            }
+          },
+          "termsLinks": {
+            "title": "Links to the terms and conditions for this offer.",
+            "oneOf": [
+              {
+                "properties": {
+                  "localeCode": {
+                    "title": "The locale code of the terms link",
+                    "type": "string"
+                  },
+                  "linkToTermsInLocale": {
+                    "title": "Link to the terms and conditions in the locale stated",
+                    "type": "string"
+                  }
+                },
+                "type": "object",
+                "title": "TermsLinks",
+                "x-readme-ref-name": "TermsLinks"
+              }
+            ]
+          },
+          "meta": {
+            "title": "This is used to hold a meta status code which is then used to pass a response back to the actual response later.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "type": "object",
+        "title": "ReferrerFound",
+        "x-readme-ref-name": "ReferrerFound"
+      },
+      "EnrolRefereeType": {
+        "required": [
+          "referrerMentionMeIdentifier",
+          "referrerToken",
+          "customer",
+          "request"
+        ],
+        "properties": {
+          "referrerMentionMeIdentifier": {
+            "description": "Id representing the referrer returned by a successful name search",
+            "type": "integer",
+            "example": ""
+          },
+          "referrerToken": {
+            "description": "Token representing the referrer returned by a successful name search",
+            "type": "string",
+            "example": ""
+          },
+          "customer": {
+            "title": "Customer",
+            "description": "Information about the referrer to enrol",
+            "oneOf": [
+              {
+                "required": [
+                  "emailAddress",
+                  "firstname",
+                  "surname"
+                ],
+                "properties": {
+                  "emailAddress": {
+                    "description": "Customer email address",
+                    "type": "string",
+                    "example": "jane.doe@example.com"
+                  },
+                  "title": {
+                    "description": "Customer title such as Mr, Miss, Dr or Sir",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "firstname": {
+                    "description": "Customer firstname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "surname": {
+                    "description": "Customer surname",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "uniqueIdentifier": {
+                    "description": "Your unique identifier for this customer e.g. CustomerId",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "segment": {
+                    "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "customField": {
+                    "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "CustomerType",
+                "x-readme-ref-name": "CustomerType"
+              }
+            ]
+          },
+          "request": {
+            "title": "Request",
+            "description": "Information about the request",
+            "oneOf": [
+              {
+                "required": [
+                  "partnerCode",
+                  "situation"
+                ],
+                "properties": {
+                  "partnerCode": {
+                    "description": "Your partner code, used to link to your users and offers",
+                    "type": "string",
+                    "example": "[YOUR-PARTNER-CODE]"
+                  },
+                  "situation": {
+                    "description": "Situation - a string representing where in the application you are making this request",
+                    "type": "string",
+                    "example": "mobile-app"
+                  },
+                  "localeCode": {
+                    "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+                    "type": "string",
+                    "example": "en_GB"
+                  },
+                  "ipAddress": {
+                    "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+                    "type": "string",
+                    "example": "127.0.0.1"
+                  },
+                  "userDeviceIdentifier": {
+                    "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "deviceType": {
+                    "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appName": {
+                    "description": "Your application name. Used for reporting.",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "appVersion": {
+                    "description": "Your application version reference. Used for reporting and troubleshooting.",
+                    "type": "string",
+                    "example": "v1.73"
+                  },
+                  "authenticationToken": {
+                    "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "type": "object",
+                "title": "RequestType",
+                "x-readme-ref-name": "RequestType"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "EnrolRefereeType",
+        "x-readme-ref-name": "EnrolRefereeType"
+      },
+      "RefereeRegister": {
+        "properties": {
+          "offer": {
+            "properties": {
+              "id": {
+                "title": "The identifier of the offer.",
+                "type": "integer"
+              },
+              "localeCode": {
+                "title": "The locale code of the Offer.",
+                "type": "string"
+              },
+              "headline": {
+                "title": "The headline description for the Offer.",
+                "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                "type": "string"
+              },
+              "description": {
+                "title": "The details of the Offer.",
+                "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                "type": "string"
+              },
+              "callToAction": {
+                "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+                "description": "e.g. \"Get a £20 gift card\"",
+                "type": "string"
+              },
+              "privacyNotice": {
+                "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                "description": "e.g. \"Get a £20 gift card\"",
+                "type": "string"
+              },
+              "privacyLink": {
+                "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+                "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+                "type": "string"
+              },
+              "referrerReward": {
+                "title": "The explicit description of the Referrer Reward for the Referrer.",
+                "oneOf": [
+                  {
+                    "properties": {
+                      "description": {
+                        "title": "Friendly description of a reward for the intended recipient.",
+                        "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                        "type": "string"
+                      },
+                      "summary": {
+                        "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                        "type": "string"
+                      },
+                      "amount": {
+                        "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object",
+                    "title": "Reward",
+                    "x-readme-ref-name": "Reward"
+                  }
+                ]
+              },
+              "refereeReward": {
+                "title": "The explicit description of the Referee reward for the Referrer.",
+                "oneOf": [
+                  {
+                    "properties": {
+                      "description": {
+                        "title": "Friendly description of a reward for the intended recipient.",
+                        "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                        "type": "string"
+                      },
+                      "summary": {
+                        "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                        "type": "string"
+                      },
+                      "amount": {
+                        "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object",
+                    "title": "Reward",
+                    "x-readme-ref-name": "Reward"
+                  }
+                ]
+              }
+            },
+            "type": "object",
+            "title": "Offer",
+            "x-readme-ref-name": "Offer"
+          },
+          "refereeReward": {
+            "title": "A description of the referee reward for the Referee",
+            "oneOf": [
+              {
+                "properties": {
+                  "description": {
+                    "title": "Description of the reward",
+                    "type": "string"
+                  },
+                  "couponCode": {
+                    "title": "Reward coupon code (if appropriate)",
+                    "type": "string"
+                  },
+                  "securityCode": {
+                    "title": "Reward security code (if appropriate)",
+                    "type": "string"
+                  },
+                  "url": {
+                    "title": "Reward link (if appropriate)",
+                    "type": "string"
+                  },
+                  "amount": {
+                    "title": "The reward amount - note this is not always a number. It can be a currency amount, a percentage, a number (of items) or a text description depending on the reward type.",
+                    "type": "string"
+                  }
+                },
+                "type": "object",
+                "title": "RefereeReward",
+                "x-readme-ref-name": "RefereeReward"
+              }
+            ]
+          },
+          "content": {
+            "properties": {
+              "relationship": {
+                "title": "Relationship of the link between the two resources",
+                "type": "string"
+              },
+              "resource": {
+                "title": "The target resource being linked",
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "key": {
+                      "title": "The content key",
+                      "type": "string"
+                    },
+                    "content": {
+                      "title": "The content string",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Content",
+                  "x-readme-ref-name": "Content"
+                }
+              }
+            },
+            "type": "object",
+            "title": "ContentCollectionLink",
+            "x-readme-ref-name": "ContentCollectionLink"
+          },
+          "termsLinks": {
+            "title": "Links to the terms and conditions for this offer.",
+            "oneOf": [
+              {
+                "properties": {
+                  "localeCode": {
+                    "title": "The locale code of the terms link",
+                    "type": "string"
+                  },
+                  "linkToTermsInLocale": {
+                    "title": "Link to the terms and conditions in the locale stated",
+                    "type": "string"
+                  }
+                },
+                "type": "object",
+                "title": "TermsLinks",
+                "x-readme-ref-name": "TermsLinks"
+              }
+            ]
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "title": "RefereeRegister",
+        "x-readme-ref-name": "RefereeRegister"
+      },
+      "OrderType": {
+        "required": [
+          "orderIdentifier",
+          "total",
+          "currencyCode",
+          "dateString"
+        ],
+        "properties": {
+          "orderIdentifier": {
+            "description": "Your Order Identifier for the transaction that has taken place",
+            "type": "string",
+            "example": "123456"
+          },
+          "total": {
+            "description": "Order subtotal, excluding tax and shipping in the currency specified by currencyCode",
+            "type": "string",
+            "example": "100"
+          },
+          "currencyCode": {
+            "description": "3 letter currency code for the currency in which the transaction took place",
+            "type": "string",
+            "example": "GBP"
+          },
+          "dateString": {
+            "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
+            "type": "string",
+            "example": "2024-06-18T16:31:06+00:00"
+          },
+          "couponCode": {
+            "description": "If a coupon was used in the transaction, the coupon code the consumer used",
+            "type": "string",
+            "example": "ABC23252"
+          },
+          "discountAmount": {
+            "description": "The discount amount. Our assumption is this has already been taken off the order subtotal provided. This allows us to calculate the Cost Per Acquisition for referral.",
+            "type": "string",
+            "example": "12.44"
+          },
+          "orderItemCount": {
+            "description": "The number of items in the order/cart (if applicable). This helps us understand the type of purchase and can be a signal of advocacy.",
+            "type": "string",
+            "example": "3"
+          },
+          "isSubscription": {
+            "description": "Whether this order is for a subscription (recurring). This helps us qualify and categorise the revenue.",
+            "type": "boolean",
+            "example": ""
+          },
+          "isGift": {
+            "description": "Whether this order is a gift (being bought for someone else). Gifts can be signals of advocacy.",
+            "type": "boolean",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "OrderType",
+        "x-readme-ref-name": "OrderType"
+      },
+      "CustomerType": {
+        "required": [
+          "emailAddress",
+          "firstname",
+          "surname"
+        ],
+        "properties": {
+          "emailAddress": {
+            "description": "Customer email address",
+            "type": "string",
+            "example": "jane.doe@example.com"
+          },
+          "title": {
+            "description": "Customer title such as Mr, Miss, Dr or Sir",
+            "type": "string",
+            "example": ""
+          },
+          "firstname": {
+            "description": "Customer firstname",
+            "type": "string",
+            "example": ""
+          },
+          "surname": {
+            "description": "Customer surname",
+            "type": "string",
+            "example": ""
+          },
+          "uniqueIdentifier": {
+            "description": "Your unique identifier for this customer e.g. CustomerId",
+            "type": "string",
+            "example": ""
+          },
+          "segment": {
+            "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+            "type": "string",
+            "example": ""
+          },
+          "customField": {
+            "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "CustomerType",
+        "x-readme-ref-name": "CustomerType"
+      },
+      "RequestType": {
+        "required": [
+          "partnerCode",
+          "situation"
+        ],
+        "properties": {
+          "partnerCode": {
+            "description": "Your partner code, used to link to your users and offers",
+            "type": "string",
+            "example": "[YOUR-PARTNER-CODE]"
+          },
+          "situation": {
+            "description": "Situation - a string representing where in the application you are making this request",
+            "type": "string",
+            "example": "mobile-app"
+          },
+          "localeCode": {
+            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+            "type": "string",
+            "example": "en_GB"
+          },
+          "ipAddress": {
+            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+            "type": "string",
+            "example": "127.0.0.1"
+          },
+          "userDeviceIdentifier": {
+            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+            "type": "string",
+            "example": ""
+          },
+          "deviceType": {
+            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+            "type": "string",
+            "example": ""
+          },
+          "appName": {
+            "description": "Your application name. Used for reporting.",
+            "type": "string",
+            "example": ""
+          },
+          "appVersion": {
+            "description": "Your application version reference. Used for reporting and troubleshooting.",
+            "type": "string",
+            "example": "v1.73"
+          },
+          "authenticationToken": {
+            "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "RequestType",
+        "x-readme-ref-name": "RequestType"
+      },
+      "AddressType": {
+        "properties": {
+          "addressLine1": {
+            "description": "First line of address",
+            "type": "string",
+            "example": ""
+          },
+          "addressLine2": {
+            "description": "Second line of address",
+            "type": "string",
+            "example": ""
+          },
+          "addressCity": {
+            "description": "City part of address",
+            "type": "string",
+            "example": ""
+          },
+          "addressCounty": {
+            "description": "County or state part of address",
+            "type": "string",
+            "example": ""
+          },
+          "addressPostCode": {
+            "description": "Post or ZIP code",
+            "type": "string",
+            "example": ""
+          },
+          "addressCountry": {
+            "description": "Country of address",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "AddressType",
+        "x-readme-ref-name": "AddressType"
+      },
+      "RequestWithVariationType": {
+        "required": [
+          "partnerCode",
+          "situation"
+        ],
+        "properties": {
+          "partnerCode": {
+            "description": "Your partner code, used to link to your users and offers",
+            "type": "string",
+            "example": "[YOUR-PARTNER-CODE]"
+          },
+          "situation": {
+            "description": "Situation - a string representing where in the application you are making this request",
+            "type": "string",
+            "example": "mobile-app"
+          },
+          "localeCode": {
+            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+            "type": "string",
+            "example": "en_GB"
+          },
+          "ipAddress": {
+            "description": "IP address of the customer connection. If you're making a request on behalf of a customer, pass their IP address here. If the customer will connect directly, leave this empty and we will retrieve this from their request.",
+            "type": "string",
+            "example": "127.0.0.1"
+          },
+          "userDeviceIdentifier": {
+            "description": "User Device Identifier should be a unique reference to this combination of app + user. We use this for de-duplication, reporting and anti-gaming. For example you could concatenate your CustomerId and a UniqueID representing the App Install and provide us with the hash. On Android the UniqueID could be an InstanceID or GUID. On iPhone the UniqueID should be generated by identifierForVendor.",
+            "type": "string",
+            "example": ""
+          },
+          "deviceType": {
+            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+            "type": "string",
+            "example": ""
+          },
+          "appName": {
+            "description": "Your application name. Used for reporting.",
+            "type": "string",
+            "example": ""
+          },
+          "appVersion": {
+            "description": "Your application version reference. Used for reporting and troubleshooting.",
+            "type": "string",
+            "example": "v1.73"
+          },
+          "authenticationToken": {
+            "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
+            "type": "string",
+            "example": ""
+          },
+          "variation": {
+            "description": "Variation - an index (0,1,2...) specifying which of the currently running AB tests to choose (if available)",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "RequestWithVariationType",
+        "x-readme-ref-name": "RequestWithVariationType"
+      },
+      "AddressForSegmentationType": {
+        "properties": {
+          "addressCountry": {
+            "description": "Country of address e.g. UK or France",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object",
+        "title": "AddressForSegmentationType",
+        "x-readme-ref-name": "AddressForSegmentationType"
+      },
+      "Offer": {
+        "properties": {
+          "id": {
+            "title": "The identifier of the offer.",
+            "type": "integer"
+          },
+          "localeCode": {
+            "title": "The locale code of the Offer.",
+            "type": "string"
+          },
+          "headline": {
+            "title": "The headline description for the Offer.",
+            "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+            "type": "string"
+          },
+          "description": {
+            "title": "The details of the Offer.",
+            "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+            "type": "string"
+          },
+          "callToAction": {
+            "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+            "description": "e.g. \"Get a £20 gift card\"",
+            "type": "string"
+          },
+          "privacyNotice": {
+            "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+            "description": "e.g. \"Get a £20 gift card\"",
+            "type": "string"
+          },
+          "privacyLink": {
+            "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+            "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+            "type": "string"
+          },
+          "referrerReward": {
+            "title": "The explicit description of the Referrer Reward for the Referrer.",
+            "oneOf": [
+              {
+                "properties": {
+                  "description": {
+                    "title": "Friendly description of a reward for the intended recipient.",
+                    "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                    "type": "string"
+                  },
+                  "summary": {
+                    "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                    "type": "string"
+                  },
+                  "amount": {
+                    "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                    "type": "string"
+                  }
+                },
+                "type": "object",
+                "title": "Reward",
+                "x-readme-ref-name": "Reward"
+              }
+            ]
+          },
+          "refereeReward": {
+            "title": "The explicit description of the Referee reward for the Referrer.",
+            "oneOf": [
+              {
+                "properties": {
+                  "description": {
+                    "title": "Friendly description of a reward for the intended recipient.",
+                    "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                    "type": "string"
+                  },
+                  "summary": {
+                    "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                    "type": "string"
+                  },
+                  "amount": {
+                    "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                    "type": "string"
+                  }
+                },
+                "type": "object",
+                "title": "Reward",
+                "x-readme-ref-name": "Reward"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "Offer",
+        "x-readme-ref-name": "Offer"
+      },
+      "ShareLink": {
+        "properties": {
+          "type": {
+            "title": "The type of share mechanism (e.g. Facebook, Twitter, Open link, Email link)",
+            "type": "string"
+          },
+          "protocol": {
+            "title": "The protocol (if available) for the share",
+            "type": "string"
+          },
+          "url": {
+            "title": "The url to include in the share",
+            "type": "string"
+          },
+          "defaultShareMessage": {
+            "title": "The default message to include in the share",
+            "type": "string"
+          },
+          "exampleImplementation": {
+            "title": "An example of the share URL you could use to initiate this share.",
+            "description": "You are free to implement this your own way if you wish",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "title": "ShareLink",
+        "x-readme-ref-name": "ShareLink"
+      },
+      "TermsLinks": {
+        "properties": {
+          "localeCode": {
+            "title": "The locale code of the terms link",
+            "type": "string"
+          },
+          "linkToTermsInLocale": {
+            "title": "Link to the terms and conditions in the locale stated",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "title": "TermsLinks",
+        "x-readme-ref-name": "TermsLinks"
+      },
+      "ReferralStats": {
+        "properties": {
+          "successfulReferrals": {
+            "title": "Number of successful referrals",
+            "type": "integer"
+          },
+          "invitations": {
+            "title": "Number of invitations made",
+            "type": "integer"
+          },
+          "clicksOnInvites": {
+            "title": "Number of clicks on invites",
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "title": "ReferralStats",
+        "x-readme-ref-name": "ReferralStats"
+      },
+      "DashboardReward": {
+        "properties": {
+          "description": {
+            "title": "Friendly description of a reward for the intended recipient.",
+            "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+            "type": "string"
+          },
+          "amount": {
+            "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status of the reward eg Pending, Cancelled, Given by email",
+            "type": "string"
+          },
+          "forReferring": {
+            "title": "Description of who they referred to get the reward. As this could be multiple people, it's an array.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "type": "object",
+        "title": "DashboardReward",
+        "x-readme-ref-name": "DashboardReward"
+      },
+      "ReferrerIdentifier": {
+        "properties": {
+          "referrerMentionMeIdentifier": {
+            "title": "Our identifier for the referrer identified, the customer ID",
+            "type": "integer"
+          },
+          "referrerToken": {
+            "title": "Token used to identify the referrer uniquely\n(flowId)",
+            "type": "string"
+          },
+          "referrerOfferIdentifier": {
+            "title": "Identify the Offer (i.e. this is an Offer Id)",
+            "type": "integer"
+          },
+          "offer": {
+            "title": "Description of the offer and rewards which this referrer is able to offer",
+            "oneOf": [
+              {
+                "properties": {
+                  "id": {
+                    "title": "The identifier of the offer.",
+                    "type": "integer"
+                  },
+                  "localeCode": {
+                    "title": "The locale code of the Offer.",
+                    "type": "string"
+                  },
+                  "headline": {
+                    "title": "The headline description for the Offer.",
+                    "description": "e.g. \"You can get a £20 gift card if you refer a friend to ...\"",
+                    "type": "string"
+                  },
+                  "description": {
+                    "title": "The details of the Offer.",
+                    "description": "e.g. \"Give your friends a 20% off introductory offer\"",
+                    "type": "string"
+                  },
+                  "callToAction": {
+                    "title": "The callToAction text of the Offer - typically goes on the button of the offer",
+                    "description": "e.g. \"Get a £20 gift card\"",
+                    "type": "string"
+                  },
+                  "privacyNotice": {
+                    "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
+                    "description": "e.g. \"Get a £20 gift card\"",
+                    "type": "string"
+                  },
+                  "privacyLink": {
+                    "title": "The URL to the Mention Me privacy policy - typically shown near the Privacy Notice.",
+                    "description": "e.g. \"https://mention-me.com/help/privacy_policy\"",
+                    "type": "string"
+                  },
+                  "referrerReward": {
+                    "title": "The explicit description of the Referrer Reward for the Referrer.",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "description": {
+                            "title": "Friendly description of a reward for the intended recipient.",
+                            "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                            "type": "string"
+                          },
+                          "summary": {
+                            "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                            "type": "string"
+                          },
+                          "amount": {
+                            "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Reward",
+                        "x-readme-ref-name": "Reward"
+                      }
+                    ]
+                  },
+                  "refereeReward": {
+                    "title": "The explicit description of the Referee reward for the Referrer.",
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "description": {
+                            "title": "Friendly description of a reward for the intended recipient.",
+                            "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+                            "type": "string"
+                          },
+                          "summary": {
+                            "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+                            "type": "string"
+                          },
+                          "amount": {
+                            "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Reward",
+                        "x-readme-ref-name": "Reward"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "title": "Offer",
+                "x-readme-ref-name": "Offer"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ReferrerIdentifier",
+        "x-readme-ref-name": "ReferrerIdentifier"
+      },
+      "ContentCollectionLink": {
+        "properties": {
+          "relationship": {
+            "title": "Relationship of the link between the two resources",
+            "type": "string"
+          },
+          "resource": {
+            "title": "The target resource being linked",
+            "type": "array",
+            "items": {
+              "properties": {
+                "key": {
+                  "title": "The content key",
+                  "type": "string"
+                },
+                "content": {
+                  "title": "The content string",
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "title": "Content",
+              "x-readme-ref-name": "Content"
+            }
+          }
+        },
+        "type": "object",
+        "title": "ContentCollectionLink",
+        "x-readme-ref-name": "ContentCollectionLink"
+      },
+      "RefereeReward": {
+        "properties": {
+          "description": {
+            "title": "Description of the reward",
+            "type": "string"
+          },
+          "couponCode": {
+            "title": "Reward coupon code (if appropriate)",
+            "type": "string"
+          },
+          "securityCode": {
+            "title": "Reward security code (if appropriate)",
+            "type": "string"
+          },
+          "url": {
+            "title": "Reward link (if appropriate)",
+            "type": "string"
+          },
+          "amount": {
+            "title": "The reward amount - note this is not always a number. It can be a currency amount, a percentage, a number (of items) or a text description depending on the reward type.",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "title": "RefereeReward",
+        "x-readme-ref-name": "RefereeReward"
+      },
+      "Reward": {
+        "properties": {
+          "description": {
+            "title": "Friendly description of a reward for the intended recipient.",
+            "description": "The description we give may vary depending on the point in the flow that we choose to give it. Note that in some cases this might be \"promising the reward\" and in other cases \"giving it\".\n\ne.g. \"You'll get £20 for each friend you refer\" e.g. \"Your friends get a free camera when they order for the first time\" e.g. \"A 20% discount code\"",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary - now deprecated - it serves no purpose over and above the description.",
+            "type": "string"
+          },
+          "amount": {
+            "title": "The reward amount - now deprecated (because rewards don't have a consistent amount - some have text, percentage, number. Use the description to describe the reward.",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "title": "Reward",
+        "x-readme-ref-name": "Reward"
+      },
+      "Content": {
+        "properties": {
+          "key": {
+            "title": "The content key",
+            "type": "string"
+          },
+          "content": {
+            "title": "The content string",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "title": "Content",
+        "x-readme-ref-name": "Content"
+      }
+    }
+  }
+}
