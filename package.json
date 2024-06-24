@@ -14,6 +14,7 @@
     "dependencies": {
         "@api/consumer-api": "file:.api/apis/consumer-api",
         "@api/entry-point-api": "file:.api/apis/entry-point-api",
+        "@sentry/browser": "^8.11.0",
         "@shopify/app": "^3.58.2",
         "@shopify/cli": "^3.60.1",
         "react": "^18"
