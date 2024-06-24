@@ -53,9 +53,10 @@ export const useRefereeRegister = () => {
 				customer: {
 					emailAddress: email,
 				},
-				referrerMentionMeIdentifier: nameSearchResult.result.referrerMentionMeIdentifier,
-				referrerToken: nameSearchResult.result.referrerToken,
+				referrerMentionMeIdentifier: nameSearchResult.result.referrer.referrerMentionMeIdentifier,
+				referrerToken: nameSearchResult.result.referrer.referrerToken,
 			};
+
 			const response = await fetch(`https://${url}/api/consumer/v2/referee/register`,
 				{
 					method: "POST",
@@ -75,10 +76,22 @@ export const useRefereeRegister = () => {
 				return;
 			}
 
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+			const content = json.content.resource.reduce((acc, curr) => {
+				acc[curr.key] = curr.content;
+
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+				return acc;
+			}, {});
+
 			if (response.ok && response.status === 200) {
-				setRegisterResult(json);
+				setRegisterResult(
+					{
+						result: json,
+						content,
+					},
+				);
 				setStep("register-result");
-				console.log(json);
 				return;
 			}
 

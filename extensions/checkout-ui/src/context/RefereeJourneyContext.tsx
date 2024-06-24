@@ -15,6 +15,12 @@ export interface RefereeSearch {
 export interface NameSearchResult {
 	type: NameSearchResultType;
 	result?: ReferrerFound;
+	content?: { [key: string]: string };
+}
+
+export interface RegisterResult {
+	result?: RefereeRegister;
+	content?: { [key: string]: string };
 }
 
 type RefereeJourneyState = {
@@ -32,8 +38,8 @@ type RefereeJourneyState = {
 	setSearch: Dispatch<SetStateAction<RefereeSearch>>;
 	nameSearchResult: NameSearchResult;
 	setNameSearchResult: Dispatch<SetStateAction<NameSearchResult>>;
-	registerResult: RefereeRegister;
-	setRegisterResult: Dispatch<SetStateAction<RefereeRegister>>;
+	registerResult: RegisterResult;
+	setRegisterResult: Dispatch<SetStateAction<RegisterResult>>;
 	errorState: string;
 	setErrorState: Dispatch<SetStateAction<string>>;
 }

@@ -1,22 +1,20 @@
 import {
-	Banner,
-	BlockLayout,
 	BlockStack,
 	Button,
 	Checkbox,
 	Form,
 	Link,
-	Modal,
 	TextBlock,
 	TextField,
 	useTranslate,
+	View,
 } from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext, useState } from "react";
 import { useRefereeRegister } from "../hooks/useRefereeRegister";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { isValidEmail } from "../../../../shared/utils";
 
-export const WhoAreYouModal = () => {
+export const WhoAreYouModalContent = () => {
 	const { nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);
 
 	const translate = useTranslate();
@@ -48,42 +46,41 @@ export const WhoAreYouModal = () => {
 	}, [registerEmail, registerSubmitCallback, translate]);
 
 	return (
-		<Modal padding
-			   title="Welcome!!">
-			<BlockLayout>
-				<Form
-					disabled={loadingConsumerApi}
-					onSubmit={onSubmit}
+		<Form
+			disabled={loadingConsumerApi}
+			onSubmit={onSubmit}
+		>
+			<BlockStack>
+				<TextField error={errors?.email}
+						   icon={{ source: "email", position: "end" }}
+						   label={translate("who-are-you.form.label.your-email")}
+						   name="email"
+						   onChange={(value) => {
+							   setRegisterEmail(value);
+						   }}
+						   required
+						   type="email"
+				/>
+				<Button
+					accessibilityRole="submit"
+					loading={loadingConsumerApi}
 				>
-					<BlockStack>
-						<Banner status="success"
-								title="Welcome!" />
-						<TextField error={errors?.email}
-								   icon={{ source: "email", position: "end" }}
-								   label={translate("who-are-you.form.label.your-email")}
-								   name="email"
-								   onChange={(value) => {
-									   setRegisterEmail(value);
-								   }}
-								   required
-								   type="email"
-						/>
+					{nameSearchResult?.content?.cta || translate("who-are-you.form.submit")}
+				</Button>
+				<View background="subdued"
+					  padding="base">
+
+					<TextBlock>
+						{translate("who-are-you.privacy.text")}
+						{" "}
 						<Link external
 							  to={nameSearchResult.result.termsLinks.linkToTermsInLocale}
 						>
-							{translate("who-are-you.form.terms-link")}
+							{translate("who-are-you.privacy.link")}
 						</Link>
-						<TextBlock>Privacy policy stuff</TextBlock>
-						<Checkbox>Opt in</Checkbox>
-						<Button
-							accessibilityRole="submit"
-							loading={loadingConsumerApi}
-						>
-							{translate("who-are-you.form.submit")}
-						</Button>
-					</BlockStack>
-				</Form>
-			</BlockLayout>
-		</Modal>);
-
+					</TextBlock>
+				</View>
+			</BlockStack>
+		</Form>
+	);
 };

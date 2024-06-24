@@ -1,7 +1,7 @@
 {
 	"banner": {
 		"error": "Sorry, an error has occurred. Please try again later.",
-		"no-match": "Sorry, we can't find your friend. We'd recommend you confirm the email address they used with us and try again later."
+		"no-match": "Sorry, we can't find your friend. We'd recommend you confirm the email address they used with us and try again later.",
 		"search-by-email": "Sorry, we can't find your friend by the name '{{name}}'. Try searching with their email address too."
 	},
 	"checkout": {
@@ -27,6 +27,16 @@
 			"submit": "Find friend"
 		}
 	},
+	"modal": {
+		"title": {
+			"register": "Welcome!",
+			"register-result": {
+				"success": "Congratulations!",
+				"failure": "We're sorry!"
+			},
+			"welcome": "Welcome, who referred you?"
+		}
+	},
 	"register-result": {
 		"apply-discount": "Apply my discount",
 		"error": {
@@ -39,9 +49,14 @@
 				"your-email": "What is your email address?"
 			},
 			"error": {
-				"your-email": "Please enter your own email."
+				"your-email": "Please enter your email address."
 			},
+			"terms-link": "Terms and conditions",
 			"submit": "Claim your reward"
+		},
+		"privacy": {
+			"text": "Our refer-a-friend programme is managed by Mention Me who will process your data and send you referral service emails.",
+			"link": "More info and your privacy rights."
 		}
 	}
 }

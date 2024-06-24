@@ -61,26 +61,32 @@ export const useRefereeFindFriend = () => {
 
 			setLoadingConsumerApi(false);
 
-			console.log("fetchRefereeFindFriend result", json);
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+			const content = json.links[0].resource.reduce((acc, curr) => {
+				acc[curr.key] = curr.content;
+
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+				return acc;
+			}, {});
 
 			if (!response.ok) {
 				console.error("Response not ok when calling referrerFindFriend:", response);
 
 				if (response.status === 404) {
 					if (json?.foundMultipleReferrers) {
-						console.log("Multiple referrers found by name");
 						// Can only occur if searching by name. Email search can't get a duplicate match.
 						setNameSearchResult({
 							type: "duplicate-match",
 							result: json,
+							content
 						});
 						return;
 					}
 
-					console.log("Nothing found");
 					setNameSearchResult({
 						type: "no-match",
 						result: json,
+						content
 					});
 					return;
 				}
@@ -88,12 +94,12 @@ export const useRefereeFindFriend = () => {
 				setNameSearchResult({
 					type: "error",
 					result: json,
+					content
 				});
 				return;
 			}
 
 			if (response.ok && response.status === 200) {
-
 				if (!json?.referrer?.referrerMentionMeIdentifier || !json?.referrer?.referrerToken) {
 					throw new Error("Missing referrerMentionMeIdentifier or referrerToken in response");
 				}
@@ -101,10 +107,8 @@ export const useRefereeFindFriend = () => {
 				setNameSearchResult(
 					{
 						type: "single-match",
-						result: {
-							referrerMentionMeIdentifier: json.referrer.referrerMentionMeIdentifier,
-							referrerToken: json.referrer.referrerToken,
-						},
+						result: json,
+						content
 					},
 				);
 
@@ -118,6 +122,7 @@ export const useRefereeFindFriend = () => {
 				{
 					type: "error",
 					result: json,
+					content
 				},
 			);
 			return;

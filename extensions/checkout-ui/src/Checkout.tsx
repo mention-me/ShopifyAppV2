@@ -19,24 +19,9 @@ export interface FoundReferrerState {
 }
 
 const Extension = () => {
-
-	// const [json, setJson] = useState<EntryPointLink>();
-	// const [nameSearchResult, setNameSearchResult] = useState<NameSearchResult>(undefined);
-	// const [shouldProvideEmail, setShouldProvideEmail] = useState(false);
-	// const [foundReferrerState, setFoundReferrerState] = useState<FoundReferrerState>(undefined);
-	// const [refereeRegisterResult, setRefereeRegisterResult] = useState(undefined);
-	//
-
-	const language = useLanguage();
-	const country = useLocalizationCountry();
-
-	console.log("language", language);
-	console.log("country", country);
-
 	const editor = useExtensionEditor();
 
 	let { mmPartnerCode, environment } = useSettings();
-	console.log("environment:", environment);
 
 	// TODO(EHG): Remove. Useful for testing.
 	if (!mmPartnerCode) {

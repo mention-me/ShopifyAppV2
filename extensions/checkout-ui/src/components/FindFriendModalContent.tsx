@@ -1,12 +1,4 @@
-import {
-	BlockLayout,
-	BlockStack,
-	Button,
-	Form,
-	Modal,
-	TextField,
-	useTranslate,
-} from "@shopify/ui-extensions-react/checkout";
+import { BlockStack, Button, Form, TextField, useTranslate } from "@shopify/ui-extensions-react/checkout";
 import { useRefereeFindFriend } from "../hooks/useRefereeFindFriend";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { RefereeJourneyContext, RefereeSearch } from "../context/RefereeJourneyContext";
@@ -14,7 +6,7 @@ import { NameSearchResultBanner } from "./NameSearchResultBanner";
 import { isValidEmail } from "../../../../shared/utils";
 
 
-export const FindFriendModal = () => {
+export const FindFriendModalContent = () => {
 	const {
 		loadingConsumerApi,
 		search,
@@ -29,8 +21,6 @@ export const FindFriendModal = () => {
 	const [errors, setErrors] = useState<{ name?: string, email?: string }>({});
 
 	useEffect(() => {
-		console.log("nameSearchResult", nameSearchResult);
-
 		if (!nameSearchResult) {
 			return;
 		}
@@ -72,60 +62,55 @@ export const FindFriendModal = () => {
 		}
 
 		findFriendSubmitCallback();
-	}, [findFriendSubmitCallback, search, shouldProvideEmail, setErrors]);
+	}, [findFriendSubmitCallback, search, shouldProvideEmail, setErrors, translate]);
 
-	return (<Modal
-			padding
-			title={translate("find-friend.welcome")}>
-			<BlockLayout>
-				<Form
-					disabled={loadingConsumerApi}
-					onSubmit={onSubmit}
+	return (
+		<Form
+			disabled={loadingConsumerApi}
+			onSubmit={onSubmit}
+		>
+			<BlockStack>
+				<NameSearchResultBanner />
+				<TextField
+					autocomplete={false}
+					error={errors?.name}
+					icon={{ source: "magnify", position: "end" }}
+					label={translate("find-friend.form.label.friend-name")}
+					name="name"
+					onChange={(value) => {
+						setSearch((existing: RefereeSearch) => {
+							return {
+								...existing,
+								name: value,
+							};
+						});
+					}}
+					required
+				/>
+				{shouldProvideEmail ? <TextField
+					autocomplete={false}
+					error={errors?.email}
+					icon={{ source: "email", position: "end" }}
+					label={translate("find-friend.form.label.friend-email")}
+					name="email"
+					onChange={(value) => {
+						setSearch((existing: RefereeSearch) => {
+							return {
+								...existing,
+								email: value,
+							};
+						});
+					}}
+					required
+					type="email"
+				/> : null}
+				<Button
+					accessibilityRole="submit"
+					loading={loadingConsumerApi}
 				>
-					<BlockStack>
-						<NameSearchResultBanner />
-						<TextField
-							autocomplete={false}
-							error={errors?.name}
-							icon={{ source: "magnify", position: "end" }}
-							label={translate("find-friend.form.label.friend-name")}
-							name="name"
-							onChange={(value) => {
-								setSearch((existing: RefereeSearch) => {
-									return {
-										...existing,
-										name: value,
-									};
-								});
-							}}
-							required
-						/>
-						{shouldProvideEmail ? <TextField
-							autocomplete={false}
-							error={errors?.email}
-							icon={{ source: "email", position: "end" }}
-							label={translate("find-friend.form.label.friend-email")}
-							name="email"
-							onChange={(value) => {
-								setSearch((existing: RefereeSearch) => {
-									return {
-										...existing,
-										email: value,
-									};
-								});
-							}}
-							required
-							type="email"
-						/> : null}
-						<Button
-							accessibilityRole="submit"
-							loading={loadingConsumerApi}
-						>
-							{translate("find-friend.form.submit")}
-						</Button>
-					</BlockStack>
-				</Form>
-			</BlockLayout>
-		</Modal>
+					{translate("find-friend.form.submit")}
+				</Button>
+			</BlockStack>
+		</Form>
 	);
 };

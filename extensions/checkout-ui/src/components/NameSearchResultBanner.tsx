@@ -8,11 +8,12 @@ export const NameSearchResultBanner = () => {
 	const {
 		search,
 		nameSearchResult,
+		loadingConsumerApi
 	} = useContext(RefereeJourneyContext);
 
 	const translate = useTranslate();
 
-	if (!nameSearchResult) {
+	if (!nameSearchResult || loadingConsumerApi) {
 		return null;
 	}
 

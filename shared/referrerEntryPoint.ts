@@ -9,8 +9,6 @@ export interface ReferrerEntryPointArgs {
 
 
 export const fetchReferrerEntryPoint = async (args: ReferrerEntryPointArgs) => {
-	console.log("fetchReferrerEntryPoint", args);
-
 	const { environment, body, setJson } = args;
 
 	// TODO(EHG): Should we override the behaviour to demo when in the editor?
