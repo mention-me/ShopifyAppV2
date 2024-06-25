@@ -8,7 +8,7 @@ import { useShop } from "@shopify/ui-extensions-react/checkout";
 
 export const useRefereeFindFriend = () => {
 	const {
-		mmPartnerCode,
+		partnerCode,
 		environment,
 		setLoadingConsumerApi,
 		setNameSearchResult,
@@ -22,8 +22,8 @@ export const useRefereeFindFriend = () => {
 		console.debug("fetchRefereeFindFriend");
 		setLoadingConsumerApi(true);
 
-		if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
-			console.error("Mention Me partner code not provided", mmPartnerCode);
+		if (!partnerCode || typeof partnerCode !== "string") {
+			console.error("Mention Me partner code not provided", partnerCode);
 			return;
 		}
 
@@ -37,7 +37,7 @@ export const useRefereeFindFriend = () => {
 		const url = getDomainForEnvironment(environment);
 
 		const params = new URLSearchParams({
-			"request[partnerCode]": mmPartnerCode,
+			"request[partnerCode]": partnerCode,
 			"request[situation]": SITUATION,
 			"request[appName]": APP_NAME,
 			"request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
@@ -135,5 +135,5 @@ export const useRefereeFindFriend = () => {
 				type: "error",
 			});
 		}
-	}, [environment, mmPartnerCode, search, setLoadingConsumerApi, setNameSearchResult, setStep]);
+	}, [environment, partnerCode, myshopifyDomain, search, setLoadingConsumerApi, setNameSearchResult, setStep]);
 };

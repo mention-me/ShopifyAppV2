@@ -43,34 +43,3 @@ network_access = true
 # Defines settings that will be collected from merchants installing
 # your extension. Learn more:
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#settings-definition
-
-[extensions.settings]
-[[extensions.settings.fields]]
-key = "environment"
-type = "single_line_text_field"
-name = "Environment"
-description = "Which Mention Me environment do you wish to use?"
-
-[[extensions.settings.fields.validations]]
-name = "choices"
-value = "[\"production\", \"demo\", \"local\"]"
-
-[[extensions.settings.fields]]
-key = "mmPartnerCode"
-type = "single_line_text_field"
-name = "Partner code"
-description = "Enter your Mention Me Partner Code"
-
-[[extensions.settings.fields.validations]]
-name = "regex"
-value = "^mm[a-z0-9]{8}$"
-
-[[extensions.settings.fields]]
-key = "fallbackLocale"
-type = "single_line_text_field"
-name = "Fallback locale"
-description = "If a locale code cannot be determined, what locale should be used? (e.g. en-GB)"
-
-[[extensions.settings.fields.validations]]
-name = "regex"
-value = "^[a-zA-Z]{2}[-_][a-zA-Z]{2}$"

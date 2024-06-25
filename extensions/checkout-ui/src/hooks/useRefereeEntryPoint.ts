@@ -1,15 +1,11 @@
 import { SITUATION } from "../Checkout";
 import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
-import { chooseLocale, getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
+import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
 import { EntryPointForRefereeType, EntryPointLink } from "@api/entry-point-api/src/types";
 import { useContext, useEffect } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import { useLanguage, useSettings, useShop } from "@shopify/ui-extensions-react/checkout";
-
-export type RefereeEntryPointResponse = {
-	error?: string;
-	refereeEntryPointJson?: EntryPointLink;
-}
+import { useShop } from "@shopify/ui-extensions-react/checkout";
+import useLocale from "../../../../shared/hooks/useLocale";
 
 /**
  * Function to call the Mention Me Referee EntryPoint API.
@@ -21,28 +17,24 @@ export type RefereeEntryPointResponse = {
  */
 export const useRefereeEntryPoint = () => {
 	const {
-		mmPartnerCode,
+		partnerCode,
 		environment,
 		setLoadingEntryPointApi,
 		setRefereeEntryPointResponse,
+		setErrorState,
 	} = useContext(RefereeJourneyContext);
 
 	const { myshopifyDomain } = useShop();
 
-	const {isoCode: language} = useLanguage();
-
-	const { fallbackLocale } = useSettings();
-
-	const locale = chooseLocale(language, fallbackLocale);
+	const locale = useLocale();
 
 	useEffect(() => {
 		const fetchRefereeEntryPoint = async () => {
-			console.debug("fetchRefereeEntryPoint");
 			setLoadingEntryPointApi(true);
 
 			const body: EntryPointForRefereeType = {
 				request: {
-					partnerCode: mmPartnerCode,
+					partnerCode: partnerCode,
 					situation: SITUATION,
 					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
 					appName: APP_NAME,
@@ -54,12 +46,13 @@ export const useRefereeEntryPoint = () => {
 				},
 			};
 
-			if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
+			if (!partnerCode || typeof partnerCode !== "string") {
+				// console.error("Mention Me partner code not provided", partnerCode);
 				return;
 			}
 
 			if (!isValidEnvironment(environment)) {
-				console.error("Invalid Mention Me environment", environment);
+				// console.error("Invalid Mention Me environment", environment);
 				return;
 			}
 
@@ -78,33 +71,27 @@ export const useRefereeEntryPoint = () => {
 				if (!response.ok) {
 					console.error("Error calling entrypoint:", response);
 
-					setRefereeEntryPointResponse({
-						error: response.statusText,
-						refereeEntryPointJson: null,
-					});
+					console.log(await response.json());
+					setErrorState(response.statusText);
 					setLoadingEntryPointApi(false);
+
+					return;
 				}
 
-				const json = await response.json();
+				const json = (await response.json()) as EntryPointLink;
 
-				setRefereeEntryPointResponse({
-					error: null,
-					refereeEntryPointJson: json,
-				});
+				setRefereeEntryPointResponse(json);
 				setLoadingEntryPointApi(false);
 			} catch (error) {
-				console.error("Error calling entrypoint:", error);
+				console.error("Error calling referee entrypoint:", error);
 
-				setRefereeEntryPointResponse({
-					error: error.message,
-					refereeEntryPointJson: null,
-				});
+				setErrorState(error?.message);
 				setLoadingEntryPointApi(false);
 			}
 		};
 
-		if (mmPartnerCode && environment) {
+		if (partnerCode && environment && locale) {
 			fetchRefereeEntryPoint();
 		}
-	}, [mmPartnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, setRefereeEntryPointResponse]);
+	}, [partnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, setRefereeEntryPointResponse, locale, setErrorState]);
 };

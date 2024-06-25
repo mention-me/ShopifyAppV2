@@ -1,9 +1,16 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useMemo, useState } from "react";
 import { Environment } from "../../../../shared/utils";
-import { RefereeEntryPointResponse } from "../hooks/useRefereeEntryPoint";
 import { RefereeRegister, ReferrerFound } from "@api/consumer-api/dist/types";
+import { useMentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeShopifyConfig";
+import { EntryPointLink } from "@api/entry-point-api/src/types";
 
-export type Step = "search-by-name" | "search-by-name-and-email" | "no-match" | "register" | "register-result" | "completed-success";
+export type Step =
+	"search-by-name"
+	| "search-by-name-and-email"
+	| "no-match"
+	| "register"
+	| "register-result"
+	| "completed-success";
 
 export type NameSearchResultType = "loading" | "no-match" | "duplicate-match" | "single-match" | "error";
 
@@ -24,16 +31,17 @@ export interface RegisterResult {
 }
 
 type RefereeJourneyState = {
-	mmPartnerCode: string;
-	environment: Environment;
+	partnerCode?: string;
+	environment?: Environment;
+	defaultLocale?: string;
 	step: Step;
 	setStep: Dispatch<SetStateAction<Step>>;
 	loadingEntryPointApi: boolean;
 	setLoadingEntryPointApi: Dispatch<SetStateAction<boolean>>;
 	loadingConsumerApi: boolean;
 	setLoadingConsumerApi: Dispatch<SetStateAction<boolean>>;
-	refereeEntryPointResponse: RefereeEntryPointResponse;
-	setRefereeEntryPointResponse: Dispatch<SetStateAction<RefereeEntryPointResponse>>;
+	refereeEntryPointResponse: EntryPointLink;
+	setRefereeEntryPointResponse: Dispatch<SetStateAction<EntryPointLink>>;
 	search: RefereeSearch;
 	setSearch: Dispatch<SetStateAction<RefereeSearch>>;
 	nameSearchResult: NameSearchResult;
@@ -44,20 +52,20 @@ type RefereeJourneyState = {
 	setErrorState: Dispatch<SetStateAction<string>>;
 }
 
-export const RefereeJourneyContext = createContext<RefereeJourneyState>(undefined);
+export const RefereeJourneyContext = createContext<RefereeJourneyState | null>(null);
 
 interface Props {
-	readonly mmPartnerCode: string;
-	readonly environment: Environment;
 	readonly children: ReactNode;
 }
 
-export const RefereeJourneyProvider = ({ mmPartnerCode, environment, children }: Props) => {
+export const RefereeJourneyProvider = ({ children }: Props) => {
+	const mentionMeConfig = useMentionMeShopifyConfig();
+
 	const [step, setStep] = useState<RefereeJourneyState["step"]>("search-by-name");
 	const [loadingEntryPointApi, setLoadingEntryPointApi] = useState(true);
 	const [loadingConsumerApi, setLoadingConsumerApi] = useState(false);
 
-	const [refereeEntryPointResponse, setRefereeEntryPointResponse] = useState<RefereeEntryPointResponse>();
+	const [refereeEntryPointResponse, setRefereeEntryPointResponse] = useState<EntryPointLink>();
 
 	const [search, setSearch] = useState<RefereeSearch>();
 	const [nameSearchResult, setNameSearchResult] = useState<NameSearchResult>();
@@ -67,9 +75,12 @@ export const RefereeJourneyProvider = ({ mmPartnerCode, environment, children }:
 	const [errorState, setErrorState] = useState<string>();
 
 	const state = useMemo(() => {
+		const { partnerCode, environment, defaultLocale } = mentionMeConfig;
+
 		return {
-			mmPartnerCode,
+			partnerCode,
 			environment,
+			defaultLocale,
 			step,
 			setStep,
 			loadingEntryPointApi,
@@ -88,8 +99,7 @@ export const RefereeJourneyProvider = ({ mmPartnerCode, environment, children }:
 			setErrorState,
 		};
 	}, [
-		mmPartnerCode,
-		environment,
+		mentionMeConfig,
 		step,
 		loadingEntryPointApi,
 		loadingConsumerApi,

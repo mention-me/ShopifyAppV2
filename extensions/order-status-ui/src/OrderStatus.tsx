@@ -1,10 +1,13 @@
 import { reactExtension, useOrder } from "@shopify/ui-extensions-react/checkout";
 import Extension from "./Extension";
+import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
 
 const OrderStatus = () => {
-	const { order } = useOrder();
+	const order = useOrder();
 
-	return <Extension orderId={order.id} />;
+	return <ReferrerJourneyProvider orderId={order.id}>
+		<Extension />
+	</ReferrerJourneyProvider>;
 };
 
 export default reactExtension(

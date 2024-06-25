@@ -7,120 +7,54 @@ import {
 	InlineLayout,
 	Link,
 	TextBlock,
-	useBillingAddress,
-	useEmail,
 	useExtensionEditor,
-	useLanguage,
-	useSettings,
-	useShop,
-	useTotalAmount,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
-import { useEffect, useMemo, useState } from "react";
-import { EntryPointForReferrerType, EntryPointOfferAndLink } from "@api/entry-point-api/src/types";
-import { APP_NAME, APP_VERSION } from "../../../shared/constants";
-import { chooseLocale, isValidEnvironment, parseShopifyId } from "../../../shared/utils";
-import { fetchReferrerEntryPoint } from "../../../shared/referrerEntryPoint";
+import { useContext } from "react";
 import { setupSentry } from "../../../shared/sentry";
+import { ReferrerJourneyContext } from "./context/ReferrerJourneyContext";
+import useReferrerEntryPoint from "./hooks/useReferrerEntryPoint";
 
 setupSentry();
 
-interface ExtensionProps {
-	readonly orderId: string;
-}
+const Extension = () => {
+	const {
+		partnerCode,
+		environment,
+		errorState,
+		referrerEntryPointResponse,
+	} = useContext(ReferrerJourneyContext);
 
-const Extension = ({ orderId }: ExtensionProps) => {
-	const email = useEmail();
-	const money = useTotalAmount();
-	const billingAddress = useBillingAddress();
+	useReferrerEntryPoint();
 
 	// Now we're into the rendering part
 	const editor = useExtensionEditor();
-	const [json, setJson] = useState<EntryPointOfferAndLink>(null);
-
-	const { myshopifyDomain } = useShop();
-
-	let { mmPartnerCode, environment } = useSettings();
-
-	mmPartnerCode = "mmf1c1195b";
-	environment = "demo";
-
-	const { isoCode: language } = useLanguage();
-
-	const { fallbackLocale } = useSettings();
-
-	const locale = chooseLocale(language, fallbackLocale);
-
-	const body: EntryPointForReferrerType = useMemo(() => {
-		return {
-			customer: {
-				emailAddress: email,
-				firstname: billingAddress?.firstName,
-				surname: billingAddress?.lastName,
-			},
-			request: {
-				partnerCode: mmPartnerCode,
-				situation: "shopify-order-status",
-				appVersion: `${myshopifyDomain}/${APP_VERSION}`,
-				appName: APP_NAME,
-				localeCode: locale,
-			},
-			implementation: {
-				wrapContentWithBranding: true,
-				showCloseIcon: false,
-			},
-			order: {
-				orderIdentifier: parseShopifyId(orderId),
-				currencyCode: money.currencyCode,
-				total: String(money.amount),
-				// Use the time of the request instead of explicitly setting a time.
-				dateString: "",
-			},
-		};
-	}, [email, billingAddress?.firstName, billingAddress?.lastName, mmPartnerCode, myshopifyDomain, locale, orderId, money.currencyCode, money.amount]);
-
-	useEffect(() => {
-		if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
-			return;
-		}
-
-		if (!isValidEnvironment(environment)) {
-			console.error("Invalid Mention Me environment", environment);
-			return;
-		}
-
-		fetchReferrerEntryPoint({
-			environment,
-			body,
-			setJson,
-		});
-	}, [mmPartnerCode, environment, body, setJson]);
 
 	if (!environment || typeof environment !== "string") {
-		console.error("Mention Me environment not set");
-
 		if (editor) {
 			return <Banner
 				status="critical"
-				title="Mention Me environment not set. Choose demo for testing, production for live customers." />;
+				title="Mention Me environment not set. Visit the Mention Me app settings in Shopify to choose an environment." />;
 		}
 
 		return null;
 	}
 
-	if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
-		console.error("Mention Me partner code not set");
-
+	if (!partnerCode || typeof partnerCode !== "string") {
 		if (editor) {
 			return <Banner
 				status="critical"
-				title="Mention Me partner code needs to be set to show Mention Me journey. Click the Mention Me app on the left to add it." />;
+				title="Mention Me partner code needs to be set to show Mention Me journey. Visit the Mention Me app settings in Shopify to set the partner code." />;
 		}
 
 		return null;
 	}
 
-	if (!json) {
+	if (errorState) {
+		return null;
+	}
+
+	if (!referrerEntryPointResponse) {
 		return null;
 	}
 
@@ -134,25 +68,25 @@ const Extension = ({ orderId }: ExtensionProps) => {
 				<BlockStack padding="base"
 							spacing="base">
 					<Heading level={2}>
-						{json.headline}
+						{referrerEntryPointResponse.headline}
 					</Heading>
 					<TextBlock>
-						{json.description}
+						{referrerEntryPointResponse.description}
 					</TextBlock>
 					<View blockAlignment="center"
 						  minBlockSize="fill">
 						{/* Button can't support "external". See https://github.com/Shopify/ui-extensions/issues/1835#issuecomment-2113067449
 							 And because Link can't be full width, the button is restricted in size :( */}
 						<Link external
-							  to={json.url}
+							  to={referrerEntryPointResponse.url}
 						>
 							<Button inlineAlignment="center">
-								{json.defaultCallToAction}
+								{referrerEntryPointResponse.defaultCallToAction}
 							</Button>
 						</Link>
 					</View>
 				</BlockStack>
-				{json.imageUrl && (
+				{referrerEntryPointResponse.imageUrl && (
 					<View
 						// 	maxInlineSize={Style.default(200)
 						// 	.when({ viewportInlineSize: { min: "small" } }, 200)
@@ -160,10 +94,10 @@ const Extension = ({ orderId }: ExtensionProps) => {
 						// 	.when({ viewportInlineSize: { min: "large" } }, 200)}
 					>
 						<Link external
-							  to={json.url}>
+							  to={referrerEntryPointResponse.url}>
 							<Image borderRadius="large"
 								   fit="cover"
-								   source={json.imageUrl} />
+								   source={referrerEntryPointResponse.imageUrl} />
 						</Link>
 					</View>
 				)}
@@ -171,11 +105,11 @@ const Extension = ({ orderId }: ExtensionProps) => {
 			<View background="subdued"
 				  padding="base">
 				<TextBlock appearance="subdued">
-					{json.privacyNotice}
+					{referrerEntryPointResponse.privacyNotice}
 					{" "}
 					<Link external
-						  to={json.privacyNoticeUrl}>
-						{json.privacyNoticeLinkText || "More info and your privacy rights"}
+						  to={referrerEntryPointResponse.privacyNoticeUrl}>
+						{referrerEntryPointResponse.privacyNoticeLinkText || "More info and your privacy rights"}
 					</Link>
 				</TextBlock>
 			</View>

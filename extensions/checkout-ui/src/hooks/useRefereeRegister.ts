@@ -9,7 +9,7 @@ import { useShop } from "@shopify/ui-extensions-react/checkout";
 
 export const useRefereeRegister = () => {
 	const {
-		mmPartnerCode,
+		partnerCode,
 		environment,
 		setStep,
 		setLoadingConsumerApi,
@@ -22,8 +22,8 @@ export const useRefereeRegister = () => {
 	return useCallback(async (email: string) => {
 		console.debug("useRefereeRegister");
 
-		if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
-			console.error("Mention Me partner code not provided", mmPartnerCode);
+		if (!partnerCode || typeof partnerCode !== "string") {
+			console.error("Mention Me partner code not provided", partnerCode);
 			return;
 		}
 
@@ -34,7 +34,7 @@ export const useRefereeRegister = () => {
 
 		setLoadingConsumerApi(true);
 
-		let url = getDomainForEnvironment(environment);
+		const url = getDomainForEnvironment(environment);
 
 		if (!nameSearchResult.result) {
 			throw new Error("Expected nameSearchResult result to be defined");
@@ -43,7 +43,7 @@ export const useRefereeRegister = () => {
 		try {
 			const body: EnrolRefereeType = {
 				request: {
-					partnerCode: mmPartnerCode,
+					partnerCode: partnerCode,
 					situation: SITUATION,
 					appName: APP_NAME,
 					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
@@ -98,5 +98,5 @@ export const useRefereeRegister = () => {
 		} catch (error) {
 			console.error("Error caught calling registerReferee:", error);
 		}
-	}, [environment, mmPartnerCode, nameSearchResult.result, setLoadingConsumerApi, setRegisterResult, setStep]);
+	}, [partnerCode, environment, setLoadingConsumerApi, nameSearchResult.result, myshopifyDomain, setRegisterResult, setStep]);
 };

@@ -2,30 +2,53 @@ import {
 	Banner,
 	BlockStack,
 	Link,
-	SkeletonTextBlock, useCurrency,
-	useExtensionEditor, useExtensionLanguage, useLanguage, useLocalizationCountry, useLocalizationMarket,
+	SkeletonTextBlock,
+	useExtensionEditor,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { RefereeJourneyContext } from "./context/RefereeJourneyContext";
-import { useRefereeEntryPoint } from "./hooks/useRefereeEntryPoint";
 import { CheckoutModal } from "./components/CheckoutModal";
+import { isValidEnvironment } from "../../../shared/utils";
+import { useRefereeEntryPoint } from "./hooks/useRefereeEntryPoint";
 
 const CheckoutUI = () => {
 	const editor = useExtensionEditor();
+
 	const {
+		partnerCode,
+		environment,
 		loadingEntryPointApi,
 		refereeEntryPointResponse,
 		step,
 		errorState,
 	} = useContext(RefereeJourneyContext);
 
-	// On load, fetch the referee entry point to get the "Been referred by a friend?" link.
 	useRefereeEntryPoint();
 
 	const showBeenReferredByFriendLink = useMemo(() => {
 		return !errorState && step !== "completed-success";
 	}, [errorState, step]);
+
+	if (!isValidEnvironment(environment)) {
+		if (editor) {
+			return <Banner
+				status="critical"
+				title="Mention Me environment not set. Visit the Mention Me app settings in Shopify to choose an environment." />;
+		}
+
+		return null;
+	}
+
+	if (!partnerCode || typeof partnerCode !== "string") {
+		if (editor) {
+			return <Banner
+				status="critical"
+				title="Mention Me partner code needs to be set to show Mention Me journey. Visit the Mention Me app settings in Shopify to set the partner code." />;
+		}
+
+		return null;
+	}
 
 	if (loadingEntryPointApi) {
 		return <SkeletonTextBlock />;
@@ -36,12 +59,10 @@ const CheckoutUI = () => {
 		return null;
 	}
 
-	const { error, refereeEntryPointJson } = refereeEntryPointResponse;
-
-	if (error) {
+	if (errorState) {
 		if (editor) {
 			return <Banner status="critical"
-						   title={"Failed to load Mention Me journey: " + error} />;
+						   title={"Failed to load Mention Me journey: " + errorState} />;
 		}
 
 		return null;
@@ -55,7 +76,7 @@ const CheckoutUI = () => {
 				{errorState && <Banner status="critical"
 									   title={errorState} />}
 				{showBeenReferredByFriendLink && <Link overlay={<CheckoutModal />}>
-					{refereeEntryPointJson.defaultCallToAction}
+					{refereeEntryPointResponse.defaultCallToAction}
 				</Link>}
 			</View>
 		</BlockStack>
