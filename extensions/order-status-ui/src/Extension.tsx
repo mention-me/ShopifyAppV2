@@ -10,15 +10,16 @@ import {
 	useBillingAddress,
 	useEmail,
 	useExtensionEditor,
-	useOrder,
-	useSettings, useShop,
+	useLanguage,
+	useSettings,
+	useShop,
 	useTotalAmount,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
 import { useEffect, useMemo, useState } from "react";
 import { EntryPointForReferrerType, EntryPointOfferAndLink } from "@api/entry-point-api/src/types";
 import { APP_NAME, APP_VERSION } from "../../../shared/constants";
-import { isValidEnvironment, parseShopifyId } from "../../../shared/utils";
+import { chooseLocale, isValidEnvironment, parseShopifyId } from "../../../shared/utils";
 import { fetchReferrerEntryPoint } from "../../../shared/referrerEntryPoint";
 import { setupSentry } from "../../../shared/sentry";
 
@@ -28,7 +29,7 @@ interface ExtensionProps {
 	readonly orderId: string;
 }
 
-const Extension = ({orderId}: ExtensionProps) => {
+const Extension = ({ orderId }: ExtensionProps) => {
 	const email = useEmail();
 	const money = useTotalAmount();
 	const billingAddress = useBillingAddress();
@@ -39,10 +40,16 @@ const Extension = ({orderId}: ExtensionProps) => {
 
 	const { myshopifyDomain } = useShop();
 
-	let { mmPartnerCode, layout, environment } = useSettings();
+	let { mmPartnerCode, environment } = useSettings();
 
 	mmPartnerCode = "mmf1c1195b";
 	environment = "demo";
+
+	const { isoCode: language } = useLanguage();
+
+	const { fallbackLocale } = useSettings();
+
+	const locale = chooseLocale(language, fallbackLocale);
 
 	const body: EntryPointForReferrerType = useMemo(() => {
 		return {
@@ -56,8 +63,7 @@ const Extension = ({orderId}: ExtensionProps) => {
 				situation: "shopify-order-status",
 				appVersion: `${myshopifyDomain}/${APP_VERSION}`,
 				appName: APP_NAME,
-				// TODO(EHG): Figure out locales
-				localeCode: "en_GB",
+				localeCode: locale,
 			},
 			implementation: {
 				wrapContentWithBranding: true,
@@ -71,7 +77,7 @@ const Extension = ({orderId}: ExtensionProps) => {
 				dateString: "",
 			},
 		};
-	}, [email, billingAddress?.firstName, billingAddress?.lastName, mmPartnerCode, myshopifyDomain, orderId, money.currencyCode, money.amount]);
+	}, [email, billingAddress?.firstName, billingAddress?.lastName, mmPartnerCode, myshopifyDomain, locale, orderId, money.currencyCode, money.amount]);
 
 	useEffect(() => {
 		if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
@@ -88,7 +94,7 @@ const Extension = ({orderId}: ExtensionProps) => {
 			body,
 			setJson,
 		});
-	}, [mmPartnerCode, environment, body, environment, mmPartnerCode, setJson]);
+	}, [mmPartnerCode, environment, body, setJson]);
 
 	if (!environment || typeof environment !== "string") {
 		console.error("Mention Me environment not set");
@@ -116,16 +122,6 @@ const Extension = ({orderId}: ExtensionProps) => {
 
 	if (!json) {
 		return null;
-	}
-
-	if (layout === "banner") {
-		return <Banner status="info"
-					   title={json.description}>
-			<Link external
-				  to={json.url}>
-				{json.defaultCallToAction}
-			</Link>
-		</Banner>;
 	}
 
 	return (

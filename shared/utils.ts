@@ -1,8 +1,6 @@
-
-
 export type Environment = "production" | "demo" | "local";
 
-export const isValidEnvironment = (env: any): env is Environment => {
+export const isValidEnvironment = (env: unknown): env is Environment => {
 	if (!env || typeof env !== "string") {
 		return false;
 	}
@@ -42,3 +40,21 @@ export const parseShopifyId = (id: string) => {
 	const idParts = id.split("/");
 	return idParts[idParts.length - 1];
 };
+
+/**
+ * Try and choose a locale to use for the Mention Me API.
+ *
+ * @param language
+ * @param fallbackLocale comes from useSettings so could be all sorts of values.
+ */
+export const chooseLocale = (language: string, fallbackLocale: string | number | boolean) => {
+	if (language.length === 5 && /^[a-z]{2}[-_][a-z]{2}$/i.test(language)) {
+		return language;
+	}
+
+	if (typeof fallbackLocale === "string" && fallbackLocale.length === 5 && /^[a-z]{2}[-_][a-z]{2}$/i.test(fallbackLocale)) {
+		return fallbackLocale;
+	}
+
+	throw new Error(`Invalid language from Shopify [${language}] and no valid fallback locale [${fallbackLocale}].`);
+}

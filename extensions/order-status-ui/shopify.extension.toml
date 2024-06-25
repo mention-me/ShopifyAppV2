@@ -17,6 +17,12 @@ handle = "order-status-ui"
 [[extensions.targeting]]
 module = "./src/OrderStatus.tsx"
 target = "customer-account.order-status.block.render"
+default_placement = "ORDER_STATUS1"
+
+[[extensions.targeting]]
+module = "./src/ThankYou.tsx"
+target = "purchase.thank-you.block.render"
+default_placement = "ORDER_STATUS1"
 
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.
@@ -65,11 +71,11 @@ name = "regex"
 value = "^mm[a-z0-9]{8}$"
 
 [[extensions.settings.fields]]
-key = "layout"
+key = "fallbackLocale"
 type = "single_line_text_field"
-name = "Layout"
-description = "Choose a layout type for your referral journey"
+name = "Fallback locale"
+description = "If a locale code cannot be determined, what locale should be used? (e.g. en-GB)"
 
 [[extensions.settings.fields.validations]]
-name = "choices"
-value = "[\"banner\", \"max\"]"
+name = "regex"
+value = "^[a-zA-Z]{2}[-_][a-zA-Z]{2}$"

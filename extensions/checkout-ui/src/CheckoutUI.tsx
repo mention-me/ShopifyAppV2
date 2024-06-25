@@ -2,11 +2,11 @@ import {
 	Banner,
 	BlockStack,
 	Link,
-	SkeletonTextBlock,
-	useExtensionEditor,
+	SkeletonTextBlock, useCurrency,
+	useExtensionEditor, useExtensionLanguage, useLanguage, useLocalizationCountry, useLocalizationMarket,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { RefereeJourneyContext } from "./context/RefereeJourneyContext";
 import { useRefereeEntryPoint } from "./hooks/useRefereeEntryPoint";
 import { CheckoutModal } from "./components/CheckoutModal";

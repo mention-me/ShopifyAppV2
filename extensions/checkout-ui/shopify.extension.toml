@@ -65,3 +65,12 @@ description = "Enter your Mention Me Partner Code"
 name = "regex"
 value = "^mm[a-z0-9]{8}$"
 
+[[extensions.settings.fields]]
+key = "fallbackLocale"
+type = "single_line_text_field"
+name = "Fallback locale"
+description = "If a locale code cannot be determined, what locale should be used? (e.g. en-GB)"
+
+[[extensions.settings.fields.validations]]
+name = "regex"
+value = "^[a-zA-Z]{2}[-_][a-zA-Z]{2}$"

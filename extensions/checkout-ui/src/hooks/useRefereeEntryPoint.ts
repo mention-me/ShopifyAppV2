@@ -1,10 +1,10 @@
 import { SITUATION } from "../Checkout";
 import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
-import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
+import { chooseLocale, getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
 import { EntryPointForRefereeType, EntryPointLink } from "@api/entry-point-api/src/types";
 import { useContext, useEffect } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import { useShop } from "@shopify/ui-extensions-react/checkout";
+import { useLanguage, useSettings, useShop } from "@shopify/ui-extensions-react/checkout";
 
 export type RefereeEntryPointResponse = {
 	error?: string;
@@ -20,7 +20,6 @@ export type RefereeEntryPointResponse = {
  * using Shopify components.
  */
 export const useRefereeEntryPoint = () => {
-	console.debug("useRefereeEntryPoint");
 	const {
 		mmPartnerCode,
 		environment,
@@ -29,6 +28,12 @@ export const useRefereeEntryPoint = () => {
 	} = useContext(RefereeJourneyContext);
 
 	const { myshopifyDomain } = useShop();
+
+	const {isoCode: language} = useLanguage();
+
+	const { fallbackLocale } = useSettings();
+
+	const locale = chooseLocale(language, fallbackLocale);
 
 	useEffect(() => {
 		const fetchRefereeEntryPoint = async () => {
@@ -41,8 +46,7 @@ export const useRefereeEntryPoint = () => {
 					situation: SITUATION,
 					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
 					appName: APP_NAME,
-					// TODO(EHG): Figure out locales
-					localeCode: "en_GB",
+					localeCode: locale,
 				},
 				implementation: {
 					wrapContentWithBranding: true,
@@ -102,5 +106,5 @@ export const useRefereeEntryPoint = () => {
 		if (mmPartnerCode && environment) {
 			fetchRefereeEntryPoint();
 		}
-	}, [mmPartnerCode, environment]);
+	}, [mmPartnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, setRefereeEntryPointResponse]);
 };
