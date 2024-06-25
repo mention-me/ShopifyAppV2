@@ -1,8 +1,10 @@
-import { reactExtension } from "@shopify/ui-extensions-react/checkout";
+import { reactExtension, useOrder } from "@shopify/ui-extensions-react/checkout";
 import Extension from "./Extension";
 
 const OrderStatus = () => {
-	return <Extension />;
+	const { order } = useOrder();
+
+	return <Extension orderId={order.id} />;
 };
 
 export default reactExtension(

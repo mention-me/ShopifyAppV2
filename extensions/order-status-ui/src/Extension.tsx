@@ -24,11 +24,14 @@ import { setupSentry } from "../../../shared/sentry";
 
 setupSentry();
 
-const Extension = () => {
+interface ExtensionProps {
+	readonly orderId: string;
+}
+
+const Extension = ({orderId}: ExtensionProps) => {
 	const email = useEmail();
 	const money = useTotalAmount();
 	const billingAddress = useBillingAddress();
-	const order = useOrder();
 
 	// Now we're into the rendering part
 	const editor = useExtensionEditor();
@@ -61,14 +64,14 @@ const Extension = () => {
 				showCloseIcon: false,
 			},
 			order: {
-				orderIdentifier: parseShopifyId(order?.id),
+				orderIdentifier: parseShopifyId(orderId),
 				currencyCode: money.currencyCode,
 				total: String(money.amount),
 				// Use the time of the request instead of explicitly setting a time.
 				dateString: "",
 			},
 		};
-	}, [email, billingAddress, mmPartnerCode, order, money]);
+	}, [email, billingAddress?.firstName, billingAddress?.lastName, mmPartnerCode, myshopifyDomain, orderId, money.currencyCode, money.amount]);
 
 	useEffect(() => {
 		if (!mmPartnerCode || typeof mmPartnerCode !== "string") {
