@@ -73,8 +73,6 @@ const CheckoutUI = () => {
 			<View>
 				{step === "completed-success" && <Banner status="success"
 														 title="Your discount has been applied for being referred. Thank you!" />}
-				{errorState && <Banner status="critical"
-									   title={errorState} />}
 				{showBeenReferredByFriendLink && <Link overlay={<CheckoutModal />}>
 					{refereeEntryPointResponse.defaultCallToAction}
 				</Link>}

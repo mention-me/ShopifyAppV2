@@ -51,6 +51,11 @@ const Extension = () => {
 	}
 
 	if (errorState) {
+		if (editor) {
+			return <Banner status="critical"
+						   title={"Failed to load Mention Me journey: " + errorState} />;
+		}
+
 		return null;
 	}
 
