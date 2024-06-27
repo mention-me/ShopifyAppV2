@@ -113,7 +113,9 @@ const Extension = () => {
 				)}
 			</InlineLayout>
 			<View background="subdued"
-				  padding="base">
+				  borderRadius={["none", "none", "large", "large"]}
+				  padding="base"
+			>
 				<TextBlock appearance="subdued">
 					{referrerEntryPointResponse.privacyNotice}
 					{" "}
