@@ -19,6 +19,8 @@ export const useMentionMeShopifyConfig = () => {
 		defaultLocale: "",
 	});
 
+	const [loading, setLoading] = useState(true);
+
 	const url = getDomainForEnvironment("local");
 
 	useEffect(() => {
@@ -39,6 +41,7 @@ export const useMentionMeShopifyConfig = () => {
 				const json = await response.json() as MentionMeShopifyConfig;
 
 				setMentionMeConfig(json);
+				setLoading(false);
 			} catch (error) {
 				throw new Error("Caught exception trying to retrieve config for shop");
 			}
@@ -48,5 +51,8 @@ export const useMentionMeShopifyConfig = () => {
 	}, [myshopifyDomain, url]);
 
 
-	return mentionMeConfig;
+	return {
+		loading,
+		mentionMeConfig
+	};
 };

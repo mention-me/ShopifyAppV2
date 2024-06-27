@@ -18,6 +18,7 @@ const CheckoutUI = () => {
 	const {
 		partnerCode,
 		environment,
+		loadingMentionMeConfig,
 		loadingEntryPointApi,
 		refereeEntryPointResponse,
 		step,
@@ -29,6 +30,10 @@ const CheckoutUI = () => {
 	const showBeenReferredByFriendLink = useMemo(() => {
 		return !errorState && step !== "completed-success";
 	}, [errorState, step]);
+
+	if (loadingMentionMeConfig || loadingEntryPointApi) {
+		return <SkeletonTextBlock />;
+	}
 
 	if (!isValidEnvironment(environment)) {
 		if (editor) {
@@ -48,10 +53,6 @@ const CheckoutUI = () => {
 		}
 
 		return null;
-	}
-
-	if (loadingEntryPointApi) {
-		return <SkeletonTextBlock />;
 	}
 
 	if (!refereeEntryPointResponse) {

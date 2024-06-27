@@ -19,6 +19,7 @@ setupSentry();
 
 const Extension = () => {
 	const {
+		loadingMentionMeConfig,
 		partnerCode,
 		environment,
 		errorState,
@@ -29,6 +30,10 @@ const Extension = () => {
 
 	// Now we're into the rendering part
 	const editor = useExtensionEditor();
+
+	if (loadingMentionMeConfig) {
+		return null;
+	}
 
 	if (!environment || typeof environment !== "string") {
 		if (editor) {

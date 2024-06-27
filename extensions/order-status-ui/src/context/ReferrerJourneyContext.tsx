@@ -9,6 +9,7 @@ type ReferrerJourneyState = {
 	partnerCode: string;
 	environment: Environment;
 	defaultLocale: string;
+	loadingMentionMeConfig,
 	loadingEntryPointApi: boolean;
 	setLoadingEntryPointApi: Dispatch<SetStateAction<boolean>>;
 	referrerEntryPointResponse: EntryPointOfferAndLink;
@@ -25,7 +26,7 @@ interface Props {
 }
 
 export const ReferrerJourneyProvider = ({ orderId, children }: Props) => {
-	const mentionMeConfig = useMentionMeShopifyConfig();
+	const {loading: loadingMentionMeConfig, mentionMeConfig} = useMentionMeShopifyConfig();
 
 	const [loadingEntryPointApi, setLoadingEntryPointApi] = useState(true);
 
@@ -41,6 +42,7 @@ export const ReferrerJourneyProvider = ({ orderId, children }: Props) => {
 			partnerCode,
 			environment,
 			defaultLocale,
+			loadingMentionMeConfig,
 			loadingEntryPointApi,
 			setLoadingEntryPointApi,
 			referrerEntryPointResponse,
@@ -51,6 +53,7 @@ export const ReferrerJourneyProvider = ({ orderId, children }: Props) => {
 	}, [
 		orderId,
 		mentionMeConfig,
+		loadingMentionMeConfig,
 		loadingEntryPointApi,
 		referrerEntryPointResponse,
 		errorState,
