@@ -1,19 +1,24 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "e74b8c5a5854a3d50a97330a49e4a97f"
-name = "mention-me"
-application_url = "https://mentionme.dev/"
+client_id = "f489fe1d33c740d223ea46fcb5f2df58"
+name = "Mention Me"
+handle = "mention-me-1"
+application_url = "https://mention-me.com/shopify/app"
 embedded = true
 
 [build]
 dev_store_url = "mention-me-checkout-extensibility.myshopify.com"
 include_config_on_deploy = true
 
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
 [auth]
-redirect_urls = [ "https://mentionme.dev/shopify/api/auth" ]
+redirect_urls = [ ]
 
 [webhooks]
-api_version = "2024-01"
+api_version = "2024-04"
 
 [pos]
 embedded = false
