@@ -38,9 +38,6 @@ export const FindFriendModalContent = () => {
 
 		const { type } = nameSearchResult;
 
-		console.log(nameSearchResult);
-		console.log("ShouldProvideEmail", shouldProvideEmail)
-
 		/*
 		Rules:
 
@@ -53,9 +50,6 @@ export const FindFriendModalContent = () => {
 		 */
 
 		if (type === "duplicate-match") {
-			// In this two cases, explicitly change it. In all others, don't.
-			// Email defaults to being off, so we'll keep it that way if it is off.
-			// If it's turned on by either of these two cases, we'll keep it on.
 			setShouldProvideEmail(true);
 			return;
 		}

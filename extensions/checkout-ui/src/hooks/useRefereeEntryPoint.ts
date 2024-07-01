@@ -71,7 +71,6 @@ export const useRefereeEntryPoint = () => {
 				if (!response.ok) {
 					console.error("Error calling entrypoint:", response);
 
-					console.log(await response.json());
 					setErrorState(response.statusText);
 					setLoadingEntryPointApi(false);
 

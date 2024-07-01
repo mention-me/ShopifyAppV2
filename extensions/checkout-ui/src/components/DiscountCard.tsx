@@ -24,8 +24,6 @@ const DiscountCard = () => {
 	const [applyingDiscount, setApplyingDiscount] = useState(false);
 
 	const applyCouponCode = useCallback(async () => {
-		console.log("registerResult", registerResult);
-
 		if (!registerResult?.result?.refereeReward) {
 			console.error("No referee reward");
 			return;
@@ -62,8 +60,6 @@ const DiscountCard = () => {
 	if (!registerResult.result?.refereeReward?.couponCode) {
 		return null;
 	}
-
-	console.log("Coupon code", registerResult.result);
 
 	return (
 		<>
