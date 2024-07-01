@@ -21,7 +21,7 @@ export const useMentionMeShopifyConfig = () => {
 
 	const [loading, setLoading] = useState(true);
 
-	const url = getDomainForEnvironment("local");
+	const url = getDomainForEnvironment("production");
 
 	useEffect(() => {
 		const fetchMentionMeConfig = async () => {
