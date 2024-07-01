@@ -57,9 +57,6 @@ export const WhoAreYouModalContent = () => {
 				<TextBlock>
 					{nameSearchResult.content.description}
 				</TextBlock>
-				{/*<TextBlock emphasis="bold">*/}
-				{/*	{translate("who-are-you.form.label.your-email")}*/}
-				{/*</TextBlock>*/}
 				<TextField error={errors?.email}
 						   icon={{ source: "email", position: "end" }}
 						   label={translate("who-are-you.form.label.your-email")}

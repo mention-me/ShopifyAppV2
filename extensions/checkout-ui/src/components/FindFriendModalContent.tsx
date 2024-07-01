@@ -96,9 +96,6 @@ export const FindFriendModalContent = () => {
 				<TextBlock>
 					{translate("find-friend.description")}
 				</TextBlock>
-				{/*<TextBlock emphasis="bold">*/}
-				{/*	{translate("find-friend.form.label.friend-name")}*/}
-				{/*</TextBlock>*/}
 				<TextField
 					autocomplete={false}
 					error={errors?.name}
@@ -115,10 +112,7 @@ export const FindFriendModalContent = () => {
 					}}
 					required
 				/>
-				{shouldProvideEmail ? <>
-					{/*<TextBlock emphasis="bold">*/}
-					{/*	{translate("find-friend.form.label.friend-email")}*/}
-					{/*</TextBlock>*/}
+				{shouldProvideEmail ?
 					<TextField
 						autocomplete={false}
 						error={errors?.email}
@@ -136,7 +130,7 @@ export const FindFriendModalContent = () => {
 						required
 						type="email"
 					/>
-				</> : null}
+					: null}
 			</BlockStack>
 			<BlockSpacer />
 			<Button

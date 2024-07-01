@@ -3,7 +3,7 @@ import {
 	BlockStack,
 	Link,
 	SkeletonTextBlock,
-	useExtensionEditor,
+	useExtensionEditor, useTranslate,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
 import { useContext, useMemo } from "react";
@@ -13,6 +13,8 @@ import { isValidEnvironment } from "../../../shared/utils";
 import { useRefereeEntryPoint } from "./hooks/useRefereeEntryPoint";
 
 const CheckoutUI = () => {
+	const translate = useTranslate();
+
 	const editor = useExtensionEditor();
 
 	const {
@@ -23,8 +25,6 @@ const CheckoutUI = () => {
 		refereeEntryPointResponse,
 		step,
 		errorState,
-		modalVisible,
-		setModalVisible
 	} = useContext(RefereeJourneyContext);
 
 	useRefereeEntryPoint();
@@ -71,10 +71,8 @@ const CheckoutUI = () => {
 		<BlockStack spacing="base">
 			<View>
 				{step === "completed-success" && <Banner status="success"
-														 title="Your discount has been applied for being referred. Thank you!" />}
-				{showBeenReferredByFriendLink && <Link onPress={() => {
-					setModalVisible(true);
-				}} overlay={modalVisible && <CheckoutModal />}>
+														 title={translate("success.discount-applied")} />}
+				{showBeenReferredByFriendLink && <Link overlay={<CheckoutModal />}>
 					{refereeEntryPointResponse.defaultCallToAction}
 				</Link>}
 			</View>

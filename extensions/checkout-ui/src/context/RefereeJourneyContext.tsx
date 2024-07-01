@@ -50,14 +50,6 @@ type RefereeJourneyState = {
 	setRegisterResult: Dispatch<SetStateAction<RegisterResult>>;
 	errorState: string;
 	setErrorState: Dispatch<SetStateAction<string>>;
-	/**
-	 * We should control the state of the modal using Shopify's built-in components, but they don't provide a way
-	 * to programmatically close the modal.
-	 *
-	 * https://github.com/Shopify/ui-extensions/issues/1009
-	 */
-	modalVisible: boolean;
-	setModalVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 export const RefereeJourneyContext = createContext<RefereeJourneyState | null>(null);
@@ -81,8 +73,6 @@ export const RefereeJourneyProvider = ({ children }: Props) => {
 	const [registerResult, setRegisterResult] = useState<RefereeRegister>();
 
 	const [errorState, setErrorState] = useState<string>();
-
-	const [modalVisible, setModalVisible] = useState(false);
 
 	const state = useMemo(() => {
 		const { partnerCode, environment, defaultLocale } = mentionMeConfig;
@@ -108,8 +98,6 @@ export const RefereeJourneyProvider = ({ children }: Props) => {
 			setRegisterResult,
 			errorState,
 			setErrorState,
-			modalVisible,
-			setModalVisible
 		};
 	}, [
 		mentionMeConfig,
@@ -122,7 +110,6 @@ export const RefereeJourneyProvider = ({ children }: Props) => {
 		nameSearchResult,
 		registerResult,
 		errorState,
-		modalVisible
 	]);
 
 	return (

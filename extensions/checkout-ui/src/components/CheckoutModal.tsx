@@ -17,6 +17,8 @@ import { FindFriendModalContent } from "./FindFriendModalContent";
 import { RegisterResultModalContent } from "./RegisterResultModalContent";
 import NoMatchModalContent from "./NoMatchModalContent";
 
+export const CHECKOUT_MODAL_ID = "been-referred-by-friend-modal";
+
 export const CheckoutModal = () => {
 	const { step, refereeEntryPointResponse } = useContext(RefereeJourneyContext);
 
@@ -46,6 +48,7 @@ export const CheckoutModal = () => {
 
 	return (
 		<Modal
+			id={CHECKOUT_MODAL_ID}
 			padding
 			title={refereeEntryPointResponse.defaultCallToAction}
 		>

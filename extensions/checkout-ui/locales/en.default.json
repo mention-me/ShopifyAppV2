@@ -4,6 +4,9 @@
 			"error": "Sorry, an unknown error has occurred. Please try again later."
 		}
 	},
+	"success": {
+		"discount-applied": "Your discount has been applied."
+	},
 	"find-friend": {
 		"heading": "Tell us who sent you so that we can thank them.",
 		"description": "If one of your friends loves us enough to recommend us please tell us their name below.",
@@ -21,17 +24,6 @@
 				"friend-email": "Friend's email"
 			},
 			"submit": "Find them"
-		}
-	},
-	"modal": {
-		"error": "Sorry, an error has occurred",
-		"title": {
-			"register": "Welcome!",
-			"register-result": {
-				"success": "Congratulations!",
-				"failure": "We're sorry!"
-			},
-			"welcome": "Welcome, who referred you?"
 		}
 	},
 	"register-result": {

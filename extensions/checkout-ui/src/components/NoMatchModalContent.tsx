@@ -1,13 +1,23 @@
-import { BlockStack, Button, Heading, TextBlock, useTranslate, View } from "@shopify/ui-extensions-react/checkout";
+import {
+	BlockStack,
+	Button,
+	Heading,
+	TextBlock,
+	useApi,
+	useTranslate,
+	View,
+} from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
+import { CHECKOUT_MODAL_ID } from "./CheckoutModal";
 
 const NoMatchModalContent = () => {
+	const {ui} = useApi();
+
 	const translate = useTranslate();
 
 	const {
 		setStep,
-		setModalVisible,
 	} = useContext(RefereeJourneyContext);
 
 	const tryAgain = useCallback(() => {
@@ -32,7 +42,9 @@ const NoMatchModalContent = () => {
 				</View>
 				<View>
 					<Button onPress={() => {
-						setModalVisible(false);
+						// Poorly documented function, see:
+						// https://github.com/Shopify/ui-extensions/issues/1009
+						ui.overlay.close(CHECKOUT_MODAL_ID)
 					}}>
 						{translate("no-match.continue-shopping")}
 					</Button>
