@@ -52,7 +52,7 @@ type RefereeJourneyState = {
 	setErrorState: Dispatch<SetStateAction<string>>;
 	/**
 	 * We should control the state of the modal using Shopify's built-in components, but they don't provide a way
-	 * to programmatically close the modal. 
+	 * to programmatically close the modal.
 	 *
 	 * https://github.com/Shopify/ui-extensions/issues/1009
 	 */

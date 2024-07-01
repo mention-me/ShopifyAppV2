@@ -1,5 +1,12 @@
 import { Environment, getDomainForEnvironment } from "../utils";
-import { useShop } from "@shopify/ui-extensions-react/checkout";
+import {
+	useCurrency,
+	useExtensionLanguage,
+	useLanguage,
+	useLocalizationCountry,
+	useLocalizationMarket,
+	useShop,
+} from "@shopify/ui-extensions-react/checkout";
 import { useEffect, useState } from "react";
 
 export interface MentionMeShopifyConfig {
@@ -19,14 +26,28 @@ export const useMentionMeShopifyConfig = () => {
 		defaultLocale: "",
 	});
 
+	const currency = useCurrency();
+	const extensionLanguage = useExtensionLanguage();
+	const language = useLanguage();
+	const country = useLocalizationCountry();
+	const market = useLocalizationMarket();
+
 	const [loading, setLoading] = useState(true);
 
 	const url = getDomainForEnvironment("production");
 
 	useEffect(() => {
 		const fetchMentionMeConfig = async () => {
+			const u = new URL(`https://${url}/shopify/app/config/${myshopifyDomain}`);
+			u.searchParams.append("extensionLanguage", extensionLanguage.isoCode);
+			u.searchParams.append("language", language.isoCode);
+			u.searchParams.append("currency", currency.isoCode);
+			u.searchParams.append("country", country.isoCode);
+			u.searchParams.append("market", market.id);
+			u.searchParams.append("marketHandle", market.handle);
+
 			try {
-				const response = await fetch(`https://${url}/shopify/app/config/${myshopifyDomain}`,
+				const response = await fetch(u.toString(),
 					{
 						method: "GET",
 						// mode: "no-cors",
@@ -48,11 +69,11 @@ export const useMentionMeShopifyConfig = () => {
 		};
 
 		fetchMentionMeConfig();
-	}, [myshopifyDomain, url]);
+	}, [country.isoCode, currency.isoCode, extensionLanguage.isoCode, language.isoCode, market.handle, market.id, myshopifyDomain, url]);
 
 
 	return {
 		loading,
-		mentionMeConfig
+		mentionMeConfig,
 	};
 };
