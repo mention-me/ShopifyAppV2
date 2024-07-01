@@ -14,6 +14,7 @@ export interface MentionMeShopifyConfig {
 	environment?: Environment,
 	partnerCode?: string,
 	defaultLocale?: string,
+	refereeModalImage?: string,
 }
 
 export const useMentionMeShopifyConfig = () => {

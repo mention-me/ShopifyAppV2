@@ -1,7 +1,7 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useMemo, useState } from "react";
 import { Environment } from "../../../../shared/utils";
 import { RefereeRegister, ReferrerFound } from "@api/consumer-api/dist/types";
-import { useMentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeShopifyConfig";
+import { MentionMeShopifyConfig, useMentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeShopifyConfig";
 import { EntryPointLink } from "@api/entry-point-api/src/types";
 
 export type Step =
@@ -35,6 +35,7 @@ type RefereeJourneyState = {
 	defaultLocale?: string;
 	step: Step;
 	setStep: Dispatch<SetStateAction<Step>>;
+	mentionMeConfig: MentionMeShopifyConfig;
 	loadingMentionMeConfig: boolean;
 	loadingEntryPointApi: boolean;
 	setLoadingEntryPointApi: Dispatch<SetStateAction<boolean>>;
@@ -84,6 +85,7 @@ export const RefereeJourneyProvider = ({ children }: Props) => {
 			step,
 			setStep,
 			loadingMentionMeConfig,
+			mentionMeConfig,
 			loadingEntryPointApi,
 			setLoadingEntryPointApi,
 			loadingConsumerApi,

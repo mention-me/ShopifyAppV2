@@ -20,7 +20,7 @@ import NoMatchModalContent from "./NoMatchModalContent";
 export const CHECKOUT_MODAL_ID = "been-referred-by-friend-modal";
 
 export const CheckoutModal = () => {
-	const { step, refereeEntryPointResponse } = useContext(RefereeJourneyContext);
+	const { step, refereeEntryPointResponse, mentionMeConfig } = useContext(RefereeJourneyContext);
 
 	const translate = useTranslate();
 
@@ -55,14 +55,20 @@ export const CheckoutModal = () => {
 			<BlockStack
 				padding="base"
 			>
-				<View>
-					<Image borderRadius="large"
-						   fit="contain"
-						   source="https://static-demo.mention-me.com/assets/6682edf556ab5_img_2.png" />
-				</View>
+				{/*
+				No amount of faffing around with maxBlockSize seems to constrain the height of the image,
+				so it's assumed you've already got the image the right height.
+				*/}
+				{mentionMeConfig?.refereeModalImage && (
+					<View>
+						<Image borderRadius="large"
+							   fit="cover"
+							   source={mentionMeConfig.refereeModalImage} />
+					</View>
+				)}
 				{modalContent}
 				<BlockSpacer spacing="extraLoose" />
-				<View>
+				<View display="inline">
 					<InlineLayout blockAlignment="start"
 								  columns="auto"
 								  maxBlockSize={5}
