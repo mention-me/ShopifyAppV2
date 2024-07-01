@@ -1,17 +1,12 @@
 import { Heading, TextBlock } from "@shopify/ui-extensions-react/checkout";
-import { useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import RegisterResultFailureModalContent from "./RegisterResultFailureModalContent";
+import { useContext } from "react";
 import DiscountCard from "./DiscountCard";
 
-export const RegisterResultModalContent = () => {
+const RegisterResultFailureModalContent = () => {
 	const {
 		registerResult,
 	} = useContext(RefereeJourneyContext);
-
-	if (registerResult?.result.status !== "Success") {
-		return <RegisterResultFailureModalContent />;
-	}
 
 	return (
 		<>
@@ -19,11 +14,11 @@ export const RegisterResultModalContent = () => {
 				{registerResult.content["headline"]}
 			</Heading>
 			<TextBlock>
-				{registerResult.content["fulfilled-also-emailed"]}
-				{" "}
-				{registerResult.content["voucher-usage-restriction"] || ""}
+				{registerResult.content["detail"]}
 			</TextBlock>
 			<DiscountCard />
 		</>
 	);
 };
+
+export default RegisterResultFailureModalContent;

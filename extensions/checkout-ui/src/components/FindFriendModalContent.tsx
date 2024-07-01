@@ -1,8 +1,16 @@
-import { BlockStack, Button, Form, TextField, useTranslate } from "@shopify/ui-extensions-react/checkout";
+import {
+	BlockSpacer,
+	BlockStack,
+	Button,
+	Form,
+	Heading,
+	TextBlock,
+	TextField,
+	useTranslate,
+} from "@shopify/ui-extensions-react/checkout";
 import { useRefereeFindFriend } from "../hooks/useRefereeFindFriend";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { RefereeJourneyContext, RefereeSearch } from "../context/RefereeJourneyContext";
-import { NameSearchResultBanner } from "./NameSearchResultBanner";
 import { isValidEmail } from "../../../../shared/utils";
 
 
@@ -11,7 +19,10 @@ export const FindFriendModalContent = () => {
 		loadingConsumerApi,
 		search,
 		setSearch,
+		step,
+		setStep,
 		nameSearchResult,
+		setNameSearchResult,
 	} = useContext(RefereeJourneyContext);
 
 	const translate = useTranslate();
@@ -26,6 +37,10 @@ export const FindFriendModalContent = () => {
 		}
 
 		const { type } = nameSearchResult;
+
+		console.log(nameSearchResult);
+		console.log("ShouldProvideEmail", shouldProvideEmail)
+
 		/*
 		Rules:
 
@@ -37,14 +52,25 @@ export const FindFriendModalContent = () => {
 		6. If not found by email - give up.
 		 */
 
-		if (type === "duplicate-match" || type === "no-match") {
+		if (type === "duplicate-match") {
 			// In this two cases, explicitly change it. In all others, don't.
 			// Email defaults to being off, so we'll keep it that way if it is off.
 			// If it's turned on by either of these two cases, we'll keep it on.
 			setShouldProvideEmail(true);
 			return;
 		}
-	}, [nameSearchResult, setShouldProvideEmail]);
+
+		if (type === "no-match" && !shouldProvideEmail) {
+			setNameSearchResult(undefined);
+			setShouldProvideEmail(true);
+			return;
+		}
+
+		if (type === "no-match" && shouldProvideEmail) {
+			setStep("no-match");
+			return;
+		}
+	}, [nameSearchResult, setNameSearchResult, shouldProvideEmail, setShouldProvideEmail, step, setStep]);
 
 	const findFriendSubmitCallback = useRefereeFindFriend();
 
@@ -70,7 +96,15 @@ export const FindFriendModalContent = () => {
 			onSubmit={onSubmit}
 		>
 			<BlockStack>
-				<NameSearchResultBanner />
+				<Heading level={1}>
+					{translate("find-friend.heading")}
+				</Heading>
+				<TextBlock>
+					{translate("find-friend.description")}
+				</TextBlock>
+				{/*<TextBlock emphasis="bold">*/}
+				{/*	{translate("find-friend.form.label.friend-name")}*/}
+				{/*</TextBlock>*/}
 				<TextField
 					autocomplete={false}
 					error={errors?.name}
@@ -87,30 +121,36 @@ export const FindFriendModalContent = () => {
 					}}
 					required
 				/>
-				{shouldProvideEmail ? <TextField
-					autocomplete={false}
-					error={errors?.email}
-					icon={{ source: "email", position: "end" }}
-					label={translate("find-friend.form.label.friend-email")}
-					name="email"
-					onChange={(value) => {
-						setSearch((existing: RefereeSearch) => {
-							return {
-								...existing,
-								email: value,
-							};
-						});
-					}}
-					required
-					type="email"
-				/> : null}
-				<Button
-					accessibilityRole="submit"
-					loading={loadingConsumerApi}
-				>
-					{translate("find-friend.form.submit")}
-				</Button>
+				{shouldProvideEmail ? <>
+					{/*<TextBlock emphasis="bold">*/}
+					{/*	{translate("find-friend.form.label.friend-email")}*/}
+					{/*</TextBlock>*/}
+					<TextField
+						autocomplete={false}
+						error={errors?.email}
+						icon={{ source: "email", position: "end" }}
+						label={translate("find-friend.form.label.friend-email")}
+						name="email"
+						onChange={(value) => {
+							setSearch((existing: RefereeSearch) => {
+								return {
+									...existing,
+									email: value,
+								};
+							});
+						}}
+						required
+						type="email"
+					/>
+				</> : null}
 			</BlockStack>
+			<BlockSpacer />
+			<Button
+				accessibilityRole="submit"
+				loading={loadingConsumerApi}
+			>
+				{translate("find-friend.form.submit")}
+			</Button>
 		</Form>
 	);
 };

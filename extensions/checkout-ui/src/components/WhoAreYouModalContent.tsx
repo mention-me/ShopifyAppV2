@@ -1,13 +1,13 @@
 import {
+	BlockSpacer,
 	BlockStack,
 	Button,
-	Checkbox,
 	Form,
+	Heading,
 	Link,
 	TextBlock,
 	TextField,
 	useTranslate,
-	View,
 } from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext, useState } from "react";
 import { useRefereeRegister } from "../hooks/useRefereeRegister";
@@ -51,6 +51,15 @@ export const WhoAreYouModalContent = () => {
 			onSubmit={onSubmit}
 		>
 			<BlockStack>
+				<Heading level={1}>
+					{nameSearchResult.content.headline}
+				</Heading>
+				<TextBlock>
+					{nameSearchResult.content.description}
+				</TextBlock>
+				{/*<TextBlock emphasis="bold">*/}
+				{/*	{translate("who-are-you.form.label.your-email")}*/}
+				{/*</TextBlock>*/}
 				<TextField error={errors?.email}
 						   icon={{ source: "email", position: "end" }}
 						   label={translate("who-are-you.form.label.your-email")}
@@ -61,26 +70,32 @@ export const WhoAreYouModalContent = () => {
 						   required
 						   type="email"
 				/>
-				<Button
-					accessibilityRole="submit"
-					loading={loadingConsumerApi}
-				>
-					{nameSearchResult?.content?.cta || translate("who-are-you.form.submit")}
-				</Button>
-				<View background="subdued"
-					  padding="base">
-
-					<TextBlock>
-						{translate("who-are-you.privacy.text")}
-						{" "}
-						<Link external
-							  to={nameSearchResult.result.termsLinks.linkToTermsInLocale}
-						>
-							{translate("who-are-you.privacy.link")}
-						</Link>
-					</TextBlock>
-				</View>
+				<TextBlock appearance="subdued">
+					{nameSearchResult.result.referrer.offer.privacyNotice || translate("who-are-you.privacy.text")}
+					{" "}
+					<Link external
+						  to={nameSearchResult.result.referrer.offer.privacyLink}
+					>
+						{translate("who-are-you.privacy.link")}
+					</Link>
+					{" "}
+					{translate("who-are-you.terms.text")}
+					{" "}
+					<Link external
+						  to={nameSearchResult.result.termsLinks.linkToTermsInLocale}
+					>
+						{translate("who-are-you.terms.link")}
+					</Link>
+					.
+				</TextBlock>
 			</BlockStack>
+			<BlockSpacer />
+			<Button
+				accessibilityRole="submit"
+				loading={loadingConsumerApi}
+			>
+				{nameSearchResult?.content?.cta || translate("who-are-you.form.submit")}
+			</Button>
 		</Form>
 	);
 };

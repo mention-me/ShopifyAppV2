@@ -1,16 +1,12 @@
 {
-	"banner": {
-		"error": "Sorry, an error has occurred. Please try again later.",
-		"no-match": "Sorry, we can't find your friend. We'd recommend you confirm the email address they used with us and try again later.",
-		"search-by-email": "Sorry, we can't find your friend by the name '{{name}}'. Try searching with their email address too."
-	},
 	"checkout": {
 		"modal": {
 			"error": "Sorry, an unknown error has occurred. Please try again later."
 		}
 	},
 	"find-friend": {
-		"welcome": "Welcome, who referred you to us?",
+		"heading": "Tell us who sent you so that we can thank them.",
+		"description": "If one of your friends loves us enough to recommend us please tell us their name below.",
 		"form": {
 			"error": {
 				"name": {
@@ -21,13 +17,14 @@
 				}
 			},
 			"label": {
-				"friend-name": "Your friend's name",
-				"friend-email": "Your friend's email"
+				"friend-name": "Friend's name and surname",
+				"friend-email": "Friend's email"
 			},
-			"submit": "Find friend"
+			"submit": "Find them"
 		}
 	},
 	"modal": {
+		"error": "Sorry, an error has occurred",
 		"title": {
 			"register": "Welcome!",
 			"register-result": {
@@ -40,13 +37,13 @@
 	"register-result": {
 		"apply-discount": "Apply my discount",
 		"error": {
-			"applying-coupon": "We were unable to apply your discount."
+			"applying-coupon": "We were unable to apply your discount"
 		}
 	},
 	"who-are-you": {
 		"form": {
 			"label": {
-				"your-email": "What is your email address?"
+				"your-email": "Your email address"
 			},
 			"error": {
 				"your-email": "Please enter your email address."
@@ -57,6 +54,17 @@
 		"privacy": {
 			"text": "Our refer-a-friend programme is managed by Mention Me who will process your data and send you referral service emails.",
 			"link": "More info and your privacy rights."
+		},
+		"terms": {
+			"text": "By accepting this offer you agree to the",
+			"link": "Terms and Conditions"
 		}
-	}
+	},
+	"no-match": {
+		"headline": "These details don’t match anyone who has signed up to refer their friends by name.",
+		"description": "But thank you for letting us know that they referred you to us. We’ll get in touch with them to thank them for sending you our way. And we hope you love us as much as they do.",
+		"try-again": "Try another email address",
+		"continue-shopping": "Continue shopping"
+	},
+	"powered-by": "Powered by"
 }

@@ -23,6 +23,8 @@ const CheckoutUI = () => {
 		refereeEntryPointResponse,
 		step,
 		errorState,
+		modalVisible,
+		setModalVisible
 	} = useContext(RefereeJourneyContext);
 
 	useRefereeEntryPoint();
@@ -61,12 +63,8 @@ const CheckoutUI = () => {
 	}
 
 	if (errorState) {
-		if (editor) {
-			return <Banner status="critical"
-						   title={"Failed to load Mention Me journey: " + errorState} />;
-		}
-
-		return null;
+		return <Banner status="critical"
+					   title={errorState} />;
 	}
 
 	return (
@@ -74,7 +72,9 @@ const CheckoutUI = () => {
 			<View>
 				{step === "completed-success" && <Banner status="success"
 														 title="Your discount has been applied for being referred. Thank you!" />}
-				{showBeenReferredByFriendLink && <Link overlay={<CheckoutModal />}>
+				{showBeenReferredByFriendLink && <Link onPress={() => {
+					setModalVisible(true);
+				}} overlay={modalVisible && <CheckoutModal />}>
 					{refereeEntryPointResponse.defaultCallToAction}
 				</Link>}
 			</View>
