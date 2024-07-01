@@ -10,14 +10,16 @@ export const setupSentry = () => {
 	self.addEventListener(
 		'unhandledrejection',
 		(error) => {
+			console.error("unhandledrejection", error);
 			Sentry.captureException(
-				new Error(error.reason.stack),
+				new Error(error?.reason?.stack),
 			);
 		},
 	);
 	self.addEventListener('error', (error) => {
+		console.error("error", error);
 		Sentry.captureException(
-			new Error(error.reason.stack),
+			new Error(error?.reason?.stack),
 		);
 	});
 };
