@@ -12,17 +12,25 @@ import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { CHECKOUT_MODAL_ID } from "./CheckoutModal";
 
 const NoMatchModalContent = () => {
-	const {ui} = useApi();
+	const { ui } = useApi();
 
 	const translate = useTranslate();
 
 	const {
 		setStep,
+		setNameSearchResult,
 	} = useContext(RefereeJourneyContext);
 
 	const tryAgain = useCallback(() => {
-		setStep("search-by-name");
-	}, [setStep]);
+		setNameSearchResult((value) => {
+			// Pretend we only hit a no-match to reset the state back.
+			return {
+				...value,
+				type: "no-match",
+			};
+		});
+		setStep("no-match");
+	}, [setNameSearchResult, setStep]);
 
 	return (
 		<>
@@ -44,7 +52,7 @@ const NoMatchModalContent = () => {
 					<Button onPress={() => {
 						// Poorly documented function, see:
 						// https://github.com/Shopify/ui-extensions/issues/1009
-						ui.overlay.close(CHECKOUT_MODAL_ID)
+						ui.overlay.close(CHECKOUT_MODAL_ID);
 					}}>
 						{translate("no-match.continue-shopping")}
 					</Button>

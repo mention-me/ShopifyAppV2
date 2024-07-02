@@ -12,6 +12,7 @@ export const useRefereeFindFriend = () => {
 		environment,
 		setLoadingConsumerApi,
 		setNameSearchResult,
+		step,
 		setStep,
 		search,
 	} = useContext(RefereeJourneyContext);
@@ -19,7 +20,6 @@ export const useRefereeFindFriend = () => {
 	const { myshopifyDomain } = useShop()
 
 	return useCallback(async () => {
-		console.debug("fetchRefereeFindFriend");
 		setLoadingConsumerApi(true);
 
 		if (!partnerCode || typeof partnerCode !== "string") {
@@ -87,7 +87,7 @@ export const useRefereeFindFriend = () => {
 					}
 
 					setNameSearchResult({
-						type: "no-match",
+						type: step === "no-match" || step === "duplicate-match" ? "no-match-final" : "no-match",
 						result: json,
 						content,
 					});

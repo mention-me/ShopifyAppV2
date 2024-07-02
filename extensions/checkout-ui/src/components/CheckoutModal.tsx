@@ -25,7 +25,7 @@ export const CheckoutModal = () => {
 	const translate = useTranslate();
 
 	const modalContent = useMemo(() => {
-		if (step === "search-by-name") {
+		if (step === "search-by-name" || step === "duplicate-match" || step === "no-match") {
 			return <FindFriendModalContent />;
 		}
 
@@ -37,7 +37,7 @@ export const CheckoutModal = () => {
 			return <RegisterResultModalContent />;
 		}
 
-		if (step === "no-match") {
+		if (step === "no-match-final") {
 			return <NoMatchModalContent />;
 		}
 

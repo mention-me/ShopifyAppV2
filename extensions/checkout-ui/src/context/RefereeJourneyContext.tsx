@@ -7,11 +7,13 @@ import { EntryPointLink } from "@api/entry-point-api/src/types";
 export type Step =
 	"search-by-name"
 	| "no-match"
+	| "no-match-final"
+	| "duplicate-match"
 	| "register"
 	| "register-result"
 	| "completed-success";
 
-export type NameSearchResultType = "no-match" | "duplicate-match" | "single-match" | "error";
+export type NameSearchResultType = "no-match" | "no-match-final" | "duplicate-match" | "single-match" | "error";
 
 export interface RefereeSearch {
 	name: string;

@@ -10,6 +10,14 @@
 	"find-friend": {
 		"heading": "Tell us who sent you so that we can thank them.",
 		"description": "If one of your friends loves us enough to recommend us please tell us their name below.",
+		"no-match": {
+			"heading": "Thanks. Unfortunately, {{name}} is not a name we recognise.",
+			"description": "Try and provide their email address to confirm who they are."
+		},
+		"dupe-match": {
+			"heading": "We know a few people called {{name}}. Can you confirm which one is your friend?",
+			"description": "Please enter their email address so that we know who to thank."
+		},
 		"form": {
 			"error": {
 				"name": {

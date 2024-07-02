@@ -9,7 +9,7 @@ import {
 	useTranslate,
 } from "@shopify/ui-extensions-react/checkout";
 import { useRefereeFindFriend } from "../hooks/useRefereeFindFriend";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { RefereeJourneyContext, RefereeSearch } from "../context/RefereeJourneyContext";
 import { isValidEmail } from "../../../../shared/utils";
 
@@ -31,6 +31,8 @@ export const FindFriendModalContent = () => {
 
 	const [errors, setErrors] = useState<{ name?: string, email?: string }>({});
 
+	const [nameSearchedFor, setNameSearchedFor] = useState<string>();
+
 	useEffect(() => {
 		if (!nameSearchResult) {
 			return;
@@ -49,22 +51,24 @@ export const FindFriendModalContent = () => {
 		6. If not found by email - give up.
 		 */
 
+		setNameSearchedFor(search?.name);
+
 		if (type === "duplicate-match") {
 			setShouldProvideEmail(true);
+			setStep("duplicate-match");
 			return;
 		}
 
-		if (type === "no-match" && !shouldProvideEmail) {
-			setNameSearchResult(undefined);
+		if (type === "no-match") {
 			setShouldProvideEmail(true);
-			return;
-		}
-
-		if (type === "no-match" && shouldProvideEmail) {
 			setStep("no-match");
 			return;
 		}
-	}, [nameSearchResult, setNameSearchResult, shouldProvideEmail, setShouldProvideEmail, step, setStep]);
+
+		if (type === "no-match-final") {
+			setStep("no-match-final");
+		}
+	}, [nameSearchResult, setNameSearchResult, shouldProvideEmail, setShouldProvideEmail, step, setStep, search?.name]);
 
 	const findFriendSubmitCallback = useRefereeFindFriend();
 
@@ -84,6 +88,33 @@ export const FindFriendModalContent = () => {
 		findFriendSubmitCallback();
 	}, [findFriendSubmitCallback, search, shouldProvideEmail, setErrors, translate]);
 
+	const [heading, description] = useMemo(() => {
+		console.log(shouldProvideEmail);
+		console.log(nameSearchResult);
+		if (!shouldProvideEmail) {
+			return [
+				translate("find-friend.heading"),
+				translate("find-friend.description")
+			];
+		}
+
+		if (step === "duplicate-match") {
+			return [
+				translate("find-friend.dupe-match.heading", { name: nameSearchedFor }),
+				translate("find-friend.dupe-match.description"),
+			];
+		}
+
+		if (step === "no-match") {
+			return [
+				translate("find-friend.no-match.heading", { name: nameSearchedFor }),
+				translate("find-friend.no-match.description"),
+			];
+		}
+
+		throw new Error("Unknown name search result type");
+	}, [nameSearchResult, step, nameSearchedFor, shouldProvideEmail, translate]);
+
 	return (
 		<Form
 			disabled={loadingConsumerApi}
@@ -91,10 +122,10 @@ export const FindFriendModalContent = () => {
 		>
 			<BlockStack>
 				<Heading level={1}>
-					{translate("find-friend.heading")}
+					{heading}
 				</Heading>
 				<TextBlock>
-					{translate("find-friend.description")}
+					{description}
 				</TextBlock>
 				<TextField
 					autocomplete={false}
@@ -111,6 +142,7 @@ export const FindFriendModalContent = () => {
 						});
 					}}
 					required
+					value={search?.name}
 				/>
 				{shouldProvideEmail ?
 					<TextField
@@ -129,6 +161,7 @@ export const FindFriendModalContent = () => {
 						}}
 						required
 						type="email"
+						value={search?.email}
 					/>
 					: null}
 			</BlockStack>
