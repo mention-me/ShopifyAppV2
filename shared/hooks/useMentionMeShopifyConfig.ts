@@ -70,7 +70,7 @@ export const useMentionMeShopifyConfig = () => {
 		};
 
 		fetchMentionMeConfig();
-	}, [country?.isoCode, currency.isoCode, extensionLanguage.isoCode, language.isoCode, market?.handle, market.id, myshopifyDomain, url]);
+	}, [country?.isoCode, currency.isoCode, extensionLanguage.isoCode, language.isoCode, market?.handle, market?.id, myshopifyDomain, url]);
 
 
 	return {
