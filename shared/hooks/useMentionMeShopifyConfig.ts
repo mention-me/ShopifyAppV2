@@ -43,9 +43,9 @@ export const useMentionMeShopifyConfig = () => {
 			u.searchParams.append("extensionLanguage", extensionLanguage.isoCode);
 			u.searchParams.append("language", language.isoCode);
 			u.searchParams.append("currency", currency.isoCode);
-			u.searchParams.append("country", country.isoCode);
-			u.searchParams.append("market", market.id);
-			u.searchParams.append("marketHandle", market.handle);
+			u.searchParams.append("country", country?.isoCode);
+			u.searchParams.append("market", market?.id);
+			u.searchParams.append("marketHandle", market?.handle);
 
 			try {
 				const response = await fetch(u.toString(),
@@ -70,7 +70,7 @@ export const useMentionMeShopifyConfig = () => {
 		};
 
 		fetchMentionMeConfig();
-	}, [country.isoCode, currency.isoCode, extensionLanguage.isoCode, language.isoCode, market.handle, market.id, myshopifyDomain, url]);
+	}, [country?.isoCode, currency.isoCode, extensionLanguage.isoCode, language.isoCode, market?.handle, market.id, myshopifyDomain, url]);
 
 
 	return {
