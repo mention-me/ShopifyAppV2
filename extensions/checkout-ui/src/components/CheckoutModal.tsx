@@ -60,11 +60,14 @@ export const CheckoutModal = () => {
 				so it's assumed you've already got the image the right height.
 				*/}
 				{mentionMeConfig?.refereeModalImage && (
-					<View>
-						<Image borderRadius="large"
-							   fit="cover"
-							   source={mentionMeConfig.refereeModalImage} />
-					</View>
+					<>
+						<View>
+							<Image borderRadius="large"
+								   fit="cover"
+								   source={mentionMeConfig.refereeModalImage} />
+						</View>
+						<BlockSpacer />
+					</>
 				)}
 				{modalContent}
 				<BlockSpacer spacing="extraLoose" />
