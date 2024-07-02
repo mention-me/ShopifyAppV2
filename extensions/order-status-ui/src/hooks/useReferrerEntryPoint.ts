@@ -5,6 +5,7 @@ import { getDomainForEnvironment, isValidEnvironment, parseShopifyOrderId } from
 import {
 	useBillingAddress,
 	useEmail,
+	useExtensionEditor,
 	useShop,
 	useTotalAmount,
 } from "@shopify/ui-extensions-react/checkout";
@@ -20,6 +21,8 @@ const useReferrerEntryPoint = () => {
 		setReferrerEntryPointResponse,
 		setErrorState,
 	} = useContext(ReferrerJourneyContext);
+
+	const editor = useExtensionEditor();
 
 	const { myshopifyDomain } = useShop();
 
@@ -53,7 +56,9 @@ const useReferrerEntryPoint = () => {
 				order: {
 					orderIdentifier: parseShopifyOrderId(orderId),
 					currencyCode: money.currencyCode,
-					total: String(money.amount),
+					// When we're in the editor, don't record a value. This is to prevent these values being counted
+					// as real orders.
+					total: editor ? "0" : String(money.amount),
 					// Use the time of the request instead of explicitly setting a time.
 					dateString: "",
 				},
