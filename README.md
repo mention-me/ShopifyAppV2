@@ -1,20 +1,9 @@
-# Mention Me Shopify App (Alpha)
+# Mention Me Shopify App (Beta)
 
-This app is a prototype of how Mention Me might implement our journey with the Shopify Checkout Extensibility changes.
+This app implements the Mention Me Referrer and Referee journeys within the Shopify Checkout Extensibility tools.
 
-This application is work in progress, and we recommend reaching out to us at support@mention-me.com if you're interested in using it.
+This application is work in progress, and we recommend reaching out to us at support@mention-me.com if you're interested
+in using it.
 
-# API Types
-
-We install types for each of the APIs we use from Mention Me.
-
-The identifiers come from the developers.mention-me.com API reference.
-
-Installed via:
-
-```bash
-npx api@next install -i "entry-point-api" "@mention-me/v2.0#72sflxkmgq91"
-npx api@next install -i "consumer-api" "@mention-me/v2.0#15d5t3klxkmgofm"
-```
-
-
+Our goal is to have this as an app you can install directly within your store. In the meantime, we can work with you to
+implement the experience in your store.

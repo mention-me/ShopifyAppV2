@@ -2,6 +2,9 @@
 .env
 .env.*
 
+# Client specific configuration
+shopify.app.*.toml
+
 # Dependency directory
 node_modules
 
