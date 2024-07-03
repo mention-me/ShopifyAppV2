@@ -4,6 +4,7 @@
 
 # Client specific configuration
 shopify.app.*.toml
+!shopify.app.default.toml
 !shopify.app.custom-example.toml
 
 # Dependency directory

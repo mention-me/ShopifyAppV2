@@ -3,6 +3,7 @@
 client_id = "f489fe1d33c740d223ea46fcb5f2df58"
 name = "Mention Me"
 handle = "mention-me-1"
+# application_url = "https://mentionme.dev/shopify/app"
 application_url = "https://mention-me.com/shopify/app"
 embedded = true
 
