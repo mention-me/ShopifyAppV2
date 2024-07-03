@@ -1,0 +1,36 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "<client-id-goes-here>"
+name = "Mention Me - My Store"
+handle = "mention-me-my-store"
+application_url = "https://mention-me.com/shopify/app/custom/<client-id-goes-here>"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
+[auth]
+redirect_urls = [ ]
+
+[webhooks]
+api_version = "2024-04"
+
+[[webhooks.subscriptions]]
+uri = "https://mention-me.com/shopify/webhooks/customers/data_request"
+compliance_topics = ["customers/data_request"]
+
+[[webhooks.subscriptions]]
+uri = "https://mention-me.com/shopify/webhooks/customers/redact"
+compliance_topics = ["customers/redact"]
+
+[[webhooks.subscriptions]]
+uri = "https://mention-me.com/shopify/webhooks/shop/redact"
+compliance_topics = ["shop/redact"]
+
+[pos]
+embedded = false
+
