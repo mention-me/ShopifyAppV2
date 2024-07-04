@@ -81,7 +81,7 @@ export const CheckoutModal = () => {
 						</TextBlock>
 						<InlineSpacer spacing="extraTight" />
 						<Image fit="cover"
-							   source="https://static-demo.mention-me.com/assets/6682f07f33b76_img_1.png"
+							   source="https://static.mention-me.com/shopify-app/mention-me-logo.svg"
 						/>
 					</InlineLayout>
 				</View>
