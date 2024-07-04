@@ -43,7 +43,6 @@ of `shopify.app.custom-example.toml`.
 
 You will need to:
 
-- Ensure the webhooks match the `shopify.app.custom-example.toml` file.
 - Ensure the redirect_url matches the `shopify.app.custom-example.toml` file.
 - Ensure the `application_url` includes your client ID
 

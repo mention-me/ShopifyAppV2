@@ -19,18 +19,6 @@ redirect_urls = [ ]
 [webhooks]
 api_version = "2024-04"
 
-[[webhooks.subscriptions]]
-uri = "https://mention-me.com/shopify/webhooks/customers/data_request"
-compliance_topics = ["customers/data_request"]
-
-[[webhooks.subscriptions]]
-uri = "https://mention-me.com/shopify/webhooks/customers/redact"
-compliance_topics = ["customers/redact"]
-
-[[webhooks.subscriptions]]
-uri = "https://mention-me.com/shopify/webhooks/shop/redact"
-compliance_topics = ["shop/redact"]
-
 [pos]
 embedded = false
 
