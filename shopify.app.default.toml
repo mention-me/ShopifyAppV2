@@ -3,7 +3,6 @@
 client_id = "f489fe1d33c740d223ea46fcb5f2df58"
 name = "Mention Me"
 handle = "mention-me-1"
-# application_url = "https://mentionme.dev/shopify/app"
 application_url = "https://mention-me.com/shopify/app"
 embedded = true
 
@@ -21,17 +20,17 @@ redirect_urls = [ ]
 [webhooks]
 api_version = "2024-04"
 
-[[webhooks.subscriptions]]
-uri = "https://mention-me.com/shopify/webhooks/customers/data_request"
-compliance_topics = ["customers/data_request"]
+  [[webhooks.subscriptions]]
+  uri = "https://mention-me.com/shopify/webhooks/customers/data_request"
+  compliance_topics = [ "customers/data_request" ]
 
-[[webhooks.subscriptions]]
-uri = "https://mention-me.com/shopify/webhooks/customers/redact"
-compliance_topics = ["customers/redact"]
+  [[webhooks.subscriptions]]
+  uri = "https://mention-me.com/shopify/webhooks/customers/redact"
+  compliance_topics = [ "customers/redact" ]
 
-[[webhooks.subscriptions]]
-uri = "https://mention-me.com/shopify/webhooks/shop/redact"
-compliance_topics = ["shop/redact"]
+  [[webhooks.subscriptions]]
+  uri = "https://mention-me.com/shopify/webhooks/shop/redact"
+  compliance_topics = [ "shop/redact" ]
 
 [pos]
 embedded = false
