@@ -18,6 +18,7 @@ const NoMatchModalContent = () => {
 
 	const {
 		setStep,
+		nameSearchResult,
 		setNameSearchResult,
 	} = useContext(RefereeJourneyContext);
 
@@ -35,17 +36,17 @@ const NoMatchModalContent = () => {
 	return (
 		<>
 			<Heading level={1}>
-				{translate("no-match.headline")}
+				{nameSearchResult.content.headline}
 			</Heading>
 			<TextBlock>
-				{translate("no-match.description")}
+				{nameSearchResult.content.description}
 			</TextBlock>
 
 			<BlockStack>
 				<View>
 					<Button onPress={tryAgain}
 					>
-						{translate("no-match.try-again")}
+						{nameSearchResult.content.back}
 					</Button>
 				</View>
 				<View>
@@ -54,7 +55,7 @@ const NoMatchModalContent = () => {
 						// https://github.com/Shopify/ui-extensions/issues/1009
 						ui.overlay.close(CHECKOUT_MODAL_ID);
 					}}>
-						{translate("no-match.continue-shopping")}
+						{nameSearchResult.content.cta}
 					</Button>
 				</View>
 			</BlockStack>
