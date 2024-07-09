@@ -2,6 +2,14 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useMemo, useState }
 import { Environment } from "../../../../shared/utils";
 import { useMentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeShopifyConfig";
 import { EntryPointOfferAndLink } from "@api/entry-point-api/src/types";
+import {
+	useCurrency,
+	useExtensionLanguage,
+	useLanguage,
+	useLocalizationCountry,
+	useLocalizationMarket,
+	useShop,
+} from "@shopify/ui-extensions-react/checkout";
 
 
 type ReferrerJourneyState = {
@@ -9,7 +17,7 @@ type ReferrerJourneyState = {
 	partnerCode: string;
 	environment: Environment;
 	defaultLocale: string;
-	loadingMentionMeConfig,
+	loadingMentionMeConfig: boolean;
 	loadingEntryPointApi: boolean;
 	setLoadingEntryPointApi: Dispatch<SetStateAction<boolean>>;
 	referrerEntryPointResponse: EntryPointOfferAndLink;
@@ -26,7 +34,24 @@ interface Props {
 }
 
 export const ReferrerJourneyProvider = ({ orderId, children }: Props) => {
-	const {loading: loadingMentionMeConfig, mentionMeConfig} = useMentionMeShopifyConfig();
+	const { myshopifyDomain } = useShop();
+
+	const currency = useCurrency();
+	const extensionLanguage = useExtensionLanguage();
+	const language = useLanguage();
+	const country = useLocalizationCountry();
+	const market = useLocalizationMarket();
+
+	const { loading: loadingMentionMeConfig, mentionMeConfig } = useMentionMeShopifyConfig({
+			myshopifyDomain,
+			extensionLanguage: extensionLanguage.isoCode,
+			language: language.isoCode,
+			country: country.isoCode,
+			currency: currency.isoCode,
+			marketId: market.id,
+			marketHandle: market.handle,
+		},
+	);
 
 	const [loadingEntryPointApi, setLoadingEntryPointApi] = useState(true);
 

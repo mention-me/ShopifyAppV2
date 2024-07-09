@@ -6,6 +6,7 @@ import {
 	useBillingAddress,
 	useEmail,
 	useExtensionEditor,
+	useLanguage,
 	useShop,
 	useTotalAmount,
 } from "@shopify/ui-extensions-react/checkout";
@@ -13,10 +14,13 @@ import useLocale from "../../../../shared/hooks/useLocale";
 import { ReferrerJourneyContext } from "../context/ReferrerJourneyContext";
 
 const useReferrerEntryPoint = () => {
+	const {myshopifyDomain} = useShop();
+
 	const {
 		orderId,
 		partnerCode,
 		environment,
+		defaultLocale,
 		setLoadingEntryPointApi,
 		setReferrerEntryPointResponse,
 		setErrorState,
@@ -24,9 +28,9 @@ const useReferrerEntryPoint = () => {
 
 	const editor = useExtensionEditor();
 
-	const { myshopifyDomain } = useShop();
+	const language = useLanguage();
 
-	const locale = useLocale();
+	const locale = useLocale({ shopifyLanguage: language.isoCode, defaultLocale });
 
 	const email = useEmail();
 	const money = useTotalAmount();
@@ -111,7 +115,7 @@ const useReferrerEntryPoint = () => {
 		if (partnerCode && environment) {
 			fetchReferrerEntryPoint();
 		}
-	}, [partnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, locale, setErrorState, email, billingAddress?.firstName, billingAddress?.lastName, orderId, money.currencyCode, money.amount, setReferrerEntryPointResponse]);
+	}, [partnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, locale, setErrorState, email, billingAddress?.firstName, billingAddress?.lastName, orderId, money.currencyCode, money.amount, setReferrerEntryPointResponse, editor]);
 };
 
 export default useReferrerEntryPoint;
