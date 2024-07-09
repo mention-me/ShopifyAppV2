@@ -8,16 +8,16 @@ import {
 	TextField,
 	useTranslate,
 } from "@shopify/ui-extensions-react/checkout";
-import { useRefereeFindFriend } from "../hooks/useRefereeFindFriend";
+import { useRefereeFindFriend } from "../../hooks/useRefereeFindFriend";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { RefereeJourneyContext, RefereeSearch } from "../context/RefereeJourneyContext";
-import { isValidEmail } from "../../../../shared/utils";
+import { RefereeJourneyContext, RefereeSearch } from "../../context/RefereeJourneyContext";
+import { isValidEmail } from "../../../../../shared/utils";
 
 
 export const FindFriendModalContent = () => {
 	const {
 		loadingConsumerApi,
-		refereeEntryPointResponse,
+		refereeContentApiResponse,
 		search,
 		setSearch,
 		step,
@@ -87,10 +87,10 @@ export const FindFriendModalContent = () => {
 
 	const [heading, description] = useMemo(() => {
 		return [
-			nameSearchResult?.content?.headline || refereeEntryPointResponse.headline,
-			nameSearchResult?.content?.description || refereeEntryPointResponse.searchText,
+			nameSearchResult?.content?.headline || refereeContentApiResponse.headline,
+			nameSearchResult?.content?.description || refereeContentApiResponse.searchText,
 		];
-	}, [refereeEntryPointResponse, nameSearchResult]);
+	}, [refereeContentApiResponse, nameSearchResult]);
 
 	return (
 		<Form
@@ -108,7 +108,7 @@ export const FindFriendModalContent = () => {
 					autocomplete={false}
 					error={errors?.name}
 					icon={{ source: "magnify", position: "end" }}
-					label={refereeEntryPointResponse.nameInputPlaceholder}
+					label={refereeContentApiResponse.nameInputPlaceholder}
 					name="name"
 					onChange={(value) => {
 						setSearch((existing: RefereeSearch) => {
@@ -126,7 +126,7 @@ export const FindFriendModalContent = () => {
 						autocomplete={false}
 						error={errors?.email}
 						icon={{ source: "email", position: "end" }}
-						label={refereeEntryPointResponse.emailInputPlaceholder}
+						label={refereeContentApiResponse.emailInputPlaceholder}
 						name="email"
 						onChange={(value) => {
 							setSearch((existing: RefereeSearch) => {
@@ -147,7 +147,7 @@ export const FindFriendModalContent = () => {
 				accessibilityRole="submit"
 				loading={loadingConsumerApi}
 			>
-				{refereeEntryPointResponse.searchCta}
+				{refereeContentApiResponse.searchCta}
 			</Button>
 		</Form>
 	);

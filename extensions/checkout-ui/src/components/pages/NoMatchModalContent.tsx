@@ -8,8 +8,8 @@ import {
 	View,
 } from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext } from "react";
-import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import { CHECKOUT_MODAL_ID } from "./CheckoutModal";
+import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
+import { CHECKOUT_MODAL_ID } from "../CheckoutModal";
 
 const NoMatchModalContent = () => {
 	const { ui } = useApi();

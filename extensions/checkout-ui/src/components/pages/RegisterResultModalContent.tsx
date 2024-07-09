@@ -1,8 +1,8 @@
 import { Heading, TextBlock } from "@shopify/ui-extensions-react/checkout";
 import { useContext } from "react";
-import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
+import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import RegisterResultFailureModalContent from "./RegisterResultFailureModalContent";
-import DiscountCard from "./DiscountCard";
+import DiscountCard from "./components/DiscountCard";
 
 export const RegisterResultModalContent = () => {
 	const {

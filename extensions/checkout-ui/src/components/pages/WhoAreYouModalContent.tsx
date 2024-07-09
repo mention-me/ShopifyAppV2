@@ -10,9 +10,9 @@ import {
 	useTranslate,
 } from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext, useState } from "react";
-import { useRefereeRegister } from "../hooks/useRefereeRegister";
-import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import { isValidEmail } from "../../../../shared/utils";
+import { useRefereeRegister } from "../../hooks/useRefereeRegister";
+import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
+import { isValidEmail } from "../../../../../shared/utils";
 
 export const WhoAreYouModalContent = () => {
 	const { nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);

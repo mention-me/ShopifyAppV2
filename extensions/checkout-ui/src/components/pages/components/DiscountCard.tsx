@@ -8,7 +8,7 @@ import {
 	View,
 } from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext, useState } from "react";
-import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
+import { RefereeJourneyContext } from "../../../context/RefereeJourneyContext";
 
 const DiscountCard = () => {
 	const applyDiscountCodeChange = useApplyDiscountCodeChange();

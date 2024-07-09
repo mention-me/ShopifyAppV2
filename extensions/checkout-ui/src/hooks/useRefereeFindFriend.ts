@@ -135,5 +135,5 @@ export const useRefereeFindFriend = () => {
 				type: "error",
 			});
 		}
-	}, [environment, partnerCode, myshopifyDomain, search, setLoadingConsumerApi, setNameSearchResult, setStep]);
+	}, [setLoadingConsumerApi, partnerCode, environment, search, myshopifyDomain, setNameSearchResult, step, setStep]);
 };
