@@ -59,12 +59,12 @@ export const CheckoutModal = () => {
 				No amount of faffing around with maxBlockSize seems to constrain the height of the image,
 				so it's assumed you've already got the image the right height.
 				*/}
-				{mentionMeConfig?.refereeModalImage && (
+				{mentionMeConfig?.refereeBannerImageUrl && (
 					<>
 						<View>
 							<Image borderRadius="large"
 								   fit="cover"
-								   source={mentionMeConfig.refereeModalImage} />
+								   source={mentionMeConfig.refereeBannerImageUrl} />
 						</View>
 						<BlockSpacer />
 					</>
