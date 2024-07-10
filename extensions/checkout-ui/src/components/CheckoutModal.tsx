@@ -12,15 +12,15 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import { useContext, useMemo } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import { WhoAreYouModalContent } from "./WhoAreYouModalContent";
-import { FindFriendModalContent } from "./FindFriendModalContent";
-import { RegisterResultModalContent } from "./RegisterResultModalContent";
-import NoMatchModalContent from "./NoMatchModalContent";
+import { WhoAreYouModalContent } from "./pages/WhoAreYouModalContent";
+import { FindFriendModalContent } from "./pages/FindFriendModalContent";
+import { RegisterResultModalContent } from "./pages/RegisterResultModalContent";
+import NoMatchModalContent from "./pages/NoMatchModalContent";
 
 export const CHECKOUT_MODAL_ID = "been-referred-by-friend-modal";
 
 export const CheckoutModal = () => {
-	const { step, refereeEntryPointResponse, mentionMeConfig } = useContext(RefereeJourneyContext);
+	const { step, refereeContentApiResponse, mentionMeConfig } = useContext(RefereeJourneyContext);
 
 	const translate = useTranslate();
 
@@ -50,7 +50,7 @@ export const CheckoutModal = () => {
 		<Modal
 			id={CHECKOUT_MODAL_ID}
 			padding
-			title={refereeEntryPointResponse.defaultCallToAction}
+			title={refereeContentApiResponse.entryCta}
 		>
 			<BlockStack
 				padding="base"

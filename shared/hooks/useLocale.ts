@@ -1,12 +1,10 @@
-import { useMentionMeShopifyConfig } from "./useMentionMeShopifyConfig";
-import { useLanguage } from "@shopify/ui-extensions-react/checkout";
+interface Props {
+	shopifyLanguage: string;
+	defaultLocale: string;
+}
 
-const useLocale = () => {
-	const { defaultLocale } = useMentionMeShopifyConfig();
-
-	let { isoCode: language } = useLanguage();
-
-	language = language.replace("-", "_");
+const useLocale = ({ shopifyLanguage, defaultLocale }: Props) => {
+	const language = shopifyLanguage.replace("-", "_");
 
 	if (language.length === 5 && /^[a-z]{2}_[a-z]{2}$/i.test(language)) {
 		return language;

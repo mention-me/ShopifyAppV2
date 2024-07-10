@@ -25,7 +25,7 @@ const EnrolRefereeType = {
     },
     "customer": {
       "title": "Customer",
-      "description": "Information about the referrer to enrol",
+      "description": "Information about the referee to register and give a reward",
       "oneOf": [
         CustomerType
       ]

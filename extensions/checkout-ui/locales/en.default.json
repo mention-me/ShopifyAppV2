@@ -8,16 +8,6 @@
 		"discount-applied": "Your discount has been applied."
 	},
 	"find-friend": {
-		"heading": "Tell us who sent you so that we can thank them.",
-		"description": "If one of your friends loves us enough to recommend us please tell us their name below.",
-		"no-match": {
-			"heading": "Thanks. Unfortunately, {{name}} is not a name we recognise.",
-			"description": "Try and provide their email address to confirm who they are."
-		},
-		"dupe-match": {
-			"heading": "We know a few people called {{name}}. Can you confirm which one is your friend?",
-			"description": "Please enter their email address so that we know who to thank."
-		},
 		"form": {
 			"error": {
 				"name": {
@@ -26,16 +16,11 @@
 				"email": {
 					"missing-or-invalid": "Please enter your friends email address."
 				}
-			},
-			"label": {
-				"friend-name": "Friend's name and surname",
-				"friend-email": "Friend's email"
-			},
-			"submit": "Find them"
+			}
 		}
 	},
 	"register-result": {
-		"apply-discount": "Apply my discount",
+		"apply-discount":  "apply-discount",
 		"error": {
 			"applying-coupon": "We were unable to apply your discount"
 		}
@@ -59,12 +44,6 @@
 			"text": "By accepting this offer you agree to the",
 			"link": "Terms and Conditions"
 		}
-	},
-	"no-match": {
-		"headline": "These details don’t match anyone who has signed up to refer their friends by name.",
-		"description": "But thank you for letting us know that they referred you to us. We’ll get in touch with them to thank them for sending you our way. And we hope you love us as much as they do.",
-		"try-again": "Try another email address",
-		"continue-shopping": "Continue shopping"
 	},
 	"powered-by": "Powered by"
 }

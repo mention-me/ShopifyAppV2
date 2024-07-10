@@ -7,7 +7,7 @@ export default class SDK {
   core: APICore;
 
   constructor() {
-    this.core = new APICore(definition, 'consumer-api/v2 (api/7.0.0-beta.7)');
+    this.core = new APICore(definition, 'consumer-api/v2 (api/7.0.0-beta.8)');
   }
 
   /**
@@ -104,6 +104,23 @@ export default class SDK {
    */
   get_api_referrer_dashboard(metadata: types.GetApiReferrerDashboardMetadataParam): Promise<FetchResponse<200, types.ReferralDashboardOffer>> {
     return this.core.fetch('/api/consumer/{version}/referrer/dashboard', 'get', metadata);
+  }
+
+  /**
+   * Fetch details from Mention Me with which to build a "find a friend" page. This will
+   * include an initial CTA, such as "Been referred by a friend?" as well as specific content
+   * which you can use to build the page.
+   *
+   * Using this API to build your content will allow you to keep your content up to date with
+   * the latest content managed in Mention Me.
+   *
+   * You should call this API once when your page is loaded, e.g. on the checkout page, and
+   * use it to populate the page.
+   *
+   * @summary Find a friend content
+   */
+  get_api_name_search_content(metadata: types.GetApiNameSearchContentMetadataParam): Promise<FetchResponse<200, types.RefereeContent>> {
+    return this.core.fetch('/api/consumer/{version}/referrer/search/content', 'get', metadata);
   }
 
   /**

@@ -10,7 +10,7 @@ import { useContext, useMemo } from "react";
 import { RefereeJourneyContext } from "./context/RefereeJourneyContext";
 import { CheckoutModal } from "./components/CheckoutModal";
 import { isValidEnvironment } from "../../../shared/utils";
-import { useRefereeEntryPoint } from "./hooks/useRefereeEntryPoint";
+import { useRefereeSearchContent } from "./hooks/useRefereeSearchContent";
 
 const CheckoutUI = () => {
 	const translate = useTranslate();
@@ -21,19 +21,19 @@ const CheckoutUI = () => {
 		partnerCode,
 		environment,
 		loadingMentionMeConfig,
-		loadingEntryPointApi,
-		refereeEntryPointResponse,
+		loadingRefereeContentApi,
+		refereeContentApiResponse,
 		step,
 		errorState,
 	} = useContext(RefereeJourneyContext);
 
-	useRefereeEntryPoint();
+	useRefereeSearchContent();
 
 	const showBeenReferredByFriendLink = useMemo(() => {
 		return !errorState && step !== "completed-success";
 	}, [errorState, step]);
 
-	if (loadingMentionMeConfig || loadingEntryPointApi) {
+	if (loadingMentionMeConfig || loadingRefereeContentApi) {
 		return <SkeletonTextBlock />;
 	}
 
@@ -57,7 +57,7 @@ const CheckoutUI = () => {
 		return null;
 	}
 
-	if (!refereeEntryPointResponse) {
+	if (!refereeContentApiResponse) {
 		console.log("No referee entry point response. Nothing to render.");
 		return null;
 	}
@@ -73,7 +73,7 @@ const CheckoutUI = () => {
 				{step === "completed-success" && <Banner status="success"
 														 title={translate("success.discount-applied")} />}
 				{showBeenReferredByFriendLink && <Link overlay={<CheckoutModal />}>
-					{refereeEntryPointResponse.defaultCallToAction}
+					{refereeContentApiResponse.entryCta}
 				</Link>}
 			</View>
 		</BlockStack>

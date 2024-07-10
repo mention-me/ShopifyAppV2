@@ -8,15 +8,16 @@ import {
 	TextField,
 	useTranslate,
 } from "@shopify/ui-extensions-react/checkout";
-import { useRefereeFindFriend } from "../hooks/useRefereeFindFriend";
+import { useRefereeFindFriend } from "../../hooks/useRefereeFindFriend";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { RefereeJourneyContext, RefereeSearch } from "../context/RefereeJourneyContext";
-import { isValidEmail } from "../../../../shared/utils";
+import { RefereeJourneyContext, RefereeSearch } from "../../context/RefereeJourneyContext";
+import { isValidEmail } from "../../../../../shared/utils";
 
 
 export const FindFriendModalContent = () => {
 	const {
 		loadingConsumerApi,
+		refereeContentApiResponse,
 		search,
 		setSearch,
 		step,
@@ -30,8 +31,6 @@ export const FindFriendModalContent = () => {
 	const [shouldProvideEmail, setShouldProvideEmail] = useState(false);
 
 	const [errors, setErrors] = useState<{ name?: string, email?: string }>({});
-
-	const [nameSearchedFor, setNameSearchedFor] = useState<string>();
 
 	useEffect(() => {
 		if (!nameSearchResult) {
@@ -50,8 +49,6 @@ export const FindFriendModalContent = () => {
 		5. If found by email - next step
 		6. If not found by email - give up.
 		 */
-
-		setNameSearchedFor(search?.name);
 
 		if (type === "duplicate-match") {
 			setShouldProvideEmail(true);
@@ -89,31 +86,11 @@ export const FindFriendModalContent = () => {
 	}, [findFriendSubmitCallback, search, shouldProvideEmail, setErrors, translate]);
 
 	const [heading, description] = useMemo(() => {
-		console.log(shouldProvideEmail);
-		console.log(nameSearchResult);
-		if (!shouldProvideEmail) {
-			return [
-				translate("find-friend.heading"),
-				translate("find-friend.description")
-			];
-		}
-
-		if (step === "duplicate-match") {
-			return [
-				translate("find-friend.dupe-match.heading", { name: nameSearchedFor }),
-				translate("find-friend.dupe-match.description"),
-			];
-		}
-
-		if (step === "no-match") {
-			return [
-				translate("find-friend.no-match.heading", { name: nameSearchedFor }),
-				translate("find-friend.no-match.description"),
-			];
-		}
-
-		throw new Error("Unknown name search result type");
-	}, [nameSearchResult, step, nameSearchedFor, shouldProvideEmail, translate]);
+		return [
+			nameSearchResult?.content?.headline || refereeContentApiResponse.headline,
+			nameSearchResult?.content?.description || refereeContentApiResponse.searchText,
+		];
+	}, [refereeContentApiResponse, nameSearchResult]);
 
 	return (
 		<Form
@@ -131,7 +108,7 @@ export const FindFriendModalContent = () => {
 					autocomplete={false}
 					error={errors?.name}
 					icon={{ source: "magnify", position: "end" }}
-					label={translate("find-friend.form.label.friend-name")}
+					label={refereeContentApiResponse.nameInputPlaceholder}
 					name="name"
 					onChange={(value) => {
 						setSearch((existing: RefereeSearch) => {
@@ -149,7 +126,7 @@ export const FindFriendModalContent = () => {
 						autocomplete={false}
 						error={errors?.email}
 						icon={{ source: "email", position: "end" }}
-						label={translate("find-friend.form.label.friend-email")}
+						label={refereeContentApiResponse.emailInputPlaceholder}
 						name="email"
 						onChange={(value) => {
 							setSearch((existing: RefereeSearch) => {
@@ -170,7 +147,7 @@ export const FindFriendModalContent = () => {
 				accessibilityRole="submit"
 				loading={loadingConsumerApi}
 			>
-				{translate("find-friend.form.submit")}
+				{refereeContentApiResponse.searchCta}
 			</Button>
 		</Form>
 	);

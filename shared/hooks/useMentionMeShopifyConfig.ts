@@ -1,12 +1,4 @@
 import { Environment, getDomainForEnvironment } from "../utils";
-import {
-	useCurrency,
-	useExtensionLanguage,
-	useLanguage,
-	useLocalizationCountry,
-	useLocalizationMarket,
-	useShop,
-} from "@shopify/ui-extensions-react/checkout";
 import { useEffect, useState } from "react";
 
 export interface MentionMeShopifyConfig {
@@ -17,8 +9,17 @@ export interface MentionMeShopifyConfig {
 	refereeBannerImageUrl?: string,
 }
 
-export const useMentionMeShopifyConfig = () => {
-	const { myshopifyDomain } = useShop();
+interface Props {
+	myshopifyDomain: string;
+	currency: string;
+	extensionLanguage: string;
+	language: string;
+	country?: string;
+	marketId?: string;
+	marketHandle?: string
+}
+
+export const useMentionMeShopifyConfig = ({myshopifyDomain, extensionLanguage, language, currency, country, marketId, marketHandle}: Props) => {
 
 	const [mentionMeConfig, setMentionMeConfig] = useState<MentionMeShopifyConfig>({
 		shopId: undefined,
@@ -27,12 +28,6 @@ export const useMentionMeShopifyConfig = () => {
 		defaultLocale: "",
 	});
 
-	const currency = useCurrency();
-	const extensionLanguage = useExtensionLanguage();
-	const language = useLanguage();
-	const country = useLocalizationCountry();
-	const market = useLocalizationMarket();
-
 	const [loading, setLoading] = useState(true);
 
 	const url = getDomainForEnvironment("production");
@@ -40,12 +35,12 @@ export const useMentionMeShopifyConfig = () => {
 	useEffect(() => {
 		const fetchMentionMeConfig = async () => {
 			const u = new URL(`https://${url}/shopify/app/config/${myshopifyDomain}`);
-			u.searchParams.append("extensionLanguage", extensionLanguage.isoCode);
-			u.searchParams.append("language", language.isoCode);
-			u.searchParams.append("currency", currency.isoCode);
-			u.searchParams.append("country", country?.isoCode);
-			u.searchParams.append("market", market?.id);
-			u.searchParams.append("marketHandle", market?.handle);
+			u.searchParams.append("extensionLanguage", extensionLanguage);
+			u.searchParams.append("language", language);
+			u.searchParams.append("currency", currency);
+			u.searchParams.append("country", country);
+			u.searchParams.append("market", marketId);
+			u.searchParams.append("marketHandle", marketHandle);
 
 			try {
 				const response = await fetch(u.toString(),
@@ -70,7 +65,7 @@ export const useMentionMeShopifyConfig = () => {
 		};
 
 		fetchMentionMeConfig();
-	}, [country?.isoCode, currency.isoCode, extensionLanguage.isoCode, language.isoCode, market?.handle, market?.id, myshopifyDomain, url]);
+	}, [country, currency, extensionLanguage, language, marketHandle, marketId, myshopifyDomain, url]);
 
 
 	return {

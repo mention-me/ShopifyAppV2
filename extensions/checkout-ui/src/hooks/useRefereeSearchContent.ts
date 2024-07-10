@@ -1,11 +1,12 @@
 import { SITUATION } from "../Checkout";
 import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
 import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
-import { EntryPointForRefereeType, EntryPointLink } from "@api/entry-point-api/src/types";
+import { RefereeContent } from "@api/consumer-api/src/types";
 import { useContext, useEffect } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { useShop } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
+import { useLanguage } from "@shopify/ui-extensions-react/checkout";
 
 /**
  * Function to call the Mention Me Referee EntryPoint API.
@@ -15,36 +16,25 @@ import useLocale from "../../../../shared/hooks/useLocale";
  * It will also return a URL, but we will ignore this as we will use the Consumer API to build our own fully fledged UI
  * using Shopify components.
  */
-export const useRefereeEntryPoint = () => {
+export const useRefereeSearchContent = () => {
 	const {
 		partnerCode,
 		environment,
-		setLoadingEntryPointApi,
-		setRefereeEntryPointResponse,
+		defaultLocale,
+		setLoadingRefereeContentApi,
+		setRefereeContentApiResponse,
 		setErrorState,
 	} = useContext(RefereeJourneyContext);
 
 	const { myshopifyDomain } = useShop();
 
-	const locale = useLocale();
+	const { isoCode } = useLanguage();
+
+	const locale = useLocale({shopifyLanguage: isoCode, defaultLocale});
 
 	useEffect(() => {
-		const fetchRefereeEntryPoint = async () => {
-			setLoadingEntryPointApi(true);
-
-			const body: EntryPointForRefereeType = {
-				request: {
-					partnerCode: partnerCode,
-					situation: SITUATION,
-					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
-					appName: APP_NAME,
-					localeCode: locale,
-				},
-				implementation: {
-					wrapContentWithBranding: true,
-					showCloseIcon: false,
-				},
-			};
+		const fetchRefereeJourneyContent = async () => {
+			setLoadingRefereeContentApi(true);
 
 			if (!partnerCode || typeof partnerCode !== "string") {
 				// console.error("Mention Me partner code not provided", partnerCode);
@@ -58,39 +48,46 @@ export const useRefereeEntryPoint = () => {
 
 			const url = getDomainForEnvironment(environment);
 
+			const params = new URLSearchParams({
+				"request[partnerCode]": partnerCode,
+				"request[situation]": SITUATION,
+				"request[appName]": APP_NAME,
+				"request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
+				"request[localeCode]": locale,
+			});
+
 			try {
-				const response = await fetch(`https://${url}/api/entry-point/v2/referee`,
+				const response = await fetch(`https://${url}/api/consumer/v2/referrer/search/content?${params.toString()}`,
 					{
-						method: "POST",
+						method: "GET",
 						credentials: "include",
 						headers: { accept: "application/json", "Content-Type": "application/json" },
-						body: JSON.stringify(body),
 					},
 				);
 
 				if (!response.ok) {
-					console.error("Error calling entrypoint:", response);
+					console.error("Error calling referrer search content API:", response);
 
 					setErrorState(response.statusText);
-					setLoadingEntryPointApi(false);
+					setLoadingRefereeContentApi(false);
 
 					return;
 				}
 
-				const json = (await response.json()) as EntryPointLink;
+				const json = (await response.json()) as RefereeContent;
 
-				setRefereeEntryPointResponse(json);
-				setLoadingEntryPointApi(false);
+				setRefereeContentApiResponse(json);
+				setLoadingRefereeContentApi(false);
 			} catch (error) {
 				console.error("Error calling referee entrypoint:", error);
 
 				setErrorState(error?.message);
-				setLoadingEntryPointApi(false);
+				setLoadingRefereeContentApi(false);
 			}
 		};
 
 		if (partnerCode && environment && locale) {
-			fetchRefereeEntryPoint();
+			fetchRefereeJourneyContent();
 		}
-	}, [partnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, setRefereeEntryPointResponse, locale, setErrorState]);
+	}, [partnerCode, environment, setLoadingRefereeContentApi, myshopifyDomain, setRefereeContentApiResponse, locale, setErrorState]);
 };

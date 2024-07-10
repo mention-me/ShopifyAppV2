@@ -84,7 +84,7 @@
                           "dateString": {
                             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                             "type": "string",
-                            "example": "2024-06-18T16:31:06+00:00"
+                            "example": "2024-07-10T09:43:37+00:00"
                           },
                           "couponCode": {
                             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -492,7 +492,7 @@
                           "dateString": {
                             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                             "type": "string",
-                            "example": "2024-06-18T16:31:06+00:00"
+                            "example": "2024-07-10T09:43:37+00:00"
                           },
                           "couponCode": {
                             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -1100,6 +1100,156 @@
         }
       }
     },
+    "/api/consumer/{version}/referrer/search/content": {
+      "get": {
+        "tags": [
+          "Find referrer by name"
+        ],
+        "summary": "Find a friend content",
+        "description": "Fetch details from Mention Me with which to build a \"find a friend\" page. This will include an initial CTA, such as \"Been referred by a friend?\" as well as specific content which you can use to build the page.\n\nUsing this API to build your content will allow you to keep your content up to date with the latest content managed in Mention Me.\n\nYou should call this API once when your page is loaded, e.g. on the checkout page, and use it to populate the page.",
+        "operationId": "get_api_name_search_content",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "v2|v1",
+              "enum": [
+                "v2",
+                "v1"
+              ]
+            },
+            "example": "v2"
+          },
+          {
+            "name": "request[partnerCode]",
+            "in": "query",
+            "description": "Your partner code, used to link to your users and offers",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "[YOUR-PARTNER-CODE]"
+          },
+          {
+            "name": "request[situation]",
+            "in": "query",
+            "description": "Situation - a string representing where in the application you are making this request",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "mobile-app"
+          },
+          {
+            "name": "request[localeCode]",
+            "in": "query",
+            "description": "Locale code - ISO standard locale code (e.g. en_GB) for the locale you expect the content to be in",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[userDeviceIdentifier]",
+            "in": "query",
+            "description": "User Device Identifier should be a unique reference to this combination of app + user.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[deviceType]",
+            "in": "query",
+            "description": "Device type - your description of the device the user is using. We use this for performance and conversion optimisation.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[appName]",
+            "in": "query",
+            "description": "Your application name. Used for reporting.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request[appVersion]",
+            "in": "query",
+            "description": "Your application version reference. Used for reporting and troubleshooting.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "entryCta": {
+                      "title": "The Call to Action the user uses to start the journey.",
+                      "description": "e.g. \"Been referred by a friend?\"",
+                      "type": "string"
+                    },
+                    "headline": {
+                      "title": "A headline to display to users when they open the NameSearch journey.",
+                      "description": "e.g. \"Who referred you to us?\"",
+                      "type": "string"
+                    },
+                    "searchText": {
+                      "title": "A headline to display to users when they open the NameSearch journey.",
+                      "description": "e.g. \"Enter your friends name so we can thank them for referring you to us.\"",
+                      "type": "string"
+                    },
+                    "searchCta": {
+                      "title": "The Call to Action on the button.",
+                      "description": "e.g. \"Find them\"",
+                      "type": "string"
+                    },
+                    "nameInputPlaceholder": {
+                      "title": "A placeholder string to display in the name input field.",
+                      "description": "e.g. \"Your friend's name\"",
+                      "type": "string"
+                    },
+                    "emailInputPlaceholder": {
+                      "title": "A placeholder string to display in the email input field.",
+                      "description": "e.g. \"Your friend's email\"",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "title": "RefereeContent",
+                  "x-readme-ref-name": "RefereeContent"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when the integration for this merchant is not enabled"
+          },
+          "404": {
+            "description": "Returned when it is not possible to an offer to render content for"
+          },
+          "500": {
+            "description": "The request contains errors"
+          },
+          "503": {
+            "description": "The service was unavailable, try again shortly"
+          }
+        }
+      }
+    },
     "/api/consumer/{version}/referrer/search": {
       "get": {
         "tags": [
@@ -1349,7 +1499,8 @@
                       "type": "boolean"
                     },
                     "links": {
-                      "title": "Pagination of output and links to associated resources, including content-collection items",
+                      "title": "Pagination of output and links to associated resources, including content-collection items.",
+                      "description": "TODO: This is overcomplicated. We should just call it \"content\" and return content!",
                       "type": "array",
                       "items": {
                         "properties": {
@@ -1480,7 +1631,7 @@
                   },
                   "customer": {
                     "title": "Customer",
-                    "description": "Information about the referrer to enrol",
+                    "description": "Information about the referee to register and give a reward",
                     "oneOf": [
                       {
                         "required": [
@@ -1846,7 +1997,7 @@
                   "dateString": {
                     "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                     "type": "string",
-                    "example": "2024-06-18T16:31:06+00:00"
+                    "example": "2024-07-10T09:43:37+00:00"
                   },
                   "couponCode": {
                     "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -2199,7 +2350,7 @@
                   "dateString": {
                     "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                     "type": "string",
-                    "example": "2024-06-18T16:31:06+00:00"
+                    "example": "2024-07-10T09:43:37+00:00"
                   },
                   "couponCode": {
                     "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -2621,6 +2772,43 @@
         "title": "ReferralDashboardOffer",
         "x-readme-ref-name": "ReferralDashboardOffer"
       },
+      "RefereeContent": {
+        "properties": {
+          "entryCta": {
+            "title": "The Call to Action the user uses to start the journey.",
+            "description": "e.g. \"Been referred by a friend?\"",
+            "type": "string"
+          },
+          "headline": {
+            "title": "A headline to display to users when they open the NameSearch journey.",
+            "description": "e.g. \"Who referred you to us?\"",
+            "type": "string"
+          },
+          "searchText": {
+            "title": "A headline to display to users when they open the NameSearch journey.",
+            "description": "e.g. \"Enter your friends name so we can thank them for referring you to us.\"",
+            "type": "string"
+          },
+          "searchCta": {
+            "title": "The Call to Action on the button.",
+            "description": "e.g. \"Find them\"",
+            "type": "string"
+          },
+          "nameInputPlaceholder": {
+            "title": "A placeholder string to display in the name input field.",
+            "description": "e.g. \"Your friend's name\"",
+            "type": "string"
+          },
+          "emailInputPlaceholder": {
+            "title": "A placeholder string to display in the email input field.",
+            "description": "e.g. \"Your friend's email\"",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "title": "RefereeContent",
+        "x-readme-ref-name": "RefereeContent"
+      },
       "ReferrerFound": {
         "properties": {
           "referrer": {
@@ -2747,7 +2935,8 @@
             "type": "boolean"
           },
           "links": {
-            "title": "Pagination of output and links to associated resources, including content-collection items",
+            "title": "Pagination of output and links to associated resources, including content-collection items.",
+            "description": "TODO: This is overcomplicated. We should just call it \"content\" and return content!",
             "type": "array",
             "items": {
               "properties": {
@@ -2830,7 +3019,7 @@
           },
           "customer": {
             "title": "Customer",
-            "description": "Information about the referrer to enrol",
+            "description": "Information about the referee to register and give a reward",
             "oneOf": [
               {
                 "required": [
@@ -3156,7 +3345,7 @@
           "dateString": {
             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
             "type": "string",
-            "example": "2024-06-18T16:31:06+00:00"
+            "example": "2024-07-10T09:43:37+00:00"
           },
           "couponCode": {
             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
