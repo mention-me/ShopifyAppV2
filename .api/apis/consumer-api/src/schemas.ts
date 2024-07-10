@@ -8,12 +8,14 @@ import DashboardReward from './schemas/DashboardReward.js';
 import EnrolRefereeType from './schemas/EnrolRefereeType.js';
 import EnrolReferrerType from './schemas/EnrolReferrerType.js';
 import GetApiNameSearch from './schemas/GetApiNameSearch.js';
+import GetApiNameSearchContent from './schemas/GetApiNameSearchContent.js';
 import GetApiReferrerDashboard from './schemas/GetApiReferrerDashboard.js';
 import Offer from './schemas/Offer.js';
 import OrderType from './schemas/OrderType.js';
 import PostApiOrder from './schemas/PostApiOrder.js';
 import PostApiReferrerEnrol from './schemas/PostApiReferrerEnrol.js';
 import PostApiRegisterReferee from './schemas/PostApiRegisterReferee.js';
+import RefereeContent from './schemas/RefereeContent.js';
 import RefereeRegister from './schemas/RefereeRegister.js';
 import RefereeReward from './schemas/RefereeReward.js';
 import ReferralDashboardOffer from './schemas/ReferralDashboardOffer.js';
@@ -26,4 +28,4 @@ import RequestWithVariationType from './schemas/RequestWithVariationType.js';
 import Reward from './schemas/Reward.js';
 import ShareLink from './schemas/ShareLink.js';
 import TermsLinks from './schemas/TermsLinks.js';
-export { AddressForSegmentationType, AddressType, ConfirmOrderType, Content, ContentCollectionLink, CustomerType, DashboardReward, EnrolRefereeType, EnrolReferrerType, GetApiNameSearch, GetApiReferrerDashboard, Offer, OrderType, PostApiOrder, PostApiReferrerEnrol, PostApiRegisterReferee, RefereeRegister, RefereeReward, ReferralDashboardOffer, ReferralShareOffer, ReferralStats, ReferrerFound, ReferrerIdentifier, RequestType, RequestWithVariationType, Reward, ShareLink, TermsLinks }
+export { AddressForSegmentationType, AddressType, ConfirmOrderType, Content, ContentCollectionLink, CustomerType, DashboardReward, EnrolRefereeType, EnrolReferrerType, GetApiNameSearch, GetApiNameSearchContent, GetApiReferrerDashboard, Offer, OrderType, PostApiOrder, PostApiReferrerEnrol, PostApiRegisterReferee, RefereeContent, RefereeRegister, RefereeReward, ReferralDashboardOffer, ReferralShareOffer, ReferralStats, ReferrerFound, ReferrerIdentifier, RequestType, RequestWithVariationType, Reward, ShareLink, TermsLinks }

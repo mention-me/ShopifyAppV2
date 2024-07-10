@@ -13,11 +13,11 @@
     {
       "private": true,
       "identifier": "consumer-api",
-      "source": "@mention-me/v2.0#15d5t3klxkmgofm",
-      "integrity": "sha512-qKw75ljOCc6hj5BUpsZPKBn+R84FYYa6HpkNfxotIzwCmPpGgFba/Hbrd4eGTVzpwExWWt/jWSgpnZfzSghN8g==",
-      "installerVersion": "7.0.0-beta.7",
+      "source": "@mention-me/v2.0#34zv38c29lyfnluiu",
+      "integrity": "sha512-fgnmi+7uPgqQw3GcH4mdW2T57zKQ2WHGI5TwwAoTfEBGsASh51o2vwWOd6dWp5Kysdbq1IqYaX6tbcIG4HShqA==",
+      "installerVersion": "7.0.0-beta.8",
       "language": "js",
-      "createdAt": "2024-06-18T20:33:10.849Z"
+      "createdAt": "2024-07-10T09:45:39.465Z"
     }
   ]
 }
