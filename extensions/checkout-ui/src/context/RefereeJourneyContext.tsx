@@ -83,10 +83,10 @@ export const RefereeJourneyProvider = ({ children }: Props) => {
 			myshopifyDomain,
 			extensionLanguage: extensionLanguage.isoCode,
 			language: language.isoCode,
-			country: country.isoCode,
+			country: country?.isoCode,
 			currency: currency.isoCode,
-			marketId: market.id,
-			marketHandle: market.handle,
+			marketId: market?.id,
+			marketHandle: market?.handle,
 		},
 	);
 
