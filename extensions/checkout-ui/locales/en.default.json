@@ -20,7 +20,7 @@
 		}
 	},
 	"register-result": {
-		"apply-discount":  "apply-discount",
+		"apply-discount":  "Apply discount",
 		"error": {
 			"applying-coupon": "We were unable to apply your discount"
 		}

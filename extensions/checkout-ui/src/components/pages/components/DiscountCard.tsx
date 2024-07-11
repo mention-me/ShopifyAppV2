@@ -77,11 +77,13 @@ const DiscountCard = () => {
 					</TextBlock>
 				</View>
 			</InlineStack>
-			<Button loading={applyingDiscount}
-					onPress={applyCouponCode}
-			>
-				{translate("register-result.apply-discount")}
-			</Button>
+			<View>
+				<Button loading={applyingDiscount}
+						onPress={applyCouponCode}
+				>
+					{translate("register-result.apply-discount")}
+				</Button>
+			</View>
 		</>
 	);
 };
