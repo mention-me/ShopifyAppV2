@@ -44,6 +44,7 @@ export const ReferrerJourneyProvider = ({ orderId, children }: Props) => {
 
 	const { loading: loadingMentionMeConfig, mentionMeConfig } = useMentionMeShopifyConfig({
 			myshopifyDomain,
+			extension: "order-status",
 			extensionLanguage: extensionLanguage.isoCode,
 			language: language.isoCode,
 			country: country?.isoCode,

@@ -81,6 +81,7 @@ export const RefereeJourneyProvider = ({ children }: Props) => {
 
 	const { loading: loadingMentionMeConfig, mentionMeConfig } = useMentionMeShopifyConfig({
 			myshopifyDomain,
+			extension: "checkout",
 			extensionLanguage: extensionLanguage.isoCode,
 			language: language.isoCode,
 			country: country?.isoCode,

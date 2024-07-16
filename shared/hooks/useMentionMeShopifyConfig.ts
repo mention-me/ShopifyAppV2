@@ -9,8 +9,11 @@ export interface MentionMeShopifyConfig {
 	refereeBannerImageUrl?: string,
 }
 
+export type ExtensionType = "checkout" | "order-status"
+
 interface Props {
 	myshopifyDomain: string;
+	extension: ExtensionType;
 	currency: string;
 	extensionLanguage: string;
 	language: string;
@@ -19,7 +22,7 @@ interface Props {
 	marketHandle?: string
 }
 
-export const useMentionMeShopifyConfig = ({myshopifyDomain, extensionLanguage, language, currency, country, marketId, marketHandle}: Props) => {
+export const useMentionMeShopifyConfig = ({myshopifyDomain, extension, extensionLanguage, language, currency, country, marketId, marketHandle}: Props) => {
 
 	const [mentionMeConfig, setMentionMeConfig] = useState<MentionMeShopifyConfig>({
 		shopId: undefined,
@@ -41,6 +44,7 @@ export const useMentionMeShopifyConfig = ({myshopifyDomain, extensionLanguage, l
 			u.searchParams.append("country", country);
 			u.searchParams.append("market", marketId);
 			u.searchParams.append("marketHandle", marketHandle);
+			u.searchParams.append("extension", extension);
 
 			try {
 				const response = await fetch(u.toString(),
