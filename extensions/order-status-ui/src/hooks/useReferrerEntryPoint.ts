@@ -112,7 +112,7 @@ const useReferrerEntryPoint = () => {
 			}
 		};
 
-		if (partnerCode && environment) {
+		if (partnerCode && environment && locale) {
 			fetchReferrerEntryPoint();
 		}
 	}, [partnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, locale, setErrorState, email, billingAddress?.firstName, billingAddress?.lastName, orderId, money.currencyCode, money.amount, setReferrerEntryPointResponse, editor]);

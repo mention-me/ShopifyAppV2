@@ -46,6 +46,11 @@ export const useRefereeSearchContent = () => {
 				return;
 			}
 
+			if (!locale) {
+				// console.error("Invalid Mention Me locale", locale);
+				return;
+			}
+
 			const url = getDomainForEnvironment(environment);
 
 			const params = new URLSearchParams({

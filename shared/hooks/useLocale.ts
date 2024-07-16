@@ -14,7 +14,7 @@ const useLocale = ({ shopifyLanguage, defaultLocale }: Props) => {
 		return defaultLocale;
 	}
 
-	throw new Error(`Invalid language from Shopify [${language}] and no valid default locale [${defaultLocale}].`);
+	return undefined;
 }
 
 export default useLocale;
