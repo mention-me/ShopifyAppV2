@@ -1,12 +1,18 @@
 import { Environment, getDomainForEnvironment } from "../utils";
 import { useEffect, useState } from "react";
 
+export interface Image {
+	url: string;
+	width: number;
+	height: number;
+}
+
 export interface MentionMeShopifyConfig {
 	shopId?: string,
 	environment?: Environment,
 	partnerCode?: string,
 	defaultLocale?: string,
-	refereeBannerImageUrl?: string,
+	refereeBannerImage?: Image,
 }
 
 export type ExtensionType = "checkout" | "order-status"
