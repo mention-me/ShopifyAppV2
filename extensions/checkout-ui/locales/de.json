@@ -1,0 +1,49 @@
+{
+	"checkout": {
+		"modal": {
+			"error": "Entschuldigung, ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut."
+		}
+	},
+	"success": {
+		"discount-applied": "Ihr Rabatt wurde angewendet."
+	},
+	"find-friend": {
+		"form": {
+			"error": {
+				"name": {
+					"missing": "Bitte geben Sie den Namen Ihres Freundes ein."
+				},
+				"email": {
+					"missing-or-invalid": "Bitte geben Sie die E-Mail-Adresse Ihres Freundes ein."
+				}
+			}
+		}
+	},
+	"register-result": {
+		"apply-discount": "Rabatt anwenden",
+		"error": {
+			"applying-coupon": "Wir konnten Ihren Rabatt nicht anwenden"
+		}
+	},
+	"who-are-you": {
+		"form": {
+			"label": {
+				"your-email": "Ihre E-Mail-Adresse"
+			},
+			"error": {
+				"your-email": "Bitte geben Sie Ihre E-Mail-Adresse ein."
+			},
+			"terms-link": "Geschäftsbedingungen",
+			"submit": "Fordern Sie Ihre Belohnung an"
+		},
+		"privacy": {
+			"text": "Unser Freundschaftswerbungsprogramm wird von Mention Me verwaltet, die Ihre Daten verarbeiten und Ihnen Empfehlungs-E-Mails senden werden.",
+			"link": "Mehr Infos und Ihre Datenschutzrechte."
+		},
+		"terms": {
+			"text": "Durch die Annahme dieses Angebots stimmen Sie den",
+			"link": "Geschäftsbedingungen"
+		}
+	},
+	"powered-by": "Bereitgestellt von"
+}

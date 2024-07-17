@@ -1,0 +1,49 @@
+{
+	"checkout": {
+		"modal": {
+			"error": "Desculpe, ocorreu um erro desconhecido. Por favor, tente novamente mais tarde."
+		}
+	},
+	"success": {
+		"discount-applied": "Seu desconto foi aplicado."
+	},
+	"find-friend": {
+		"form": {
+			"error": {
+				"name": {
+					"missing": "Por favor, insira o nome do seu amigo."
+				},
+				"email": {
+					"missing-or-invalid": "Por favor, insira o endereço de email do seu amigo."
+				}
+			}
+		}
+	},
+	"register-result": {
+		"apply-discount": "Aplicar desconto",
+		"error": {
+			"applying-coupon": "Não conseguimos aplicar seu desconto"
+		}
+	},
+	"who-are-you": {
+		"form": {
+			"label": {
+				"your-email": "Seu endereço de email"
+			},
+			"error": {
+				"your-email": "Por favor, insira seu endereço de email."
+			},
+			"terms-link": "Termos e Condições",
+			"submit": "Reivindique sua recompensa"
+		},
+		"privacy": {
+			"text": "Nosso programa de referência é gerido pela Mention Me, que processará seus dados e enviará emails de serviço de referência.",
+			"link": "Mais informações e seus direitos de privacidade."
+		},
+		"terms": {
+			"text": "Ao aceitar esta oferta, você concorda com os",
+			"link": "Termos e Condições"
+		}
+	},
+	"powered-by": "Desenvolvido por"
+}

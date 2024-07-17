@@ -1,0 +1,49 @@
+{
+	"checkout": {
+		"modal": {
+			"error": "Tyvärr, ett okänt fel har inträffat. Vänligen försök igen senare."
+		}
+	},
+	"success": {
+		"discount-applied": "Din rabatt har tillämpats."
+	},
+	"find-friend": {
+		"form": {
+			"error": {
+				"name": {
+					"missing": "Vänligen ange din väns namn."
+				},
+				"email": {
+					"missing-or-invalid": "Vänligen ange din väns e-postadress."
+				}
+			}
+		}
+	},
+	"register-result": {
+		"apply-discount": "Tillämpa rabatt",
+		"error": {
+			"applying-coupon": "Vi kunde inte tillämpa din rabatt"
+		}
+	},
+	"who-are-you": {
+		"form": {
+			"label": {
+				"your-email": "Din e-postadress"
+			},
+			"error": {
+				"your-email": "Vänligen ange din e-postadress."
+			},
+			"terms-link": "Villkor",
+			"submit": "Begär din belöning"
+		},
+		"privacy": {
+			"text": "Vårt referensprogram hanteras av Mention Me som kommer att behandla dina uppgifter och skicka dig referensmejl.",
+			"link": "Mer info och dina rättigheter om integritet."
+		},
+		"terms": {
+			"text": "Genom att acceptera detta erbjudande godkänner du",
+			"link": "Villkor"
+		}
+	},
+	"powered-by": "Drivs av"
+}

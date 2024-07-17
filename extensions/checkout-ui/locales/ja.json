@@ -1,0 +1,49 @@
+{
+	"checkout": {
+		"modal": {
+			"error": "申し訳ありませんが、不明なエラーが発生しました。後でもう一度お試しください。"
+		}
+	},
+	"success": {
+		"discount-applied": "割引が適用されました。"
+	},
+	"find-friend": {
+		"form": {
+			"error": {
+				"name": {
+					"missing": "友達の名前を入力してください。"
+				},
+				"email": {
+					"missing-or-invalid": "友達のメールアドレスを入力してください。"
+				}
+			}
+		}
+	},
+	"register-result": {
+		"apply-discount": "割引を適用",
+		"error": {
+			"applying-coupon": "割引を適用できませんでした"
+		}
+	},
+	"who-are-you": {
+		"form": {
+			"label": {
+				"your-email": "あなたのメールアドレス"
+			},
+			"error": {
+				"your-email": "あなたのメールアドレスを入力してください。"
+			},
+			"terms-link": "利用規約",
+			"submit": "報酬を請求する"
+		},
+		"privacy": {
+			"text": "私たちの友達紹介プログラムはMention Meによって管理されており、あなたのデータを処理し、紹介サービスのメールを送信します。",
+			"link": "詳細とプライバシーの権利についてはこちら。"
+		},
+		"terms": {
+			"text": "このオファーを受け入れることにより、あなたは",
+			"link": "利用規約"
+		}
+	},
+	"powered-by": "提供元"
+}

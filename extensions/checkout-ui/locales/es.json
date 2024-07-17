@@ -1,0 +1,49 @@
+{
+    "checkout": {
+        "modal": {
+            "error": "Lo siento, ha ocurrido un error desconocido. Por favor, inténtelo de nuevo más tarde."
+        }
+    },
+    "success": {
+        "discount-applied": "Se ha aplicado tu descuento."
+    },
+    "find-friend": {
+        "form": {
+            "error": {
+                "name": {
+                    "missing": "Por favor, introduce el nombre de tu amigo."
+                },
+                "email": {
+                    "missing-or-invalid": "Por favor, introduce la dirección de correo electrónico de tu amigo."
+                }
+            }
+        }
+    },
+    "register-result": {
+        "apply-discount": "Aplicar descuento",
+        "error": {
+            "applying-coupon": "No pudimos aplicar tu descuento"
+        }
+    },
+    "who-are-you": {
+        "form": {
+            "label": {
+                "your-email": "Tu dirección de correo electrónico"
+            },
+            "error": {
+                "your-email": "Por favor, introduce tu dirección de correo electrónico."
+            },
+            "terms-link": "Términos y condiciones",
+            "submit": "Reclama tu recompensa"
+        },
+        "privacy": {
+            "text": "Nuestro programa de refer-a-friend es gestionado por Mention Me que procesará tus datos y te enviará correos electrónicos de servicio de referencia.",
+            "link": "Más información y tus derechos de privacidad."
+        },
+        "terms": {
+            "text": "Al aceptar esta oferta, aceptas los",
+            "link": "Términos y Condiciones"
+        }
+    },
+    "powered-by": "Impulsado por"
+}
