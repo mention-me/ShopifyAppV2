@@ -1,0 +1,49 @@
+{
+	"checkout": {
+		"modal": {
+			"error": "Sorry, er is een onbekende fout opgetreden. Probeer het later opnieuw."
+		}
+	},
+	"success": {
+		"discount-applied": "Je korting is toegepast."
+	},
+	"find-friend": {
+		"form": {
+			"error": {
+				"name": {
+					"missing": "Voer de naam van je vriend in."
+				},
+				"email": {
+					"missing-or-invalid": "Voer het e-mailadres van je vriend in."
+				}
+			}
+		}
+	},
+	"register-result": {
+		"apply-discount": "Korting toepassen",
+		"error": {
+			"applying-coupon": "We konden je korting niet toepassen"
+		}
+	},
+	"who-are-you": {
+		"form": {
+			"label": {
+				"your-email": "Je e-mailadres"
+			},
+			"error": {
+				"your-email": "Voer je e-mailadres in."
+			},
+			"terms-link": "Algemene voorwaarden",
+			"submit": "Claim je beloning"
+		},
+		"privacy": {
+			"text": "Ons vriend-aanmeldprogramma wordt beheerd door Mention Me, die je gegevens zullen verwerken en je aanmeldingsmails zullen sturen.",
+			"link": "Meer informatie en je privacyrechten."
+		},
+		"terms": {
+			"text": "Door deze aanbieding te accepteren, ga je akkoord met de",
+			"link": "Algemene voorwaarden"
+		}
+	},
+	"powered-by": "Aangedreven door"
+}
