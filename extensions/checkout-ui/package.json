@@ -8,6 +8,7 @@
         "@api/entry-point-api": "file:./../../.api/apis/entry-point-api",
         "@shopify/ui-extensions": "2024.1.x",
         "@shopify/ui-extensions-react": "2024.1.x",
+        "entities": "^5.0.0",
         "react": "^18.0.0"
     },
     "devDependencies": {

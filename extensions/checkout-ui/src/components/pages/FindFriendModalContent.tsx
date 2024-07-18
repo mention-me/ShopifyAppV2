@@ -13,6 +13,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { RefereeJourneyContext, RefereeSearch } from "../../context/RefereeJourneyContext";
 import { isValidEmail } from "../../../../../shared/utils";
 
+import { decode} from "entities";
 
 export const FindFriendModalContent = () => {
 	const {
@@ -86,9 +87,12 @@ export const FindFriendModalContent = () => {
 	}, [findFriendSubmitCallback, search, shouldProvideEmail, setErrors, translate]);
 
 	const [heading, description] = useMemo(() => {
+		const headline: string = nameSearchResult?.content?.headline || refereeContentApiResponse.headline;
+		const description: string = nameSearchResult?.content?.description || refereeContentApiResponse.searchText;
+
 		return [
-			nameSearchResult?.content?.headline || refereeContentApiResponse.headline,
-			nameSearchResult?.content?.description || refereeContentApiResponse.searchText,
+			decode(headline),
+			decode(description),
 		];
 	}, [refereeContentApiResponse, nameSearchResult]);
 
