@@ -4,9 +4,8 @@ import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { SITUATION } from "../Checkout";
 import { ReferrerFound } from "@api/consumer-api/dist/types";
-import { useShop } from "@shopify/ui-extensions-react/checkout";
+import { useShop, useLanguage } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
-import { useLanguage } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
 
 export const useRefereeFindFriend = () => {
 	const {
