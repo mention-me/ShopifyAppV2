@@ -13,7 +13,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { RefereeJourneyContext, RefereeSearch } from "../../context/RefereeJourneyContext";
 import { isValidEmail } from "../../../../../shared/utils";
 
-import { decode} from "entities";
+import { decode } from "entities";
 
 export const FindFriendModalContent = () => {
 	const {
