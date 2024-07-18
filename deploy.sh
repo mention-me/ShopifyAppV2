@@ -1,5 +1,7 @@
 #!/bin/sh
 
+
+
 for FILE in `find . -name "*.toml" -depth 1`; do
 	  APP_NAME=`echo $FILE | cut -d "." -f 4`
 

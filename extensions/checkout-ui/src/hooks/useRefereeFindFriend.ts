@@ -65,12 +65,12 @@ export const useRefereeFindFriend = () => {
 			setLoadingConsumerApi(false);
 
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-			const content = json.links[0].resource.reduce((acc, curr) => {
+			const content = json.links && json.links.length > 0 ? json.links[0].resource.reduce((acc, curr) => {
 				acc[curr.key] = curr.content;
 
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 				return acc;
-			}, {});
+			}, {}) : {};
 
 			if (!response.ok) {
 				console.error("Response not ok when calling referrerFindFriend:", response);
