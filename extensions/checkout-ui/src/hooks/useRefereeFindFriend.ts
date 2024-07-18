@@ -5,11 +5,14 @@ import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { SITUATION } from "../Checkout";
 import { ReferrerFound } from "@api/consumer-api/dist/types";
 import { useShop } from "@shopify/ui-extensions-react/checkout";
+import useLocale from "../../../../shared/hooks/useLocale";
+import { useLanguage } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
 
 export const useRefereeFindFriend = () => {
 	const {
 		partnerCode,
 		environment,
+		defaultLocale,
 		setLoadingConsumerApi,
 		setNameSearchResult,
 		step,
@@ -17,7 +20,11 @@ export const useRefereeFindFriend = () => {
 		search,
 	} = useContext(RefereeJourneyContext);
 
-	const { myshopifyDomain } = useShop()
+	const { myshopifyDomain } = useShop();
+
+	const { isoCode } = useLanguage();
+
+	const locale = useLocale({shopifyLanguage: isoCode, defaultLocale});
 
 	return useCallback(async () => {
 		setLoadingConsumerApi(true);
@@ -41,6 +48,7 @@ export const useRefereeFindFriend = () => {
 			"request[situation]": SITUATION,
 			"request[appName]": APP_NAME,
 			"request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
+			"request[localeCode]": locale,
 		});
 
 		if (name) {
