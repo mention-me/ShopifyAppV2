@@ -29,13 +29,13 @@
     ],
     "devDependencies": {
         "@eslint/compat": "^1.1.0",
-        "@eslint/js": "^9.5.0",
+        "@eslint/js": "^9.7.0",
         "@shopify/eslint-plugin": "^45.0.0",
         "@types/eslint__js": "^8.42.3",
         "eslint": "^9.5.0",
         "eslint-plugin-react": "^7.34.3",
         "eslint-plugin-react-hooks": "^4.6.2",
-        "prettier": "3.2.5",
+        "prettier": "3.3.3",
         "typescript": "^5.4.5",
         "typescript-eslint": "^7.13.1"
     }
