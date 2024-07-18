@@ -75,7 +75,7 @@ export const useMentionMeShopifyConfig = ({myshopifyDomain, extension, extension
 		};
 
 		fetchMentionMeConfig();
-	}, [country, currency, extensionLanguage, language, marketHandle, marketId, myshopifyDomain, url]);
+	}, [country, currency, extension, extensionLanguage, language, marketHandle, marketId, myshopifyDomain, url]);
 
 
 	return {
