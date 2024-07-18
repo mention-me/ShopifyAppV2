@@ -1098,14 +1098,14 @@
     glob "^8.0.3"
     yaml "^2.3.0"
 
-"@shopify/ui-extensions-react@2024.1.x", "@shopify/ui-extensions-react@^2024":
-  version "2024.1.2"
-  resolved "https://registry.npmjs.org/@shopify/ui-extensions-react/-/ui-extensions-react-2024.1.2.tgz"
-  integrity sha512-bhnBBMXuQ5bGpX3K4Jg1xLdenUE63IhCtdO9N9MzL6vueeXZTXdnrYqSJv69rFQwkyf3eXIxwyLuYPlf9x6d4Q==
+"@shopify/ui-extensions-react@2024.7.x", "@shopify/ui-extensions-react@^2024":
+  version "2024.7.0"
+  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions-react/-/ui-extensions-react-2024.7.0.tgz#1b22fadedf2b1a00a538871f9b19ad282dac8ee0"
+  integrity sha512-NlgZ4A89KjEZQBXyWGpe9TvDgYCGR2f7sCInyiAIEZ1qTdn05wsB5LqKc3BNXMPLswjrT45QmxMdFD2zurLn9w==
   dependencies:
     "@remote-ui/async-subscription" "^2.1.12"
     "@remote-ui/react" "^5.0.2"
-    "@types/react" ">=18.0.0"
+    "@types/react" ">=18.2.67"
 
 "@shopify/ui-extensions@2024.1.x", "@shopify/ui-extensions@^2024":
   version "2024.1.2"
@@ -1214,7 +1214,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@>=17.0.0 <19.0.0", "@types/react@>=18.0.0", "@types/react@^18.0.0", "@types/react@^18.2.0":
+"@types/react@*", "@types/react@>=17.0.0 <19.0.0", "@types/react@>=18.2.67", "@types/react@^18.0.0", "@types/react@^18.2.0":
   version "18.3.3"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.3.3.tgz"
   integrity sha512-hti/R0pS0q1/xx+TsI73XIqk26eBsISZ2R0wUijXIngRK9R/e7Xw/cXVxQK7R5JjW+SV4zGcn5hXjudkN/pLIw==
