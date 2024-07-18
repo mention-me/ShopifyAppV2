@@ -12,6 +12,6 @@
     },
     "devDependencies": {
         "@types/react": "^18.0.0",
-        "react-reconciler": "0.29.0"
+        "react-reconciler": "0.29.2"
     }
 }
