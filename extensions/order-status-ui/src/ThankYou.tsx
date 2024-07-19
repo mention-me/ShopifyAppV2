@@ -40,7 +40,7 @@ const ThankYou = () => {
 		},
 	);
 
-	if (loading) {
+	if (loading  || true) {
 		return <Extension.Skeleton />;
 	}
 

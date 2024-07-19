@@ -5,13 +5,11 @@ import {
 	Heading,
 	Icon,
 	Image,
-	InlineLayout,
 	InlineStack,
 	Link,
 	Popover,
 	Pressable,
 	SkeletonImage,
-	SkeletonText,
 	SkeletonTextBlock,
 	TextBlock,
 	useExtensionEditor,
@@ -158,38 +156,46 @@ const Extension = () => {
 // eslint-disable-next-line react/display-name,react/no-multi-comp
 Extension.Skeleton = () => {
 	return (
-		<BlockStack border="base"
-					borderRadius="large">
-			<InlineLayout
-				padding={["base", "base", "none", "base"]}
+		<View background="base">
+			<BlockStack border="base"
+						borderRadius="large"
 			>
-				<BlockStack padding="base"
-							spacing="base">
-					<Heading level={2}>
-						<SkeletonTextBlock lines={2} />
-					</Heading>
-					<TextBlock>
-						<SkeletonTextBlock lines={2} />
-					</TextBlock>
-					<View blockAlignment="center"
-						  minBlockSize="fill">
-						<Button inlineAlignment="center">
-							<SkeletonText />
-						</Button>
-					</View>
-				</BlockStack>
-				<View>
-					<SkeletonImage blockSize={300}
-								   inlineSize={300} />
+				<SkeletonImage blockSize={250}
+							   inlineSize={800} />
+				<View borderRadius="large">
+					<BlockStack padding="loose"
+								spacing="base">
+						<Heading level={2}>
+							<SkeletonTextBlock lines={1} />
+						</Heading>
+						<TextBlock>
+							<SkeletonTextBlock lines={2} />
+						</TextBlock>
+
+						<View background="subdued"
+							  borderRadius="large"
+							  padding="tight"
+						>
+							<InlineStack padding="extraTight"
+										 spacing="extraTight"
+							>
+								<TextBlock appearance="subdued">
+									<SkeletonTextBlock lines={1} />
+								</TextBlock>
+
+							</InlineStack>
+						</View>
+
+						<View blockAlignment="center"
+							  minBlockSize="fill">
+							<Button inlineAlignment="center">
+								<SkeletonTextBlock lines={2} />
+							</Button>
+						</View>
+					</BlockStack>
 				</View>
-			</InlineLayout>
-			<View background="subdued"
-				  borderRadius={["none", "none", "large", "large"]}
-				  padding="base"
-			>
-				<SkeletonTextBlock lines={2} />
-			</View>
-		</BlockStack>
+			</BlockStack>
+		</View>
 	);
 };
 
