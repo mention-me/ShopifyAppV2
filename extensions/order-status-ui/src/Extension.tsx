@@ -75,7 +75,7 @@ const Extension = () => {
 			<BlockStack border="base"
 						borderRadius="large"
 			>
-				{false && referrerEntryPointResponse.imageUrl && (
+				{referrerEntryPointResponse.imageUrl && (
 					<View
 
 						// maxInlineSize={Style.default(200)
