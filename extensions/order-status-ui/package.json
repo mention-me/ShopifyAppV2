@@ -6,12 +6,11 @@
     "dependencies": {
         "@api/consumer-api": "file:./../../.api/apis/consumer-api",
         "@api/entry-point-api": "file:./../../.api/apis/entry-point-api",
-        "@shopify/ui-extensions": "^2024",
-        "@shopify/ui-extensions-react": "^2024",
-        "react": "^18.0.0"
+        "@shopify/ui-extensions": "^2024.7",
+        "@shopify/ui-extensions-react": "^2024.7",
+        "react": "^18.2"
     },
     "devDependencies": {
-        "@types/react": "^18.0.0",
-        "react-reconciler": "0.29.2"
+        "@types/react": "^18.0.0"
     }
 }

@@ -772,7 +772,7 @@
   dependencies:
     "@remote-ui/rpc" "^1.4.5"
 
-"@remote-ui/core@^2.2.3", "@remote-ui/core@^2.2.4":
+"@remote-ui/core@^2.2.4":
   version "2.2.4"
   resolved "https://registry.npmjs.org/@remote-ui/core/-/core-2.2.4.tgz"
   integrity sha512-7ahrsI5GqYvAGcWTcysbKFKbzbhB/mDgIJr9VurF34gor2IqRCrmrPYemLQuOCQhWqPb3AOEUxWFYNLiB5i6kA==
@@ -1098,7 +1098,7 @@
     glob "^8.0.3"
     yaml "^2.3.0"
 
-"@shopify/ui-extensions-react@2024.7.x", "@shopify/ui-extensions-react@^2024":
+"@shopify/ui-extensions-react@^2024.7":
   version "2024.7.0"
   resolved "https://registry.yarnpkg.com/@shopify/ui-extensions-react/-/ui-extensions-react-2024.7.0.tgz#1b22fadedf2b1a00a538871f9b19ad282dac8ee0"
   integrity sha512-NlgZ4A89KjEZQBXyWGpe9TvDgYCGR2f7sCInyiAIEZ1qTdn05wsB5LqKc3BNXMPLswjrT45QmxMdFD2zurLn9w==
@@ -1107,13 +1107,13 @@
     "@remote-ui/react" "^5.0.2"
     "@types/react" ">=18.2.67"
 
-"@shopify/ui-extensions@2024.1.x", "@shopify/ui-extensions@^2024":
-  version "2024.1.2"
-  resolved "https://registry.npmjs.org/@shopify/ui-extensions/-/ui-extensions-2024.1.2.tgz"
-  integrity sha512-ZXjRtSDNWuhFbvbr2tTyhvjJjsB4lXc88hzzCmp+aHWo6fEPBNw31Krj+oLfpuNfNYYl0C2ORMpFHVh97SKzHA==
+"@shopify/ui-extensions@^2024.7":
+  version "2024.7.0"
+  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions/-/ui-extensions-2024.7.0.tgz#fc850a1ffdcb6628e9fc8d4b913593dc41b278f0"
+  integrity sha512-q+Q2owY78W94FzROYU6RPl7t/soCnCaY49uSbePaxuPd3obydkLKbjSrcyTkzL9obC6rbX6dhx2i15ah8ww22Q==
   dependencies:
     "@remote-ui/async-subscription" "^2.1.12"
-    "@remote-ui/core" "^2.2.3"
+    "@remote-ui/core" "^2.2.4"
 
 "@sindresorhus/is@^5.2.0":
   version "5.6.0"
@@ -5181,7 +5181,7 @@ react-is@^16.13.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-reconciler@0.29.2, react-reconciler@^0.29.0:
+react-reconciler@^0.29.0:
   version "0.29.2"
   resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.29.2.tgz#8ecfafca63549a4f4f3e4c1e049dd5ad9ac3a54f"
   integrity sha512-zZQqIiYgDCTP/f1N/mAR10nJGrPD2ZR+jDSEsKWJHYC7Cm2wodlwbR3upZRdC3cjIjSlTLNVyO7Iu0Yy7t2AYg==
@@ -5199,14 +5199,14 @@ react-transition-group@^4.4.2:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@18.2.0, react@^18.0.0:
+react@18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
   dependencies:
     loose-envify "^1.1.0"
 
-react@^18:
+react@^18, react@^18.2:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react/-/react-18.3.1.tgz#49ab892009c53933625bd16b2533fc754cab2891"
   integrity sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==
