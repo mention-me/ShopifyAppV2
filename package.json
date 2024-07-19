@@ -15,6 +15,7 @@
         "@api/consumer-api": "file:.api/apis/consumer-api",
         "@api/entry-point-api": "file:.api/apis/entry-point-api",
         "@sentry/browser": "^8.11.0",
+        "@sentry/react": "^8.18.0",
         "@shopify/app": "^3.58.2",
         "@shopify/cli": "^3.60.1",
         "react": "^18"
@@ -30,6 +31,7 @@
     "devDependencies": {
         "@eslint/compat": "^1.1.0",
         "@eslint/js": "^9.7.0",
+        "@sentry/typescript": "^5.20.1",
         "@shopify/eslint-plugin": "^45.0.0",
         "@types/eslint__js": "^8.42.3",
         "eslint": "^9.5.0",

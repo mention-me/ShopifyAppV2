@@ -11,11 +11,8 @@ import {
 	View,
 } from "@shopify/ui-extensions-react/checkout";
 import { useContext } from "react";
-import { setupSentry } from "../../../shared/sentry";
 import { ReferrerJourneyContext } from "./context/ReferrerJourneyContext";
 import useReferrerEntryPoint from "./hooks/useReferrerEntryPoint";
-
-setupSentry();
 
 const Extension = () => {
 	const {

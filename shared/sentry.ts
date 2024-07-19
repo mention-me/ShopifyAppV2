@@ -1,12 +1,12 @@
-import * as Sentry from "@sentry/browser";
+import * as Sentry from "@sentry/react";
+import { captureException, captureMessage } from "@sentry/react";
 import { APP_VERSION } from "./constants";
 
 export const setupSentry = (shop: string, extension: string) => {
-
 	Sentry.init({
 		dsn: "https://37a7e53e4779b0c510e05239d8b25822@sentry.devtools.mentionme.tech/7",
 		defaultIntegrations: false,
-		release: `${APP_VERSION}`,
+		release: APP_VERSION,
 		environment: "production",
 		attachStacktrace: true,
 		initialScope: {
@@ -20,12 +20,23 @@ export const setupSentry = (shop: string, extension: string) => {
 	self.addEventListener(
 		"unhandledrejection",
 		(error) => {
-			console.error("unhandledrejection", error);
-			Sentry.captureException(error);
+			logError(
+				"unhandledrejection",
+				"Unhandled promise rejection",
+				new Error(error?.reason?.stack || error?.reason || "Unknown unhandledrejection error"),
+			);
 		},
 	);
 	self.addEventListener("error", (error) => {
-		console.error("error", error);
-		Sentry.captureException(error);
+		logError(
+			"error",
+			"Unhandled error",
+			new Error(error?.message),
+		);
 	});
+};
+
+export const logError = (context: string, message: string, error: Error) => {
+	console.error(context, error, message);
+	captureException(error);
 };
