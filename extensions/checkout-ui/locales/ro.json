@@ -1,49 +1,49 @@
 {
 	"checkout": {
 		"modal": {
-			"error": "Ne pare rău, a apărut o eroare necunoscută. Vă rugăm să încercați din nou mai târziu."
+			"error": "Ne pare rău, a apărut o eroare necunoscută. Încearcă din nou mai târziu."
 		}
 	},
 	"success": {
-		"discount-applied": "Reducerea dvs. a fost aplicată."
+		"discount-applied": "Reducerea ta a fost aplicată."
 	},
 	"find-friend": {
 		"form": {
 			"error": {
 				"name": {
-					"missing": "Vă rugăm să introduceți numele prietenului dvs."
+					"missing": "Te rog să introduci numele prietenului tău."
 				},
 				"email": {
-					"missing-or-invalid": "Vă rugăm să introduceți adresa de email a prietenului dvs."
+					"missing-or-invalid": "Te rog să introduci adresa de email a prietenului tău."
 				}
 			}
 		}
 	},
 	"register-result": {
-		"apply-discount": "Aplică reducerea",
+		"apply-discount":  "Aplică reducerea",
 		"error": {
-			"applying-coupon": "Nu am putut aplica reducerea dvs."
+			"applying-coupon": "Nu am putut aplica reducerea ta"
 		}
 	},
 	"who-are-you": {
 		"form": {
 			"label": {
-				"your-email": "Adresa dvs. de email"
+				"your-email": "Adresa ta de email"
 			},
 			"error": {
-				"your-email": "Vă rugăm să introduceți adresa dvs. de email."
+				"your-email": "Te rog să introduci adresa ta de email."
 			},
 			"terms-link": "Termeni și condiții",
-			"submit": "Solicitați recompensa dvs."
+			"submit": "Revendică-ți recompensa"
 		},
 		"privacy": {
-			"text": "Programul nostru de recomandări este gestionat de Mention Me, care va procesa datele dvs. și vă va trimite emailuri de serviciu de recomandare.",
-			"link": "Mai multe informații și drepturile dvs. de confidențialitate."
+			"text": "Programul nostru de recomandare este gestionat de Mention Me, care va procesa datele tale și îți va trimite emailuri de referință.",
+			"link": "Mai multe informații și drepturile tale de confidențialitate."
 		},
 		"terms": {
-			"text": "Prin acceptarea acestei oferte, sunteți de acord cu",
-			"link": "Termeni și condiții"
+			"text": "Prin acceptarea acestei oferte ești de acord cu",
+			"link": "Termenii și condițiile"
 		}
 	},
-	"powered-by": "Desfășurat de"
+	"powered-by": "Powered by"
 }
