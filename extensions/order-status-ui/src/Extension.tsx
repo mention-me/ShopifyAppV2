@@ -5,7 +5,8 @@ import {
 	Heading,
 	Image,
 	InlineLayout,
-	Link,
+	Link, SkeletonImage,
+	SkeletonText, SkeletonTextBlock,
 	TextBlock,
 	useExtensionEditor,
 	View,
@@ -16,7 +17,6 @@ import useReferrerEntryPoint from "./hooks/useReferrerEntryPoint";
 
 const Extension = () => {
 	const {
-		loadingMentionMeConfig,
 		partnerCode,
 		environment,
 		errorState,
@@ -27,10 +27,6 @@ const Extension = () => {
 
 	// Now we're into the rendering part
 	const editor = useExtensionEditor();
-
-	if (loadingMentionMeConfig) {
-		return null;
-	}
 
 	if (!environment || typeof environment !== "string") {
 		if (editor) {
@@ -121,6 +117,44 @@ const Extension = () => {
 						{referrerEntryPointResponse.privacyNoticeLinkText || "More info and your privacy rights"}
 					</Link>
 				</TextBlock>
+			</View>
+		</BlockStack>
+	);
+};
+
+// eslint-disable-next-line react/display-name,react/no-multi-comp
+Extension.Skeleton = () => {
+	return (
+		<BlockStack border="base"
+					borderRadius="large">
+			<InlineLayout
+				padding={["base", "base", "none", "base"]}
+			>
+				<BlockStack padding="base"
+							spacing="base">
+					<Heading level={2}>
+						<SkeletonTextBlock lines={2} />
+					</Heading>
+					<TextBlock>
+						<SkeletonTextBlock lines={2} />
+					</TextBlock>
+					<View blockAlignment="center"
+						  minBlockSize="fill">
+						<Button inlineAlignment="center">
+							<SkeletonText />
+						</Button>
+					</View>
+				</BlockStack>
+				<View>
+					<SkeletonImage blockSize={300}
+								   inlineSize={300} />
+				</View>
+			</InlineLayout>
+			<View background="subdued"
+				  borderRadius={["none", "none", "large", "large"]}
+				  padding="base"
+			>
+				<SkeletonTextBlock lines={2} />
 			</View>
 		</BlockStack>
 	);
