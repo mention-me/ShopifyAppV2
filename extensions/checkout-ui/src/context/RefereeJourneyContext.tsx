@@ -1,16 +1,8 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useMemo, useState } from "react";
 import { Environment } from "../../../../shared/utils";
 import { RefereeRegister, ReferrerFound } from "@api/consumer-api/dist/types";
-import { MentionMeShopifyConfig, useMentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeShopifyConfig";
+import { MentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeShopifyConfig";
 import { EntryPointLink } from "@api/entry-point-api/src/types";
-import {
-	useCurrency,
-	useExtensionLanguage,
-	useLanguage,
-	useLocalizationCountry,
-	useLocalizationMarket,
-	useShop,
-} from "@shopify/ui-extensions-react/checkout";
 import { RefereeContent } from "@api/consumer-api/src/types";
 
 export type Step =
@@ -47,7 +39,6 @@ type RefereeJourneyState = {
 	step: Step;
 	setStep: Dispatch<SetStateAction<Step>>;
 	mentionMeConfig: MentionMeShopifyConfig;
-	loadingMentionMeConfig: boolean;
 	loadingRefereeContentApi: boolean;
 	setLoadingRefereeContentApi: Dispatch<SetStateAction<boolean>>;
 	loadingConsumerApi: boolean;
@@ -68,29 +59,10 @@ export const RefereeJourneyContext = createContext<RefereeJourneyState | null>(n
 
 interface Props {
 	readonly children: ReactNode;
+	readonly mentionMeConfig: MentionMeShopifyConfig;
 }
 
-export const RefereeJourneyProvider = ({ children }: Props) => {
-	const { myshopifyDomain } = useShop();
-
-	const currency = useCurrency();
-	const extensionLanguage = useExtensionLanguage();
-	const language = useLanguage();
-	const country = useLocalizationCountry();
-	const market = useLocalizationMarket();
-
-	const { loading: loadingMentionMeConfig, mentionMeConfig } = useMentionMeShopifyConfig({
-			myshopifyDomain,
-			extension: "checkout",
-			extensionLanguage: extensionLanguage.isoCode,
-			language: language.isoCode,
-			country: country?.isoCode,
-			currency: currency.isoCode,
-			marketId: market?.id,
-			marketHandle: market?.handle,
-		},
-	);
-
+export const RefereeJourneyProvider = ({ mentionMeConfig, children }: Props) => {
 	const [step, setStep] = useState<RefereeJourneyState["step"]>("search-by-name");
 	const [loadingRefereeContentApi, setLoadingRefereeContentApi] = useState(true);
 	const [loadingConsumerApi, setLoadingConsumerApi] = useState(false);
@@ -114,7 +86,6 @@ export const RefereeJourneyProvider = ({ children }: Props) => {
 			defaultLocale,
 			step,
 			setStep,
-			loadingMentionMeConfig,
 			mentionMeConfig,
 			loadingRefereeContentApi,
 			setLoadingRefereeContentApi,
@@ -134,7 +105,6 @@ export const RefereeJourneyProvider = ({ children }: Props) => {
 	}, [
 		mentionMeConfig,
 		step,
-		loadingMentionMeConfig,
 		loadingRefereeContentApi,
 		loadingConsumerApi,
 		refereeContentApiResponse,

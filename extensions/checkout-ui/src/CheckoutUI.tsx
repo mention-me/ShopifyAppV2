@@ -20,7 +20,6 @@ const CheckoutUI = () => {
 	const {
 		partnerCode,
 		environment,
-		loadingMentionMeConfig,
 		loadingRefereeContentApi,
 		refereeContentApiResponse,
 		step,
@@ -33,8 +32,8 @@ const CheckoutUI = () => {
 		return !errorState && step !== "completed-success";
 	}, [errorState, step]);
 
-	if (loadingMentionMeConfig || loadingRefereeContentApi) {
-		return <SkeletonTextBlock />;
+	if (loadingRefereeContentApi) {
+		return <CheckoutUI.Skeleton />;
 	}
 
 	if (!isValidEnvironment(environment)) {
@@ -79,5 +78,10 @@ const CheckoutUI = () => {
 		</BlockStack>
 	);
 };
+
+// eslint-disable-next-line react/display-name,react/no-multi-comp
+CheckoutUI.Skeleton = () => {
+	return <SkeletonTextBlock />;
+}
 
 export default CheckoutUI;
