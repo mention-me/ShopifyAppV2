@@ -29,7 +29,7 @@
         "extensions/*"
     ],
     "devDependencies": {
-        "@eslint/compat": "^1.1.0",
+        "@eslint/compat": "^1.1.1",
         "@eslint/js": "^9.7.0",
         "@sentry/typescript": "^5.20.1",
         "@shopify/eslint-plugin": "^45.0.0",
