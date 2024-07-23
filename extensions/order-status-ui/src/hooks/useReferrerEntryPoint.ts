@@ -4,6 +4,8 @@ import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
 import { getDomainForEnvironment, isValidEnvironment, parseShopifyOrderId } from "../../../../shared/utils";
 import {
 	useBillingAddress,
+	useDiscountAllocations,
+	useDiscountCodes,
 	useEmail,
 	useExtensionEditor,
 	useLanguage,
@@ -14,7 +16,7 @@ import useLocale from "../../../../shared/hooks/useLocale";
 import { ReferrerJourneyContext } from "../context/ReferrerJourneyContext";
 
 const useReferrerEntryPoint = () => {
-	const {myshopifyDomain} = useShop();
+	const { myshopifyDomain } = useShop();
 
 	const {
 		orderId,
@@ -36,7 +38,17 @@ const useReferrerEntryPoint = () => {
 	const money = useTotalAmount();
 	const billingAddress = useBillingAddress();
 
+	const discountCodes = useDiscountCodes();
+	const discountAllocations = useDiscountAllocations();
+
 	useEffect(() => {
+		// The Mention Me API only supports 1 discount code. We take the first one.
+		const code = discountCodes && discountCodes.length > 0 ? discountCodes[0].code : "";
+
+		const discountAmount = discountAllocations.reduce((total, currentValue) => {
+			return total + currentValue.discountedAmount.amount;
+		}, 0);
+
 		const fetchReferrerEntryPoint = async () => {
 			setLoadingEntryPointApi(true);
 
@@ -65,6 +77,8 @@ const useReferrerEntryPoint = () => {
 					total: editor ? "0" : String(money.amount),
 					// Use the time of the request instead of explicitly setting a time.
 					dateString: "",
+					couponCode: code,
+					discountAmount: String(discountAmount),
 				},
 			};
 
@@ -115,7 +129,7 @@ const useReferrerEntryPoint = () => {
 		if (partnerCode && environment && locale) {
 			fetchReferrerEntryPoint();
 		}
-	}, [partnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, locale, setErrorState, email, billingAddress?.firstName, billingAddress?.lastName, orderId, money.currencyCode, money.amount, setReferrerEntryPointResponse, editor]);
+	}, [partnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, locale, setErrorState, email, billingAddress?.firstName, billingAddress?.lastName, orderId, money.currencyCode, money.amount, setReferrerEntryPointResponse, editor, discountCodes, discountAllocations]);
 };
 
 export default useReferrerEntryPoint;
