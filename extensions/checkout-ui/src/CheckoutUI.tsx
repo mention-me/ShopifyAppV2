@@ -3,7 +3,10 @@ import {
 	BlockStack,
 	Link,
 	SkeletonTextBlock,
-	useExtensionEditor, useTranslate,
+	Text,
+	useExtensionEditor,
+	useSettings,
+	useTranslate,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
 import { useContext, useMemo } from "react";
@@ -11,6 +14,8 @@ import { RefereeJourneyContext } from "./context/RefereeJourneyContext";
 import { CheckoutModal } from "./components/CheckoutModal";
 import { isValidEnvironment } from "../../../shared/utils";
 import { useRefereeSearchContent } from "./hooks/useRefereeSearchContent";
+import type { Appearance } from "@shopify/ui-extensions/src/surfaces/checkout/components/shared";
+import { TextSize } from "@shopify/ui-extensions/build/ts/surfaces/checkout/components/shared";
 
 const CheckoutUI = () => {
 	const translate = useTranslate();
@@ -25,6 +30,11 @@ const CheckoutUI = () => {
 		step,
 		errorState,
 	} = useContext(RefereeJourneyContext);
+
+	const { link_appearance: linkAppearance, text_size: textSize }: {
+		link_appearance: Appearance,
+		text_size: TextSize
+	} = useSettings();
 
 	useRefereeSearchContent();
 
@@ -71,9 +81,11 @@ const CheckoutUI = () => {
 			<View>
 				{step === "completed-success" && <Banner status="success"
 														 title={translate("success.discount-applied")} />}
-				{showBeenReferredByFriendLink && <Link overlay={<CheckoutModal />}>
-					{refereeContentApiResponse.entryCta}
-				</Link>}
+				{showBeenReferredByFriendLink && <Text appearance={linkAppearance} size={textSize || "base"}>
+					<Link appearance={linkAppearance} overlay={<CheckoutModal />}>
+						{refereeContentApiResponse.entryCta}
+					</Link>
+				</Text>}
 			</View>
 		</BlockStack>
 	);
@@ -82,6 +94,6 @@ const CheckoutUI = () => {
 // eslint-disable-next-line react/display-name,react/no-multi-comp
 CheckoutUI.Skeleton = () => {
 	return <SkeletonTextBlock />;
-}
+};
 
 export default CheckoutUI;
