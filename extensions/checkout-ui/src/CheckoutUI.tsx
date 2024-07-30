@@ -31,10 +31,19 @@ const CheckoutUI = () => {
 		errorState,
 	} = useContext(RefereeJourneyContext);
 
-	const { link_appearance: linkAppearance, text_size: textSize }: {
-		link_appearance: Appearance,
+	const { link_appearance: linkAppearance, text_size: textSize }: Partial<{
+		link_appearance: Extract<
+			Appearance,
+			| "accent"
+			| "subdued"
+			| "info"
+			| "success"
+			| "warning"
+			| "critical"
+			| "decorative"
+		>,
 		text_size: TextSize
-	} = useSettings();
+	}> = useSettings();
 
 	useRefereeSearchContent();
 
@@ -81,8 +90,15 @@ const CheckoutUI = () => {
 			<View>
 				{step === "completed-success" && <Banner status="success"
 														 title={translate("success.discount-applied")} />}
-				{showBeenReferredByFriendLink && <Text appearance={linkAppearance} size={textSize || "base"}>
-					<Link appearance={linkAppearance} overlay={<CheckoutModal />}>
+				{showBeenReferredByFriendLink && <Text appearance={linkAppearance}
+													   size={textSize}>
+					{/*
+					Link appearance is either the default (undefined) OR it inherits from a parent element when
+					using monochrome.
+					*/}
+					<Link appearance={linkAppearance ? "monochrome" : undefined}
+						  overlay={<CheckoutModal />}
+					>
 						{refereeContentApiResponse.entryCta}
 					</Link>
 				</Text>}

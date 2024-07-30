@@ -46,7 +46,7 @@ network_access = true
 key = "link_appearance"
 type = "single_line_text_field"
 name = "Link appearance"
-description = "Choose the styling of the Mention Me link. Options are inherited from your stores styling."
+description = "Choose the styling of the Mention Me link. Options are inherited from your stores styling. The default is 'accent'."
 
 [[extensions.settings.fields.validations]]
 name = "choices"
@@ -57,7 +57,7 @@ value = "[\"base\", \"accent\", \"decorative\", \"interactive\", \"subdued\", \"
 key = "text_size"
 type = "single_line_text_field"
 name = "Link size"
-description = "Choose the size of the Mention Me link. Options are inherited from your stores styling."
+description = "Choose the size of the Mention Me link. Options are inherited from your stores styling. The default is 'base'."
 
 [[extensions.settings.fields.validations]]
 name = "choices"
