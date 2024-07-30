@@ -14,6 +14,7 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { ReferrerJourneyContext } from "../context/ReferrerJourneyContext";
+import { consoleError } from "../../../../shared/logging";
 
 const useReferrerEntryPoint = () => {
 	const { myshopifyDomain } = useShop();
@@ -83,12 +84,12 @@ const useReferrerEntryPoint = () => {
 			};
 
 			if (!partnerCode || typeof partnerCode !== "string") {
-				console.error("Mention Me partner code not provided", partnerCode);
+				consoleError("ReferrerEntryPoint", "Mention Me partner code not provided", partnerCode);
 				return;
 			}
 
 			if (!isValidEnvironment(environment)) {
-				console.error("Invalid Mention Me environment", environment);
+				consoleError("ReferrerEntryPoint", "Invalid Mention Me environment", environment);
 				return;
 			}
 
@@ -105,9 +106,8 @@ const useReferrerEntryPoint = () => {
 				);
 
 				if (!response.ok) {
-					console.error("Error calling entrypoint:", response);
+					consoleError("ReferrerEntryPoint", "Error calling entrypoint:", response);
 
-					console.log(await response.json());
 					setErrorState(response.statusText);
 					setLoadingEntryPointApi(false);
 
@@ -119,7 +119,7 @@ const useReferrerEntryPoint = () => {
 				setReferrerEntryPointResponse(json);
 				setLoadingEntryPointApi(false);
 			} catch (error) {
-				console.error("Error calling referrer entrypoint:", error);
+				consoleError("ReferrerEntryPoint", "Error calling referrer entrypoint:", error);
 
 				setErrorState(error?.message);
 				setLoadingEntryPointApi(false);

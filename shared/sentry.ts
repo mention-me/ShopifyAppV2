@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/react";
-import { captureException, captureMessage } from "@sentry/react";
+import { captureException } from "@sentry/react";
 import { APP_VERSION } from "./constants";
+import { consoleError } from "./logging";
 
 export const setupSentry = (shop: string, extension: string) => {
 	Sentry.init({
@@ -37,6 +38,6 @@ export const setupSentry = (shop: string, extension: string) => {
 };
 
 export const logError = (context: string, message: string, error: Error) => {
-	console.error(context, error, message);
+	consoleError(context, message, error);
 	captureException(error);
 };

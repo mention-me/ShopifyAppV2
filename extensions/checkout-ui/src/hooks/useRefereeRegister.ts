@@ -6,6 +6,7 @@ import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { RefereeRegister } from "@api/consumer-api/dist/types";
 import { useShop } from "@shopify/ui-extensions-react/checkout";
+import { consoleError } from "../../../../shared/logging";
 
 export const useRefereeRegister = () => {
 	const {
@@ -20,15 +21,13 @@ export const useRefereeRegister = () => {
 	const { myshopifyDomain } = useShop();
 
 	return useCallback(async (email: string) => {
-		console.debug("useRefereeRegister");
-
 		if (!partnerCode || typeof partnerCode !== "string") {
-			console.error("Mention Me partner code not provided", partnerCode);
+			consoleError("RefereeRegister", "Mention Me partner code not provided", partnerCode);
 			return;
 		}
 
 		if (!isValidEnvironment(environment)) {
-			console.error("Invalid Mention Me environment", environment);
+			consoleError("RefereeRegister", "Invalid environment", environment);
 			return;
 		}
 
@@ -69,12 +68,11 @@ export const useRefereeRegister = () => {
 			setLoadingConsumerApi(false);
 
 			if (!response.ok) {
-				console.error("Response not ok when calling refereeRegister:", response);
+				consoleError("RefereeRegister", "Response not ok when calling refereeRegister:", response);
 
 				return;
 			}
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 			const content = json.content.resource.reduce((acc, curr) => {
 				acc[curr.key] = curr.content;
 
@@ -93,10 +91,10 @@ export const useRefereeRegister = () => {
 				return;
 			}
 
-			console.error("Unexpected response from API", json);
+			consoleError("RefereeRegister", "Unexpected response from API", json);
 			return;
 		} catch (error) {
-			console.error("Error caught calling registerReferee:", error);
+			consoleError("RefereeRegister", "Error caught calling registerReferee:", error);
 		}
 	}, [partnerCode, environment, setLoadingConsumerApi, nameSearchResult.result, myshopifyDomain, setRegisterResult, setStep]);
 };

@@ -9,6 +9,7 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext, useState } from "react";
 import { RefereeJourneyContext } from "../../../context/RefereeJourneyContext";
+import { consoleError } from "../../../../../../shared/logging";
 
 const DiscountCard = () => {
 	const applyDiscountCodeChange = useApplyDiscountCodeChange();
@@ -25,12 +26,12 @@ const DiscountCard = () => {
 
 	const applyCouponCode = useCallback(async () => {
 		if (!registerResult?.result?.refereeReward) {
-			console.error("No referee reward");
+			consoleError("DiscountCard", "No referee reward");
 			return;
 		}
 
 		if (!registerResult?.result?.refereeReward.couponCode) {
-			console.error("Unable to apply code");
+			consoleError("DiscountCard", "Unable to apply code");
 			setErrorState("Unable to apply code");
 
 			return;
@@ -41,8 +42,6 @@ const DiscountCard = () => {
 			type: "addDiscountCode",
 			code: registerResult?.result?.refereeReward.couponCode,
 		});
-
-		console.log("addDiscountCode result:", result);
 
 		if (result.type === "success") {
 			setStep("completed-success");

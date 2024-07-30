@@ -7,6 +7,7 @@ import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { useShop } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { useLanguage } from "@shopify/ui-extensions-react/checkout";
+import { consoleError } from "../../../../shared/logging";
 
 /**
  * Function to call the Mention Me Referee EntryPoint API.
@@ -37,17 +38,14 @@ export const useRefereeSearchContent = () => {
 			setLoadingRefereeContentApi(true);
 
 			if (!partnerCode || typeof partnerCode !== "string") {
-				// console.error("Mention Me partner code not provided", partnerCode);
 				return;
 			}
 
 			if (!isValidEnvironment(environment)) {
-				// console.error("Invalid Mention Me environment", environment);
 				return;
 			}
 
 			if (!locale) {
-				// console.error("Invalid Mention Me locale", locale);
 				return;
 			}
 
@@ -71,7 +69,17 @@ export const useRefereeSearchContent = () => {
 				);
 
 				if (!response.ok) {
-					console.error("Error calling referrer search content API:", response);
+					consoleError("RefereeSearchContext", "Error calling referrer search content API:", response);
+
+					try {
+						const json = (await response.json()) as RefereeContent;
+
+						if (json.errors) {
+							consoleError("RefereeSearchContent", "Errors returned from Mention Me API:", json.errors.map((error) => error.message).join(", "));
+						}
+					} catch {
+						// Do nothing
+					}
 
 					setErrorState(response.statusText);
 					setLoadingRefereeContentApi(false);
@@ -84,7 +92,7 @@ export const useRefereeSearchContent = () => {
 				setRefereeContentApiResponse(json);
 				setLoadingRefereeContentApi(false);
 			} catch (error) {
-				console.error("Error calling referee entrypoint:", error);
+				consoleError("RefereeSearchContent", "Error calling referee search content API:", error);
 
 				setErrorState(error?.message);
 				setLoadingRefereeContentApi(false);

@@ -6,6 +6,7 @@ import { SITUATION } from "../Checkout";
 import { ReferrerFound } from "@api/consumer-api/dist/types";
 import { useShop, useLanguage } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
+import { consoleError } from "../../../../shared/logging";
 
 export const useRefereeFindFriend = () => {
 	const {
@@ -29,12 +30,12 @@ export const useRefereeFindFriend = () => {
 		setLoadingConsumerApi(true);
 
 		if (!partnerCode || typeof partnerCode !== "string") {
-			console.error("Mention Me partner code not provided", partnerCode);
+			consoleError("RefereeFindFriend", "Mention Me partner code not provided", partnerCode);
 			return;
 		}
 
 		if (!isValidEnvironment(environment)) {
-			console.error("Invalid Mention Me environment", environment);
+			consoleError("RefereeFindFriend", "Invalid Mention Me environment", environment);
 			return;
 		}
 
@@ -71,7 +72,6 @@ export const useRefereeFindFriend = () => {
 
 			setLoadingConsumerApi(false);
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 			const content = json.links && json.links.length > 0 ? json.links[0].resource.reduce((acc, curr) => {
 				acc[curr.key] = curr.content;
 
@@ -80,7 +80,7 @@ export const useRefereeFindFriend = () => {
 			}, {}) : {};
 
 			if (!response.ok) {
-				console.error("Response not ok when calling referrerFindFriend:", response);
+				consoleError("RefereeFindFriend", "Response not ok when calling referrerFindFriend:", response);
 
 				if (response.status === 404) {
 					if (json?.foundMultipleReferrers) {
@@ -127,7 +127,7 @@ export const useRefereeFindFriend = () => {
 				return;
 			}
 
-			console.error("Unexpected response from API", json);
+			consoleError("RefereeFindFriend", "Unexpected response from API", json);
 			setNameSearchResult(
 				{
 					type: "error",
@@ -137,10 +137,10 @@ export const useRefereeFindFriend = () => {
 			);
 			return;
 		} catch (error) {
-			console.error("Error caught calling referrerFindFriend:", error);
+			consoleError("RefereeFindFriend", "Error caught calling referrerFindFriend:", error);
 			setNameSearchResult({
 				type: "error",
 			});
 		}
-	}, [setLoadingConsumerApi, partnerCode, environment, search, myshopifyDomain, setNameSearchResult, step, setStep]);
+	}, [setLoadingConsumerApi, partnerCode, environment, search, myshopifyDomain, locale, setNameSearchResult, step, setStep]);
 };

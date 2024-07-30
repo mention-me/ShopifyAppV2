@@ -16,6 +16,7 @@ import { WhoAreYouModalContent } from "./pages/WhoAreYouModalContent";
 import { FindFriendModalContent } from "./pages/FindFriendModalContent";
 import { RegisterResultModalContent } from "./pages/RegisterResultModalContent";
 import NoMatchModalContent from "./pages/NoMatchModalContent";
+import { consoleError } from "../../../../shared/logging";
 
 export const CHECKOUT_MODAL_ID = "been-referred-by-friend-modal";
 
@@ -41,7 +42,7 @@ export const CheckoutModal = () => {
 			return <NoMatchModalContent />;
 		}
 
-		console.error("Unknown step", step);
+		consoleError("Unknown step", step);
 		return <Banner status="critical"
 					   title={translate("checkout.modal.error")} />;
 	}, [step, translate]);
