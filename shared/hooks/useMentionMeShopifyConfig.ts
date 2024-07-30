@@ -52,7 +52,7 @@ export const useMentionMeShopifyConfig = ({myshopifyDomain, extension, extension
 			u.searchParams.append("market", marketId);
 			u.searchParams.append("marketHandle", marketHandle);
 			u.searchParams.append("extension", extension);
-			u.searchParams.append("appVersion", APP_VERSION);
+			u.searchParams.append("version", APP_VERSION);
 
 			try {
 				const response = await fetch(u.toString(),
