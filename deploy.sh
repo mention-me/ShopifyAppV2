@@ -23,3 +23,5 @@ for FILE in `find . -name "*.toml" -depth 1`; do
 
 		yarn run deploy -c $APP_NAME --force
 done
+
+git checkout -- $FILE
