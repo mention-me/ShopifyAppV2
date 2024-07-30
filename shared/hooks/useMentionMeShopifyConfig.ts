@@ -1,5 +1,6 @@
 import { Environment, getDomainForEnvironment } from "../utils";
 import { useEffect, useState } from "react";
+import { APP_VERSION } from "../constants";
 
 export interface Image {
 	url: string;
@@ -51,6 +52,7 @@ export const useMentionMeShopifyConfig = ({myshopifyDomain, extension, extension
 			u.searchParams.append("market", marketId);
 			u.searchParams.append("marketHandle", marketHandle);
 			u.searchParams.append("extension", extension);
+			u.searchParams.append("appVersion", APP_VERSION);
 
 			try {
 				const response = await fetch(u.toString(),
