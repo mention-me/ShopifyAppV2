@@ -16,6 +16,15 @@ import useLocale from "../../../../shared/hooks/useLocale";
 import { ReferrerJourneyContext } from "../context/ReferrerJourneyContext";
 import { consoleError } from "../../../../shared/logging";
 
+/**
+ * Shopify doesn't work with cookies, so we need a way to identify if someone is in test/debug mode or not.
+ * In the InjectionConfiguration code in the API controllers we look for this special constant and allow the integration
+ * to work if this string exists.
+ *
+ * See:
+ */
+const SHOPIFY_PREVIEW_MODE_FLAG = "shopify-preview-mode";
+
 const useReferrerEntryPoint = () => {
 	const { myshopifyDomain } = useShop();
 
@@ -50,6 +59,11 @@ const useReferrerEntryPoint = () => {
 			return total + currentValue.discountedAmount.amount;
 		}, 0);
 
+		const customFields = [myshopifyDomain];
+		if (editor) {
+			customFields.push(SHOPIFY_PREVIEW_MODE_FLAG);
+		}
+
 		const fetchReferrerEntryPoint = async () => {
 			setLoadingEntryPointApi(true);
 
@@ -58,7 +72,7 @@ const useReferrerEntryPoint = () => {
 					emailAddress: email,
 					firstname: billingAddress?.firstName,
 					surname: billingAddress?.lastName,
-					customField: myshopifyDomain,
+					customField: customFields.join("|"),
 				},
 				request: {
 					partnerCode: partnerCode,
