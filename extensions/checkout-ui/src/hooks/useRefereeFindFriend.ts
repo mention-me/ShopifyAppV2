@@ -1,10 +1,10 @@
 import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
-import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
+import { APP_NAME, APP_VERSION, SHOPIFY_PREVIEW_MODE_FLAG } from "../../../../shared/constants";
 import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { SITUATION } from "../Checkout";
 import { ReferrerFound } from "@api/consumer-api/dist/types";
-import { useShop, useLanguage } from "@shopify/ui-extensions-react/checkout";
+import { useShop, useLanguage, useExtensionEditor } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { consoleError } from "../../../../shared/logging";
 
@@ -21,6 +21,8 @@ export const useRefereeFindFriend = () => {
 	} = useContext(RefereeJourneyContext);
 
 	const { myshopifyDomain } = useShop();
+
+	const editor = useExtensionEditor();
 
 	const { isoCode } = useLanguage();
 
@@ -46,7 +48,7 @@ export const useRefereeFindFriend = () => {
 		const params = new URLSearchParams({
 			"request[partnerCode]": partnerCode,
 			"request[situation]": SITUATION,
-			"request[appName]": APP_NAME,
+			"request[appName]": APP_NAME  + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
 			"request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
 			"request[localeCode]": locale,
 		});
@@ -142,5 +144,5 @@ export const useRefereeFindFriend = () => {
 				type: "error",
 			});
 		}
-	}, [setLoadingConsumerApi, partnerCode, environment, search, myshopifyDomain, locale, setNameSearchResult, step, setStep]);
+	}, [setLoadingConsumerApi, partnerCode, environment, search, myshopifyDomain, locale, setNameSearchResult, step, setStep, editor]);
 };

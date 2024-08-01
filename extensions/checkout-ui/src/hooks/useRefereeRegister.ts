@@ -1,11 +1,11 @@
 import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
-import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
+import { APP_NAME, APP_VERSION, SHOPIFY_PREVIEW_MODE_FLAG } from "../../../../shared/constants";
 import { SITUATION } from "../Checkout";
 import { EnrolRefereeType } from "@api/consumer-api/src/types";
 import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { RefereeRegister } from "@api/consumer-api/dist/types";
-import { useShop } from "@shopify/ui-extensions-react/checkout";
+import { useExtensionEditor, useShop } from "@shopify/ui-extensions-react/checkout";
 import { consoleError } from "../../../../shared/logging";
 
 export const useRefereeRegister = () => {
@@ -19,6 +19,8 @@ export const useRefereeRegister = () => {
 	} = useContext(RefereeJourneyContext);
 
 	const { myshopifyDomain } = useShop();
+
+	const editor = useExtensionEditor();
 
 	return useCallback(async (email: string) => {
 		if (!partnerCode || typeof partnerCode !== "string") {
@@ -44,7 +46,7 @@ export const useRefereeRegister = () => {
 				request: {
 					partnerCode: partnerCode,
 					situation: SITUATION,
-					appName: APP_NAME,
+					appName: APP_NAME + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
 					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
 				},
 				customer: {
@@ -96,5 +98,5 @@ export const useRefereeRegister = () => {
 		} catch (error) {
 			consoleError("RefereeRegister", "Error caught calling registerReferee:", error);
 		}
-	}, [partnerCode, environment, setLoadingConsumerApi, nameSearchResult.result, myshopifyDomain, setRegisterResult, setStep]);
+	}, [partnerCode, environment, setLoadingConsumerApi, nameSearchResult.result, myshopifyDomain, setRegisterResult, setStep, editor]);
 };

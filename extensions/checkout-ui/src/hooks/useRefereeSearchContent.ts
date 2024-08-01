@@ -1,10 +1,10 @@
 import { SITUATION } from "../Checkout";
-import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
+import { APP_NAME, APP_VERSION, SHOPIFY_PREVIEW_MODE_FLAG } from "../../../../shared/constants";
 import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
 import { RefereeContent } from "@api/consumer-api/src/types";
 import { useContext, useEffect } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import { useShop } from "@shopify/ui-extensions-react/checkout";
+import { useExtensionEditor, useShop } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { useLanguage } from "@shopify/ui-extensions-react/checkout";
 import { consoleError } from "../../../../shared/logging";
@@ -28,6 +28,8 @@ export const useRefereeSearchContent = () => {
 	} = useContext(RefereeJourneyContext);
 
 	const { myshopifyDomain } = useShop();
+
+	const editor = useExtensionEditor();
 
 	const { isoCode } = useLanguage();
 
@@ -54,7 +56,7 @@ export const useRefereeSearchContent = () => {
 			const params = new URLSearchParams({
 				"request[partnerCode]": partnerCode,
 				"request[situation]": SITUATION,
-				"request[appName]": APP_NAME,
+				"request[appName]": APP_NAME  + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
 				"request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
 				"request[localeCode]": locale,
 			});
@@ -102,5 +104,5 @@ export const useRefereeSearchContent = () => {
 		if (partnerCode && environment && locale) {
 			fetchRefereeJourneyContent();
 		}
-	}, [partnerCode, environment, setLoadingRefereeContentApi, myshopifyDomain, setRefereeContentApiResponse, locale, setErrorState]);
+	}, [partnerCode, environment, setLoadingRefereeContentApi, myshopifyDomain, setRefereeContentApiResponse, locale, setErrorState, editor]);
 };

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { EntryPointForReferrerType, EntryPointOfferAndLink } from "@api/entry-point-api/src/types";
-import { APP_NAME, APP_VERSION } from "../../../../shared/constants";
+import { APP_NAME, APP_VERSION, SHOPIFY_PREVIEW_MODE_FLAG } from "../../../../shared/constants";
 import { getDomainForEnvironment, isValidEnvironment, parseShopifyOrderId } from "../../../../shared/utils";
 import {
 	useBillingAddress,
@@ -15,15 +15,6 @@ import {
 import useLocale from "../../../../shared/hooks/useLocale";
 import { ReferrerJourneyContext } from "../context/ReferrerJourneyContext";
 import { consoleError } from "../../../../shared/logging";
-
-/**
- * Shopify doesn't work with cookies, so we need a way to identify if someone is in test/debug mode or not.
- * In the InjectionConfiguration code in the API controllers we look for this special constant and allow the integration
- * to work if this string exists.
- *
- * See:
- */
-const SHOPIFY_PREVIEW_MODE_FLAG = "shopify-preview-mode";
 
 const useReferrerEntryPoint = () => {
 	const { myshopifyDomain } = useShop();
@@ -59,11 +50,6 @@ const useReferrerEntryPoint = () => {
 			return total + currentValue.discountedAmount.amount;
 		}, 0);
 
-		const customFields = [myshopifyDomain];
-		if (editor) {
-			customFields.push(SHOPIFY_PREVIEW_MODE_FLAG);
-		}
-
 		const fetchReferrerEntryPoint = async () => {
 			setLoadingEntryPointApi(true);
 
@@ -72,13 +58,13 @@ const useReferrerEntryPoint = () => {
 					emailAddress: email,
 					firstname: billingAddress?.firstName,
 					surname: billingAddress?.lastName,
-					customField: customFields.join("|"),
+					customField: myshopifyDomain
 				},
 				request: {
 					partnerCode: partnerCode,
 					situation: "shopify-order-status",
+					appName: APP_NAME  + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
 					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
-					appName: APP_NAME,
 					localeCode: locale,
 				},
 				implementation: {
