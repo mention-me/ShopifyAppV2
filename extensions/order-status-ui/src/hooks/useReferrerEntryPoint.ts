@@ -58,6 +58,7 @@ const useReferrerEntryPoint = () => {
 					emailAddress: email,
 					firstname: billingAddress?.firstName,
 					surname: billingAddress?.lastName,
+					customField: myshopifyDomain,
 				},
 				request: {
 					partnerCode: partnerCode,
