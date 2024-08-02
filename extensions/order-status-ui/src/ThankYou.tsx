@@ -2,7 +2,7 @@ import Extension from "./Extension";
 import {
 	reactExtension,
 	useApi,
-	useCurrency,
+	useCurrency, useEmail,
 	useExtensionLanguage,
 	useLanguage,
 	useLocalizationCountry,
@@ -13,6 +13,7 @@ import {
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
 import { setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
+import { useEffect } from "react";
 
 const ThankYou = () => {
 	const { orderConfirmation } = useApi("purchase.thank-you.block.render");
@@ -27,6 +28,12 @@ const ThankYou = () => {
 	const language = useLanguage();
 	const country = useLocalizationCountry();
 	const market = useLocalizationMarket();
+
+	const email = useEmail();
+
+	useEffect(() => {
+		console.log("Email in ThankYou.tsx", email)
+	}, [email]);
 
 	const { loading, mentionMeConfig } = useMentionMeShopifyConfig({
 			myshopifyDomain,

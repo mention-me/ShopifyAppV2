@@ -43,6 +43,12 @@ const useReferrerEntryPoint = () => {
 	const discountAllocations = useDiscountAllocations();
 
 	useEffect(() => {
+		console.log("Email in useReferrerEntryPoint.ts", email)
+	}, [email]);
+
+	useEffect(() => {
+		console.log("Email", email);
+
 		// The Mention Me API only supports 1 discount code. We take the first one.
 		const code = discountCodes && discountCodes.length > 0 ? discountCodes[0].code : "";
 
