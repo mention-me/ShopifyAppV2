@@ -21,10 +21,10 @@ export const setupSentry = (shop: string, extension: string) => {
 	self.addEventListener(
 		"unhandledrejection",
 		(error) => {
-			logError(
-				"unhandledrejection",
+			consoleError(
+				"Sentry",
 				"Unhandled promise rejection",
-				new Error(error?.reason?.stack || error?.reason || "Unknown unhandledrejection error"),
+				error
 			);
 		},
 	);
