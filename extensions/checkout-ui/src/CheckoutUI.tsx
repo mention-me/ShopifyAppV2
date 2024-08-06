@@ -5,6 +5,7 @@ import {
 	SkeletonTextBlock,
 	Text,
 	useExtensionEditor,
+	usePurchasingCompany,
 	useSettings,
 	useTranslate,
 	View,
@@ -16,7 +17,6 @@ import { isValidEnvironment } from "../../../shared/utils";
 import { useRefereeSearchContent } from "./hooks/useRefereeSearchContent";
 import type { Appearance } from "@shopify/ui-extensions/src/surfaces/checkout/components/shared";
 import { TextSize } from "@shopify/ui-extensions/build/ts/surfaces/checkout/components/shared";
-import { usePurchasingCompany } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
 
 const CheckoutUI = () => {
 	const translate = useTranslate();
