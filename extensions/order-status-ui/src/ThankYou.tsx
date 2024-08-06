@@ -6,7 +6,7 @@ import {
 	useExtensionLanguage,
 	useLanguage,
 	useLocalizationCountry,
-	useLocalizationMarket,
+	useLocalizationMarket, usePurchasingCompany,
 	useShop,
 	useSubscription,
 } from "@shopify/ui-extensions-react/checkout";
@@ -28,6 +28,11 @@ const ThankYou = () => {
 	const country = useLocalizationCountry();
 	const market = useLocalizationMarket();
 
+	// As per the B2B Checkout UI guide, we can identify B2B purchases by the presence of a purchasing company.
+	// In this case, we want to turn off Mention Me features.
+	// https://shopify.dev/docs/apps/build/b2b/create-checkout-ui
+	const purchasingCompany = usePurchasingCompany();
+
 	const { loading, mentionMeConfig } = useMentionMeShopifyConfig({
 			myshopifyDomain,
 			extension: "order-status",
@@ -39,6 +44,10 @@ const ThankYou = () => {
 			marketHandle: market?.handle,
 		},
 	);
+
+	if (purchasingCompany) {
+		return null;
+	}
 
 	if (loading) {
 		return <Extension.Skeleton />;

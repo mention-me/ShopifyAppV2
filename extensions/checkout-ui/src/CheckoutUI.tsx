@@ -16,11 +16,17 @@ import { isValidEnvironment } from "../../../shared/utils";
 import { useRefereeSearchContent } from "./hooks/useRefereeSearchContent";
 import type { Appearance } from "@shopify/ui-extensions/src/surfaces/checkout/components/shared";
 import { TextSize } from "@shopify/ui-extensions/build/ts/surfaces/checkout/components/shared";
+import { usePurchasingCompany } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
 
 const CheckoutUI = () => {
 	const translate = useTranslate();
 
 	const editor = useExtensionEditor();
+
+	// As per the B2B Checkout UI guide, we can identify B2B purchases by the presence of a purchasing company.
+	// In this case, we want to turn off Mention Me features.
+	// https://shopify.dev/docs/apps/build/b2b/create-checkout-ui
+	const purchasingCompany = usePurchasingCompany();
 
 	const {
 		partnerCode,
@@ -50,6 +56,10 @@ const CheckoutUI = () => {
 	const showBeenReferredByFriendLink = useMemo(() => {
 		return !errorState && step !== "completed-success";
 	}, [errorState, step]);
+
+	if (!purchasingCompany) {
+		return null;
+	}
 
 	if (loadingRefereeContentApi) {
 		return <CheckoutUI.Skeleton />;
