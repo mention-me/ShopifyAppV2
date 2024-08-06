@@ -6,13 +6,14 @@ import {
 	useLocalizationCountry,
 	useLocalizationMarket,
 	useOrder,
+	usePurchasingCompany,
 	useShop,
 } from "@shopify/ui-extensions-react/checkout";
 import Extension from "./Extension";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
 import { setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
-import { usePurchasingCompany } from "@shopify/ui-extensions-react/build/ts/surfaces/checkout";
+
 
 const OrderStatus = () => {
 	const order = useOrder();
