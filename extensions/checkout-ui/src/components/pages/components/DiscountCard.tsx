@@ -66,7 +66,7 @@ const DiscountCard = () => {
 						 padding="base"
 						 spacing="loose"
 			>
-				<Icon appearance="decorative"
+				<Icon appearance="accent"
 					  size="large"
 					  source="discount"
 				/>
