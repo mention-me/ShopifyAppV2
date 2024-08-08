@@ -1,5 +1,5 @@
 import { Environment, getDomainForEnvironment } from "../utils";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { APP_VERSION } from "../constants";
 import debounce from "../debounce";
 import { logError } from "../sentry";
@@ -93,7 +93,7 @@ export const useMentionMeShopifyConfig = ({
 	 * So, we've added a debounce - this gives the API a small amount of time (50 milliseconds at time of writing) to sort itself out. If the values change, we'll cancel the API call.
 	 * If the values don't change then we'll call the API.
 	 */
-	const debouncedFetchMentionMeConfig = debounce(fetchMentionMeConfig, 50);
+	const debouncedFetchMentionMeConfig = useMemo(() => debounce(fetchMentionMeConfig, 50), [fetchMentionMeConfig]);
 
 	useEffect(() => {
 		debouncedFetchMentionMeConfig();
