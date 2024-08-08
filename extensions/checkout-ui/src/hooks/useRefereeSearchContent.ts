@@ -102,7 +102,7 @@ export const useRefereeSearchContent = () => {
 	}, [partnerCode, environment, setLoadingRefereeContentApi, myshopifyDomain, setRefereeContentApiResponse, locale, setErrorState, editor]);
 
 	/*
-	 * Shopify is full of quirks and oddities. There are cases where certain APIs will return values asynchronously, meanning they start undefined and then later resolve to a value.
+	 * Shopify is full of quirks and oddities. There are cases where certain APIs will return values asynchronously, meaning they start undefined and then later resolve to a value.
 	 * Their documentation doesn't explain this, and bugs we've raised suggests this isn't the intended behaviour.
 	 *
 	 * So, we've added a debounce - this gives the API a small amount of time (50 milliseconds at time of writing) to sort itself out. If the values change, we'll cancel the API call.
