@@ -47,16 +47,12 @@ const debounce = <T extends (...args: any) => void>(
 		const shouldCallNow = newOptions.shouldRunImmediately && !timeout;
 
 		if (timeout !== null) {
-			console.log("Clearing timeout", timeout);
 			clearTimeout(timeout);
 		}
 
-		console.log("Setting timeout");
 		timeout = setTimeout(later, duration);
-		console.log("Timeout set", timeout);
 
 		if (shouldCallNow) {
-			console.log("Calling now")
 			callback(...args);
 		}
 	}) as Cancellable<T>;
