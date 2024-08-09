@@ -76,6 +76,7 @@ const CheckoutUI = () => {
 				title="Mention Me environment not set. Visit the Mention Me app settings in Shopify to choose an environment." />;
 		}
 
+		consoleError("CheckoutUI", "Invalid environment set", environment);
 		return null;
 	}
 
@@ -86,11 +87,13 @@ const CheckoutUI = () => {
 				title="Mention Me partner code needs to be set to show Mention Me journey. Visit the Mention Me app settings in Shopify to set the partner code." />;
 		}
 
+		consoleError("CheckoutUI", "Invalid Mention Me Partner Code set", partnerCode);
 		return null;
 	}
 
 	if (!refereeContentApiResponse) {
-		console.log("No referee entry point response. Nothing to render.");
+		consoleError("CheckoutUI", "No referee entry point response. Nothing to render.");
+
 		return null;
 	}
 

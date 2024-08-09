@@ -19,6 +19,8 @@ import {
 import { useContext } from "react";
 import { ReferrerJourneyContext } from "./context/ReferrerJourneyContext";
 import useReferrerEntryPoint from "./hooks/useReferrerEntryPoint";
+import { consoleError } from "../../../shared/logging";
+import { logError } from "../../../shared/sentry";
 
 const Extension = () => {
 	const translate = useTranslate();
@@ -42,6 +44,7 @@ const Extension = () => {
 				title="Mention Me environment not set. Visit the Mention Me app settings in Shopify to choose an environment." />;
 		}
 
+		consoleError("Extension", "Invalid environment set", environment);
 		return null;
 	}
 
@@ -52,10 +55,13 @@ const Extension = () => {
 				title="Mention Me partner code needs to be set to show Mention Me journey. Visit the Mention Me app settings in Shopify to set the partner code." />;
 		}
 
+		consoleError("Extension", "Invalid Mention Me Partner Code set", partnerCode);
 		return null;
 	}
 
 	if (errorState) {
+		logError("Extension", "Error state", new Error(errorState));
+
 		if (editor) {
 			return <Banner status="critical"
 						   title={"Failed to load Mention Me journey: " + errorState} />;
