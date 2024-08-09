@@ -17,6 +17,8 @@ import { isValidEnvironment } from "../../../shared/utils";
 import { useRefereeSearchContent } from "./hooks/useRefereeSearchContent";
 import type { Appearance } from "@shopify/ui-extensions/src/surfaces/checkout/components/shared";
 import { TextSize } from "@shopify/ui-extensions/build/ts/surfaces/checkout/components/shared";
+import { logError } from "../../../shared/sentry";
+import { consoleError } from "../../../shared/logging";
 
 const CheckoutUI = () => {
 	const translate = useTranslate();
@@ -57,7 +59,9 @@ const CheckoutUI = () => {
 		return !errorState && step !== "completed-success";
 	}, [errorState, step]);
 
-	if (!purchasingCompany) {
+	if (purchasingCompany) {
+		consoleError("CheckoutUI", "Purchasing company found. We're in a B2B situation. Mention Me features will be disabled.", purchasingCompany);
+
 		return null;
 	}
 
@@ -91,6 +95,8 @@ const CheckoutUI = () => {
 	}
 
 	if (errorState) {
+		logError("CheckoutUI", "Error state", new Error(errorState));
+
 		return <Banner status="critical"
 					   title={errorState} />;
 	}
