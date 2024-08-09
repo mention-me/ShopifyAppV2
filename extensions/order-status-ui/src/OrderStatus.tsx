@@ -13,6 +13,7 @@ import Extension from "./Extension";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
 import { setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
+import { consoleError } from "../../../shared/logging";
 
 
 const OrderStatus = () => {
@@ -46,6 +47,8 @@ const OrderStatus = () => {
 	);
 
 	if (purchasingCompany) {
+		consoleError("OrderStatus", "Purchasing company found. We're in a B2B situation. Mention Me features will be disabled.", purchasingCompany);
+
 		return null;
 	}
 
