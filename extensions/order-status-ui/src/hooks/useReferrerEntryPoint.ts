@@ -9,6 +9,7 @@ import {
 	useEmail,
 	useExtensionEditor,
 	useLanguage,
+	useSelectedPaymentOptions,
 	useShop,
 	useTotalAmount,
 } from "@shopify/ui-extensions-react/checkout";
@@ -42,6 +43,8 @@ const useReferrerEntryPoint = () => {
 	const discountCodes = useDiscountCodes();
 	const discountAllocations = useDiscountAllocations();
 
+	const paymentOptions = useSelectedPaymentOptions();
+
 	useEffect(() => {
 		// The Mention Me API only supports 1 discount code. We take the first one.
 		const code = discountCodes && discountCodes.length > 0 ? discountCodes[0].code : "";
@@ -49,6 +52,10 @@ const useReferrerEntryPoint = () => {
 		const discountAmount = discountAllocations.reduce((total, currentValue) => {
 			return total + currentValue.discountedAmount.amount;
 		}, 0);
+
+		const customField = [myshopifyDomain];
+
+		customField.push(...paymentOptions.map((option) => option.type));
 
 		const fetchReferrerEntryPoint = async () => {
 			setLoadingEntryPointApi(true);
@@ -58,12 +65,12 @@ const useReferrerEntryPoint = () => {
 					emailAddress: email,
 					firstname: billingAddress?.firstName,
 					surname: billingAddress?.lastName,
-					customField: myshopifyDomain
+					customField: customField.join("|"),
 				},
 				request: {
 					partnerCode: partnerCode,
 					situation: "shopify-order-status",
-					appName: APP_NAME  + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
+					appName: APP_NAME + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
 					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
 					localeCode: locale,
 				},
@@ -130,7 +137,25 @@ const useReferrerEntryPoint = () => {
 		if (partnerCode && environment && locale) {
 			fetchReferrerEntryPoint();
 		}
-	}, [partnerCode, environment, setLoadingEntryPointApi, myshopifyDomain, locale, setErrorState, email, billingAddress?.firstName, billingAddress?.lastName, orderId, money.currencyCode, money.amount, setReferrerEntryPointResponse, editor, discountCodes, discountAllocations]);
+	}, [
+		partnerCode,
+		environment,
+		setLoadingEntryPointApi,
+		myshopifyDomain,
+		locale,
+		setErrorState,
+		email,
+		billingAddress?.firstName,
+		billingAddress?.lastName,
+		orderId,
+		money.currencyCode,
+		money.amount,
+		setReferrerEntryPointResponse,
+		editor,
+		discountCodes,
+		discountAllocations,
+		paymentOptions
+	]);
 };
 
 export default useReferrerEntryPoint;
