@@ -50,7 +50,7 @@ const useReferrerEntryPoint = () => {
 			return total + currentValue.discountedAmount.amount;
 		}, 0);
 
-		const customField = [myshopifyDomain, APP_VERSION];
+		const customField = [myshopifyDomain];
 
 		const fetchReferrerEntryPoint = async () => {
 			setLoadingEntryPointApi(true);
