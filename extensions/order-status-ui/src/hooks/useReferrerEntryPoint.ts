@@ -9,7 +9,6 @@ import {
 	useEmail,
 	useExtensionEditor,
 	useLanguage,
-	useSelectedPaymentOptions,
 	useShop,
 	useTotalAmount,
 } from "@shopify/ui-extensions-react/checkout";
@@ -43,8 +42,6 @@ const useReferrerEntryPoint = () => {
 	const discountCodes = useDiscountCodes();
 	const discountAllocations = useDiscountAllocations();
 
-	const paymentOptions = useSelectedPaymentOptions();
-
 	useEffect(() => {
 		// The Mention Me API only supports 1 discount code. We take the first one.
 		const code = discountCodes && discountCodes.length > 0 ? discountCodes[0].code : "";
@@ -54,8 +51,6 @@ const useReferrerEntryPoint = () => {
 		}, 0);
 
 		const customField = [myshopifyDomain];
-
-		customField.push(...paymentOptions.map((option) => option.type));
 
 		const fetchReferrerEntryPoint = async () => {
 			setLoadingEntryPointApi(true);
@@ -154,7 +149,6 @@ const useReferrerEntryPoint = () => {
 		editor,
 		discountCodes,
 		discountAllocations,
-		paymentOptions
 	]);
 };
 
