@@ -62,7 +62,7 @@ const OrderStatus = () => {
 
 	return <ReferrerJourneyProvider mentionMeConfig={mentionMeConfig}
 									orderId={order.id}>
-		<Extension />
+		<Extension extensionType="order-status" />
 	</ReferrerJourneyProvider>;
 };
 

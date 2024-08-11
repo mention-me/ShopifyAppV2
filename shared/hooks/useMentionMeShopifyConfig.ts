@@ -1,6 +1,7 @@
 import { Environment, getDomainForEnvironment } from "../utils";
 import { useEffect, useState } from "react";
 import { APP_VERSION } from "../constants";
+import { ExtensionType } from "../types";
 
 export interface Image {
 	url: string;
@@ -15,8 +16,6 @@ export interface MentionMeShopifyConfig {
 	defaultLocale?: string,
 	refereeBannerImage?: Image,
 }
-
-export type ExtensionType = "checkout" | "order-status"
 
 interface Props {
 	myshopifyDomain: string;

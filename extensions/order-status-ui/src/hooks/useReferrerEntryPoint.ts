@@ -15,8 +15,9 @@ import {
 import useLocale from "../../../../shared/hooks/useLocale";
 import { ReferrerJourneyContext } from "../context/ReferrerJourneyContext";
 import { consoleError } from "../../../../shared/logging";
+import { ExtensionType } from "../Extension";
 
-const useReferrerEntryPoint = () => {
+const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 	const { myshopifyDomain } = useShop();
 
 	const {
@@ -64,7 +65,7 @@ const useReferrerEntryPoint = () => {
 				},
 				request: {
 					partnerCode: partnerCode,
-					situation: "shopify-order-status",
+					situation: `shopify-${extensionType}`,
 					appName: APP_NAME + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
 					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
 					localeCode: locale,
@@ -149,6 +150,7 @@ const useReferrerEntryPoint = () => {
 		editor,
 		discountCodes,
 		discountAllocations,
+		extensionType
 	]);
 };
 

@@ -59,7 +59,7 @@ const ThankYou = () => {
 
 	return <ReferrerJourneyProvider mentionMeConfig={mentionMeConfig}
 									orderId={order.id}>
-		<Extension />
+		<Extension extensionType="thank-you" />
 	</ReferrerJourneyProvider>;
 };
 

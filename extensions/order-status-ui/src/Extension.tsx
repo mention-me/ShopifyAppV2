@@ -22,7 +22,14 @@ import useReferrerEntryPoint from "./hooks/useReferrerEntryPoint";
 import { consoleError } from "../../../shared/logging";
 import { logError } from "../../../shared/sentry";
 
-const Extension = () => {
+
+import { ExtensionType } from "../../../shared/types";
+
+interface Props {
+	readonly extensionType: ExtensionType;
+}
+
+const Extension = ({ extensionType }: Props) => {
 	const translate = useTranslate();
 
 	const {
@@ -32,7 +39,7 @@ const Extension = () => {
 		referrerEntryPointResponse,
 	} = useContext(ReferrerJourneyContext);
 
-	useReferrerEntryPoint();
+	useReferrerEntryPoint(extensionType);
 
 	// Now we're into the rendering part
 	const editor = useExtensionEditor();
