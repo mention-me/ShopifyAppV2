@@ -5,6 +5,6 @@ export const APP_NAME = "mention-me-shopify-app";
  * In the InjectionConfiguration code in the API controllers we look for this special constant and allow the integration
  * to work if this string exists.
  *
- * See:
+ * See: src/Nora/ReferralBundle/Service/IntegrationIsAvailableService.php
  */
 export const SHOPIFY_PREVIEW_MODE_FLAG: string = "shopify-preview-mode";
