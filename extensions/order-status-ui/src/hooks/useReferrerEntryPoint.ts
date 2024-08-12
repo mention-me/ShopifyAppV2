@@ -76,10 +76,10 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 				},
 				order: {
 					orderIdentifier: parseShopifyOrderId(orderId),
-					currencyCode: money.currencyCode,
+					currencyCode: money?.currencyCode,
 					// When we're in the editor, don't record a value. This is to prevent these values being counted
 					// as real orders.
-					total: editor ? "0" : String(money.amount),
+					total: editor ? "0" : String(money?.amount),
 					// Use the time of the request instead of explicitly setting a time.
 					dateString: "",
 					couponCode: code,
@@ -130,7 +130,9 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 			}
 		};
 
-		if (partnerCode && environment && locale) {
+		// There's a behaviour in the Shopify API where "money" is undefined until the order is fully loaded.
+		// See: https://github.com/Shopify/ui-extensions/issues/2203
+		if (partnerCode && environment && locale && money?.amount && money?.currencyCode) {
 			fetchReferrerEntryPoint();
 		}
 	}, [
@@ -144,8 +146,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 		billingAddress?.firstName,
 		billingAddress?.lastName,
 		orderId,
-		money.currencyCode,
-		money.amount,
+		money,
 		setReferrerEntryPointResponse,
 		editor,
 		discountCodes,
