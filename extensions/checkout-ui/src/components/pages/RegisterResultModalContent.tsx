@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import RegisterResultFailureModalContent from "./RegisterResultFailureModalContent";
 import DiscountCard from "./components/DiscountCard";
+import { decode } from "entities";
 
 export const RegisterResultModalContent = () => {
 	const {
@@ -16,12 +17,12 @@ export const RegisterResultModalContent = () => {
 	return (
 		<>
 			<Heading level={1}>
-				{registerResult.content["headline"]}
+				{decode(registerResult.content["headline"])}
 			</Heading>
 			<TextBlock>
-				{registerResult.content["fulfilled-also-emailed"]}
+				{decode(registerResult.content["fulfilled-also-emailed"])}
 				{" "}
-				{registerResult.content["voucher-usage-restriction"] || ""}
+				{decode(registerResult.content["voucher-usage-restriction"] || "")}
 			</TextBlock>
 			<DiscountCard />
 		</>
