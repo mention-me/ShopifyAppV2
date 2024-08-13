@@ -10,11 +10,10 @@ import {
 import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { CHECKOUT_MODAL_ID } from "../CheckoutModal";
+import { decode } from "entities";
 
 const NoMatchModalContent = () => {
 	const { ui } = useApi();
-
-	const translate = useTranslate();
 
 	const {
 		setStep,
@@ -36,17 +35,17 @@ const NoMatchModalContent = () => {
 	return (
 		<>
 			<Heading level={1}>
-				{nameSearchResult.content.headline}
+				{decode(nameSearchResult.content.headline)}
 			</Heading>
 			<TextBlock>
-				{nameSearchResult.content.description}
+				{decode(nameSearchResult.content.description)}
 			</TextBlock>
 
 			<BlockStack>
 				<View>
 					<Button onPress={tryAgain}
 					>
-						{nameSearchResult.content.back}
+						{decode(nameSearchResult.content.back)}
 					</Button>
 				</View>
 				<View>
@@ -55,7 +54,7 @@ const NoMatchModalContent = () => {
 						// https://github.com/Shopify/ui-extensions/issues/1009
 						ui.overlay.close(CHECKOUT_MODAL_ID);
 					}}>
-						{nameSearchResult.content.cta}
+						{decode(nameSearchResult.content.cta)}
 					</Button>
 				</View>
 			</BlockStack>
