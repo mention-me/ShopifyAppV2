@@ -13,6 +13,7 @@ import { useCallback, useContext, useState } from "react";
 import { useRefereeRegister } from "../../hooks/useRefereeRegister";
 import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { isValidEmail } from "../../../../../shared/utils";
+import { decode } from "entities";
 
 export const WhoAreYouModalContent = () => {
 	const { nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);
@@ -52,10 +53,10 @@ export const WhoAreYouModalContent = () => {
 		>
 			<BlockStack>
 				<Heading level={1}>
-					{nameSearchResult.content.headline}
+					{decode(nameSearchResult.content.headline)}
 				</Heading>
 				<TextBlock>
-					{nameSearchResult.content.description}
+					{decode(nameSearchResult.content.description)}
 				</TextBlock>
 				<TextField error={errors?.email}
 						   icon={{ source: "email", position: "end" }}
@@ -68,7 +69,7 @@ export const WhoAreYouModalContent = () => {
 						   type="email"
 				/>
 				<TextBlock appearance="subdued">
-					{nameSearchResult.result.referrer.offer.privacyNotice || translate("who-are-you.privacy.text")}
+					{decode(nameSearchResult.result.referrer.offer.privacyNotice) || translate("who-are-you.privacy.text")}
 					{" "}
 					<Link external
 						  to={nameSearchResult.result.referrer.offer.privacyLink}
