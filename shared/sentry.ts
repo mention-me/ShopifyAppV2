@@ -29,10 +29,17 @@ export const setupSentry = (shop: string, extension: string) => {
 		},
 	);
 	self.addEventListener("error", (error) => {
+		let err = error.error;
+
+		if ( ! (err instanceof Error)) {
+			err = new Error(error.message);
+		}
+
 		logError(
 			"error",
 			"Unhandled error",
-			new Error(error?.message),
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+			err
 		);
 	});
 };
