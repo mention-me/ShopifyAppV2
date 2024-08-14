@@ -10,6 +10,7 @@ import {
 import { useCallback, useContext, useState } from "react";
 import { RefereeJourneyContext } from "../../../context/RefereeJourneyContext";
 import { consoleError } from "../../../../../../shared/logging";
+import { ErrorBoundary } from "@sentry/react";
 
 const DiscountCard = () => {
 	const applyDiscountCodeChange = useApplyDiscountCodeChange();
@@ -61,7 +62,9 @@ const DiscountCard = () => {
 	}
 
 	return (
-		<>
+		<ErrorBoundary beforeCapture={(scope) => {
+			scope.setTag("component", "DiscountCard");
+		}}>
 			<InlineStack border="base"
 						 padding="base"
 						 spacing="loose"
@@ -83,7 +86,7 @@ const DiscountCard = () => {
 					{translate("register-result.apply-discount")}
 				</Button>
 			</View>
-		</>
+		</ErrorBoundary>
 	);
 };
 

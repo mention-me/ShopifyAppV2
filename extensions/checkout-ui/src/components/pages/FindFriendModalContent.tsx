@@ -14,6 +14,7 @@ import { RefereeJourneyContext, RefereeSearch } from "../../context/RefereeJourn
 import { isValidEmail } from "../../../../../shared/utils";
 
 import { decode } from "entities";
+import { ErrorBoundary } from "@sentry/react";
 
 export const FindFriendModalContent = () => {
 	const {
@@ -97,62 +98,66 @@ export const FindFriendModalContent = () => {
 	}, [refereeContentApiResponse, nameSearchResult]);
 
 	return (
-		<Form
-			disabled={loadingConsumerApi}
-			onSubmit={onSubmit}
-		>
-			<BlockStack>
-				<Heading level={1}>
-					{heading}
-				</Heading>
-				<TextBlock>
-					{description}
-				</TextBlock>
-				<TextField
-					autocomplete={false}
-					error={errors?.name}
-					icon={{ source: "magnify", position: "end" }}
-					label={refereeContentApiResponse.nameInputPlaceholder}
-					name="name"
-					onChange={(value) => {
-						setSearch((existing: RefereeSearch) => {
-							return {
-								...existing,
-								name: value,
-							};
-						});
-					}}
-					required
-					value={search?.name}
-				/>
-				{shouldProvideEmail ?
+		<ErrorBoundary beforeCapture={(scope) => {
+			scope.setTag("component", "FindFriendModalContent");
+		}}>
+			<Form
+				disabled={loadingConsumerApi}
+				onSubmit={onSubmit}
+			>
+				<BlockStack>
+					<Heading level={1}>
+						{heading}
+					</Heading>
+					<TextBlock>
+						{description}
+					</TextBlock>
 					<TextField
 						autocomplete={false}
-						error={errors?.email}
-						icon={{ source: "email", position: "end" }}
-						label={refereeContentApiResponse.emailInputPlaceholder}
-						name="email"
+						error={errors?.name}
+						icon={{ source: "magnify", position: "end" }}
+						label={refereeContentApiResponse.nameInputPlaceholder}
+						name="name"
 						onChange={(value) => {
 							setSearch((existing: RefereeSearch) => {
 								return {
 									...existing,
-									email: value,
+									name: value,
 								};
 							});
 						}}
 						required
-						type="email"
-						value={search?.email}
+						value={search?.name}
 					/>
-					: null}
-			</BlockStack>
-			<BlockSpacer />
-			<Button
-				accessibilityRole="submit"
-				loading={loadingConsumerApi}
-			>
-				{refereeContentApiResponse.searchCta}
-			</Button>
-		</Form>
+					{shouldProvideEmail ?
+						<TextField
+							autocomplete={false}
+							error={errors?.email}
+							icon={{ source: "email", position: "end" }}
+							label={refereeContentApiResponse.emailInputPlaceholder}
+							name="email"
+							onChange={(value) => {
+								setSearch((existing: RefereeSearch) => {
+									return {
+										...existing,
+										email: value,
+									};
+								});
+							}}
+							required
+							type="email"
+							value={search?.email}
+						/>
+						: null}
+				</BlockStack>
+				<BlockSpacer />
+				<Button
+					accessibilityRole="submit"
+					loading={loadingConsumerApi}
+				>
+					{refereeContentApiResponse.searchCta}
+				</Button>
+			</Form>
+		</ErrorBoundary>
 	);
 };

@@ -4,6 +4,7 @@ import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import RegisterResultFailureModalContent from "./RegisterResultFailureModalContent";
 import DiscountCard from "./components/DiscountCard";
 import { decode } from "entities";
+import { ErrorBoundary } from "@sentry/react";
 
 export const RegisterResultModalContent = () => {
 	const {
@@ -15,7 +16,9 @@ export const RegisterResultModalContent = () => {
 	}
 
 	return (
-		<>
+		<ErrorBoundary beforeCapture={(scope) => {
+			scope.setTag("component", "RegisterResultModalContent");
+		}}>
 			<Heading level={1}>
 				{decode(registerResult.content["headline"])}
 			</Heading>
@@ -25,6 +28,6 @@ export const RegisterResultModalContent = () => {
 				{decode(registerResult.content["voucher-usage-restriction"] || "")}
 			</TextBlock>
 			<DiscountCard />
-		</>
+		</ErrorBoundary>
 	);
 };

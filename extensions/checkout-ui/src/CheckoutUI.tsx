@@ -19,6 +19,7 @@ import type { Appearance } from "@shopify/ui-extensions/src/surfaces/checkout/co
 import { TextSize } from "@shopify/ui-extensions/build/ts/surfaces/checkout/components/shared";
 import { logError } from "../../../shared/sentry";
 import { consoleError } from "../../../shared/logging";
+import { ErrorBoundary } from "@sentry/react";
 
 const CheckoutUI = () => {
 	const translate = useTranslate();
@@ -105,24 +106,28 @@ const CheckoutUI = () => {
 	}
 
 	return (
-		<BlockStack spacing="base">
-			<View>
-				{step === "completed-success" && <Banner status="success"
-														 title={translate("success.discount-applied")} />}
-				{showBeenReferredByFriendLink && <Text appearance={linkAppearance}
-													   size={textSize}>
-					{/*
+		<ErrorBoundary beforeCapture={(scope) => {
+			scope.setTag("component", "CheckoutUI");
+		}}>
+			<BlockStack spacing="base">
+				<View>
+					{step === "completed-success" && <Banner status="success"
+															 title={translate("success.discount-applied")} />}
+					{showBeenReferredByFriendLink && <Text appearance={linkAppearance}
+														   size={textSize}>
+						{/*
 					Link appearance is either the default (undefined) OR it inherits from a parent element when
 					using monochrome.
 					*/}
-					<Link appearance={linkAppearance ? "monochrome" : undefined}
-						  overlay={<CheckoutModal />}
-					>
-						{refereeContentApiResponse.entryCta}
-					</Link>
-				</Text>}
-			</View>
-		</BlockStack>
+						<Link appearance={linkAppearance ? "monochrome" : undefined}
+							  overlay={<CheckoutModal />}
+						>
+							{refereeContentApiResponse.entryCta}
+						</Link>
+					</Text>}
+				</View>
+			</BlockStack>
+		</ErrorBoundary>
 	);
 };
 

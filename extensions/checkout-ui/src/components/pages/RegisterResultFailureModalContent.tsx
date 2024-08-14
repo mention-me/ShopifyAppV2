@@ -2,6 +2,7 @@ import { Heading, TextBlock } from "@shopify/ui-extensions-react/checkout";
 import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { useContext } from "react";
 import DiscountCard from "./components/DiscountCard";
+import { ErrorBoundary } from "@sentry/react";
 
 const RegisterResultFailureModalContent = () => {
 	const {
@@ -9,7 +10,9 @@ const RegisterResultFailureModalContent = () => {
 	} = useContext(RefereeJourneyContext);
 
 	return (
-		<>
+		<ErrorBoundary beforeCapture={(scope) => {
+			scope.setTag("component", "RegisterResultFailureModalContent");
+		}}>
 			<Heading level={1}>
 				{registerResult.content["headline"]}
 			</Heading>
@@ -17,7 +20,7 @@ const RegisterResultFailureModalContent = () => {
 				{registerResult.content["detail"]}
 			</TextBlock>
 			<DiscountCard />
-		</>
+		</ErrorBoundary>
 	);
 };
 

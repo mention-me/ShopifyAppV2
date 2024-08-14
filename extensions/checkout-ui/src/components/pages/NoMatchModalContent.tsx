@@ -11,6 +11,7 @@ import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { CHECKOUT_MODAL_ID } from "../CheckoutModal";
 import { decode } from "entities";
+import { ErrorBoundary } from "@sentry/react";
 
 const NoMatchModalContent = () => {
 	const { ui } = useApi();
@@ -33,7 +34,9 @@ const NoMatchModalContent = () => {
 	}, [setNameSearchResult, setStep]);
 
 	return (
-		<>
+		<ErrorBoundary beforeCapture={(scope) => {
+			scope.setTag("component", "NoMatchModalContent");
+		}}>
 			<Heading level={1}>
 				{decode(nameSearchResult.content.headline)}
 			</Heading>
@@ -58,7 +61,7 @@ const NoMatchModalContent = () => {
 					</Button>
 				</View>
 			</BlockStack>
-		</>
+		</ErrorBoundary>
 	);
 };
 
