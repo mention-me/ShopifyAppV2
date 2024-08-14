@@ -99,35 +99,28 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 
 			const url = getDomainForEnvironment(environment);
 
-			try {
-				const response = await fetch(`https://${url}/api/entry-point/v2/offer`,
-					{
-						method: "POST",
-						credentials: "include",
-						headers: { accept: "application/json", "Content-Type": "application/json" },
-						body: JSON.stringify(body),
-					},
-				);
+			const response = await fetch(`https://${url}/api/entry-point/v2/offer`,
+				{
+					method: "POST",
+					credentials: "include",
+					headers: { accept: "application/json", "Content-Type": "application/json" },
+					body: JSON.stringify(body),
+				},
+			);
 
-				if (!response.ok) {
-					consoleError("ReferrerEntryPoint", "Error calling entrypoint:", response);
+			if (!response.ok) {
+				consoleError("ReferrerEntryPoint", "Error calling entrypoint:", response);
 
-					setErrorState(response.statusText);
-					setLoadingEntryPointApi(false);
-
-					return;
-				}
-
-				const json = (await response.json()) as EntryPointOfferAndLink;
-
-				setReferrerEntryPointResponse(json);
+				setErrorState(response.statusText);
 				setLoadingEntryPointApi(false);
-			} catch (error) {
-				consoleError("ReferrerEntryPoint", "Error calling referrer entrypoint:", error);
 
-				setErrorState(error?.message);
-				setLoadingEntryPointApi(false);
+				return;
 			}
+
+			const json = (await response.json()) as EntryPointOfferAndLink;
+
+			setReferrerEntryPointResponse(json);
+			setLoadingEntryPointApi(false);
 		};
 
 		// There's a behaviour in the Shopify API where "money" is undefined until the order is fully loaded.
@@ -151,7 +144,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 		editor,
 		discountCodes,
 		discountAllocations,
-		extensionType
+		extensionType,
 	]);
 };
 
