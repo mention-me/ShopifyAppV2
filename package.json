@@ -15,7 +15,7 @@
         "@api/consumer-api": "file:.api/apis/consumer-api",
         "@api/entry-point-api": "file:.api/apis/entry-point-api",
         "@sentry/browser": "^8.11.0",
-        "@sentry/react": "^8.25.0",
+        "@sentry/react": "^8.26.0",
         "@shopify/app": "^3.58.2",
         "@shopify/cli": "^3.65.3",
         "react": "^18"
@@ -39,6 +39,6 @@
         "eslint-plugin-react-hooks": "^4.6.2",
         "prettier": "3.3.3",
         "typescript": "^5.4.5",
-        "typescript-eslint": "^8.0.1"
+        "typescript-eslint": "^8.1.0"
     }
 }
