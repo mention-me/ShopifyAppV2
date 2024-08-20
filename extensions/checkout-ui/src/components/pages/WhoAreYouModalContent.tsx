@@ -58,10 +58,10 @@ export const WhoAreYouModalContent = () => {
 			>
 				<BlockStack>
 					<Heading level={1}>
-						{decode(nameSearchResult.content.headline)}
+						{decode(nameSearchResult.content.headline || "")}
 					</Heading>
 					<TextBlock>
-						{decode(nameSearchResult.content.description)}
+						{decode(nameSearchResult.content.description || "")}
 					</TextBlock>
 					<TextField error={errors?.email}
 							   icon={{ source: "email", position: "end" }}
