@@ -17,7 +17,7 @@ import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
 
 export const WhoAreYouModalContent = () => {
-	const { nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);
+	const { mentionMeConfig, nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);
 
 	const translate = useTranslate();
 
@@ -50,6 +50,7 @@ export const WhoAreYouModalContent = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "WhoAreYouModalContent");
+			scope.setTag("locale", mentionMeConfig.defaultLocale);
 		}}>
 			<Form
 				disabled={loadingConsumerApi}

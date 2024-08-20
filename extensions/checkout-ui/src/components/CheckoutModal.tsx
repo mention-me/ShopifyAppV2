@@ -51,6 +51,7 @@ export const CheckoutModal = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "CheckoutModal");
+			scope.setTag("locale", mentionMeConfig.defaultLocale);
 		}}>
 			<Modal
 				id={CHECKOUT_MODAL_ID}

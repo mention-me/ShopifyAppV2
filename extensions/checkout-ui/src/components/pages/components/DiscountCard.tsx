@@ -18,6 +18,7 @@ const DiscountCard = () => {
 	const translate = useTranslate();
 
 	const {
+		mentionMeConfig,
 		setStep,
 		registerResult,
 		setErrorState,
@@ -64,6 +65,7 @@ const DiscountCard = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "DiscountCard");
+			scope.setTag("locale", mentionMeConfig.defaultLocale);
 		}}>
 			<InlineStack border="base"
 						 padding="base"

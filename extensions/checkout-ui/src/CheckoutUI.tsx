@@ -32,6 +32,7 @@ const CheckoutUI = () => {
 	const purchasingCompany = usePurchasingCompany();
 
 	const {
+		mentionMeConfig,
 		partnerCode,
 		environment,
 		loadingRefereeContentApi,
@@ -108,6 +109,7 @@ const CheckoutUI = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "CheckoutUI");
+			scope.setTag("locale", mentionMeConfig.defaultLocale);
 		}}>
 			<BlockStack spacing="base">
 				<View>

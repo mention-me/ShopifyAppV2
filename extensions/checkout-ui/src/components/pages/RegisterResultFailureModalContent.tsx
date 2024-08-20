@@ -6,12 +6,14 @@ import { ErrorBoundary } from "@sentry/react";
 
 const RegisterResultFailureModalContent = () => {
 	const {
+		mentionMeConfig,
 		registerResult,
 	} = useContext(RefereeJourneyContext);
 
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "RegisterResultFailureModalContent");
+			scope.setTag("locale", mentionMeConfig.defaultLocale);
 		}}>
 			<Heading level={1}>
 				{registerResult.content["headline"]}

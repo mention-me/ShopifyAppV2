@@ -1,12 +1,4 @@
-import {
-	BlockStack,
-	Button,
-	Heading,
-	TextBlock,
-	useApi,
-	useTranslate,
-	View,
-} from "@shopify/ui-extensions-react/checkout";
+import { BlockStack, Button, Heading, TextBlock, useApi, View } from "@shopify/ui-extensions-react/checkout";
 import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { CHECKOUT_MODAL_ID } from "../CheckoutModal";
@@ -17,6 +9,7 @@ const NoMatchModalContent = () => {
 	const { ui } = useApi();
 
 	const {
+		mentionMeConfig,
 		setStep,
 		nameSearchResult,
 		setNameSearchResult,
@@ -36,6 +29,7 @@ const NoMatchModalContent = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "NoMatchModalContent");
+			scope.setTag("locale", mentionMeConfig.defaultLocale);
 		}}>
 			<Heading level={1}>
 				{decode(nameSearchResult.content.headline)}

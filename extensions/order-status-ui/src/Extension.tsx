@@ -24,6 +24,7 @@ import { logError } from "../../../shared/sentry";
 
 
 import { ExtensionType } from "../../../shared/types";
+import { ErrorBoundary } from "@sentry/react";
 
 interface Props {
 	readonly extensionType: ExtensionType;
@@ -33,6 +34,7 @@ const Extension = ({ extensionType }: Props) => {
 	const translate = useTranslate();
 
 	const {
+		mentionMeConfig,
 		partnerCode,
 		environment,
 		errorState,
@@ -82,87 +84,92 @@ const Extension = ({ extensionType }: Props) => {
 	}
 
 	return (
-		<View background="base">
-			<BlockStack border="base"
-						borderRadius="large"
-			>
-				{referrerEntryPointResponse.imageUrl && (
-					<View
+		<ErrorBoundary beforeCapture={(scope) => {
+			scope.setTag("component", "OrderExtension");
+			scope.setTag("locale", mentionMeConfig.defaultLocale);
+		}}>
+			<View background="base">
+				<BlockStack border="base"
+							borderRadius="large"
+				>
+					{referrerEntryPointResponse.imageUrl && (
+						<View
 
-						// maxInlineSize={Style.default(200)
-						// 	.when({ viewportInlineSize: { min: "small" } }, 200)
-						// 	.when({ viewportInlineSize: { min: "medium" } }, 200)
-						// 	.when({ viewportInlineSize: { min: "large" } }, 200)}
-					>
-						<Link external
-							  to={referrerEntryPointResponse.url}>
-							<Image borderRadius={["large", "large", "none", "none"]}
-								   fit="cover"
-								   source={referrerEntryPointResponse.imageUrl} />
-						</Link>
-					</View>
-				)}
-				<View borderRadius="large">
-					<BlockStack padding="loose"
-								spacing="base">
-						<Heading level={2}>
-							{referrerEntryPointResponse.headline}
-						</Heading>
-						<TextBlock>
-							{referrerEntryPointResponse.description}
-						</TextBlock>
-						<Pressable overlay={
-							<Popover>
-								<View
-									maxInlineSize={400}
-									padding="base"
+							// maxInlineSize={Style.default(200)
+							// 	.when({ viewportInlineSize: { min: "small" } }, 200)
+							// 	.when({ viewportInlineSize: { min: "medium" } }, 200)
+							// 	.when({ viewportInlineSize: { min: "large" } }, 200)}
+						>
+							<Link external
+								  to={referrerEntryPointResponse.url}>
+								<Image borderRadius={["large", "large", "none", "none"]}
+									   fit="cover"
+									   source={referrerEntryPointResponse.imageUrl} />
+							</Link>
+						</View>
+					)}
+					<View borderRadius="large">
+						<BlockStack padding="loose"
+									spacing="base">
+							<Heading level={2}>
+								{referrerEntryPointResponse.headline}
+							</Heading>
+							<TextBlock>
+								{referrerEntryPointResponse.description}
+							</TextBlock>
+							<Pressable overlay={
+								<Popover>
+									<View
+										maxInlineSize={400}
+										padding="base"
+									>
+										<TextBlock appearance="subdued">
+											{referrerEntryPointResponse.privacyNotice}
+											{" "}
+											<Link external
+												  to={referrerEntryPointResponse.privacyNoticeUrl}>
+												{referrerEntryPointResponse.privacyNoticeLinkText || "More info and your privacy rights"}
+											</Link>
+										</TextBlock>
+									</View>
+								</Popover>
+							}>
+								<View background="subdued"
+									  borderRadius="large"
+									  padding="tight"
 								>
-									<TextBlock appearance="subdued">
-										{referrerEntryPointResponse.privacyNotice}
-										{" "}
-										<Link external
-											  to={referrerEntryPointResponse.privacyNoticeUrl}>
-											{referrerEntryPointResponse.privacyNoticeLinkText || "More info and your privacy rights"}
-										</Link>
-									</TextBlock>
+									<InlineStack padding="extraTight"
+												 spacing="extraTight"
+									>
+										<TextBlock appearance="subdued">
+											{translate("managed-by")}
+										</TextBlock>
+
+										<Icon source="question" />
+									</InlineStack>
 								</View>
-							</Popover>
-						}>
-							<View background="subdued"
-								  borderRadius="large"
-								  padding="tight"
-							>
-								<InlineStack padding="extraTight"
-											 spacing="extraTight"
-								>
-									<TextBlock appearance="subdued">
-										{translate("managed-by")}
-									</TextBlock>
+							</Pressable>
 
-									<Icon source="question" />
-								</InlineStack>
-							</View>
-						</Pressable>
-
-						<View blockAlignment="center"
-							  minBlockSize="fill">
-							{/*
+							<View blockAlignment="center"
+								  minBlockSize="fill">
+								{/*
 							Button can't support "external".
 							See https://github.com/Shopify/ui-extensions/issues/1835#issuecomment-2113067449
 						 	And because Link can't be full width, the button is restricted in size :(
 						 	*/}
-							<Link external
-								  to={referrerEntryPointResponse.url}
-							>
-								<Button inlineAlignment="center">
-									{referrerEntryPointResponse.defaultCallToAction}
-								</Button>
-							</Link>
-						</View>
-					</BlockStack>
-				</View>
-			</BlockStack>
-		</View>
+								<Link external
+									  to={referrerEntryPointResponse.url}
+								>
+									<Button inlineAlignment="center">
+										{referrerEntryPointResponse.defaultCallToAction}
+									</Button>
+								</Link>
+							</View>
+						</BlockStack>
+					</View>
+				</BlockStack>
+			</View>
+		</ErrorBoundary>
 	);
 };
 

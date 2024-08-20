@@ -5,6 +5,7 @@ import { MentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeSho
 
 
 type ReferrerJourneyState = {
+	mentionMeConfig: MentionMeShopifyConfig;
 	orderId: string;
 	partnerCode: string;
 	environment: Environment;
@@ -36,6 +37,7 @@ export const ReferrerJourneyProvider = ({ orderId, mentionMeConfig, children }: 
 		const { partnerCode, environment, defaultLocale } = mentionMeConfig;
 
 		return {
+			mentionMeConfig,
 			orderId,
 			partnerCode,
 			environment,

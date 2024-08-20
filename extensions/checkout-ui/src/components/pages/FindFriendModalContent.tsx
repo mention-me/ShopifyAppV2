@@ -19,6 +19,7 @@ import { ErrorBoundary } from "@sentry/react";
 export const FindFriendModalContent = () => {
 	const {
 		loadingConsumerApi,
+		mentionMeConfig,
 		refereeContentApiResponse,
 		search,
 		setSearch,
@@ -100,6 +101,7 @@ export const FindFriendModalContent = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "FindFriendModalContent");
+			scope.setTag("locale", mentionMeConfig.defaultLocale);
 		}}>
 			<Form
 				disabled={loadingConsumerApi}
