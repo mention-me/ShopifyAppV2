@@ -109,7 +109,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 			);
 
 			if (!response.ok) {
-				consoleError("ReferrerEntryPoint", "Error calling entrypoint:", response);
+				consoleError("ReferrerEntryPoint", "Error calling entrypoint:", body, response);
 
 				setErrorState(response.statusText);
 				setLoadingEntryPointApi(false);
