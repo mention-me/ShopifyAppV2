@@ -8,13 +8,12 @@ import {
 	useOrder,
 	usePurchasingCompany,
 	useShop,
-} from "@shopify/ui-extensions-react/checkout";
+} from "@shopify/ui-extensions-react/customer-account";
 import Extension from "./Extension";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
 import { setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 import { consoleError } from "../../../shared/logging";
-
 
 const OrderStatus = () => {
 	const { myshopifyDomain } = useShop();
