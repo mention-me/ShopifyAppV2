@@ -17,12 +17,12 @@ import { consoleError } from "../../../shared/logging";
 
 
 const OrderStatus = () => {
-	const order = useOrder();
-
 	const { myshopifyDomain } = useShop();
 
+	// Setup sentry as soon as possible so that we can catch failures.
 	setupSentry(myshopifyDomain, "order-status");
 
+	const order = useOrder();
 	const currency = useCurrency();
 	const extensionLanguage = useExtensionLanguage();
 	const language = useLanguage();

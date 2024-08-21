@@ -15,12 +15,13 @@ import { setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 
 const ThankYou = () => {
-	const { orderConfirmation } = useApi("purchase.thank-you.block.render");
-	const { order } = useSubscription(orderConfirmation);
-
 	const { myshopifyDomain } = useShop();
 
+	// Setup sentry as soon as possible so that we can catch failures.
 	setupSentry(myshopifyDomain, "thank-you");
+
+	const { orderConfirmation } = useApi("purchase.thank-you.block.render");
+	const { order } = useSubscription(orderConfirmation);
 
 	const currency = useCurrency();
 	const extensionLanguage = useExtensionLanguage();
