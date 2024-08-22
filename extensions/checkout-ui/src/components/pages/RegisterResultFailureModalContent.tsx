@@ -3,6 +3,7 @@ import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { useContext } from "react";
 import DiscountCard from "./components/DiscountCard";
 import { ErrorBoundary } from "@sentry/react";
+import { setScopeTags } from "../../../../../shared/sentry";
 
 const RegisterResultFailureModalContent = () => {
 	const {
@@ -13,7 +14,8 @@ const RegisterResultFailureModalContent = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "RegisterResultFailureModalContent");
-			scope.setTag("locale", mentionMeConfig.defaultLocale);
+
+			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Heading level={1}>
 				{registerResult.content["headline"]}

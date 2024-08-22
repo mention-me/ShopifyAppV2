@@ -2,6 +2,8 @@ import * as Sentry from "@sentry/react";
 import { captureException } from "@sentry/react";
 import { APP_VERSION } from "./constants";
 import { consoleError } from "./logging";
+import { MentionMeShopifyConfig } from "./hooks/useMentionMeShopifyConfig";
+import { Scope } from "@sentry/browser";
 
 export const setupSentry = (shop: string, extension: string) => {
 	Sentry.init({
@@ -48,3 +50,8 @@ export const logError = (context: string, message: string, error: Error) => {
 	consoleError(context, message, error);
 	captureException(error);
 };
+
+export const setScopeTags = (scope: Scope, mentionMeConfig: MentionMeShopifyConfig) => {
+	scope.setTag("locale", mentionMeConfig.defaultLocale);
+	scope.setTag("environment", mentionMeConfig.environment);
+}

@@ -15,6 +15,7 @@ import { isValidEmail } from "../../../../../shared/utils";
 
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
+import { setScopeTags } from "../../../../../shared/sentry";
 
 export const FindFriendModalContent = () => {
 	const {
@@ -101,7 +102,8 @@ export const FindFriendModalContent = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "FindFriendModalContent");
-			scope.setTag("locale", mentionMeConfig.defaultLocale);
+
+			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Form
 				disabled={loadingConsumerApi}

@@ -15,6 +15,7 @@ import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { isValidEmail } from "../../../../../shared/utils";
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
+import { setScopeTags } from "../../../../../shared/sentry";
 
 export const WhoAreYouModalContent = () => {
 	const { mentionMeConfig, nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);
@@ -50,7 +51,8 @@ export const WhoAreYouModalContent = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "WhoAreYouModalContent");
-			scope.setTag("locale", mentionMeConfig.defaultLocale);
+
+			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Form
 				disabled={loadingConsumerApi}

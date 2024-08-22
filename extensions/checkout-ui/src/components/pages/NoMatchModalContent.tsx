@@ -4,6 +4,7 @@ import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { CHECKOUT_MODAL_ID } from "../CheckoutModal";
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
+import { setScopeTags } from "../../../../../shared/sentry";
 
 const NoMatchModalContent = () => {
 	const { ui } = useApi();
@@ -29,7 +30,8 @@ const NoMatchModalContent = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "NoMatchModalContent");
-			scope.setTag("locale", mentionMeConfig.defaultLocale);
+
+			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Heading level={1}>
 				{decode(nameSearchResult.content.headline)}

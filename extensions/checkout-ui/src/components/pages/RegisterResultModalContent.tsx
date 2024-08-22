@@ -5,6 +5,7 @@ import RegisterResultFailureModalContent from "./RegisterResultFailureModalConte
 import DiscountCard from "./components/DiscountCard";
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
+import { setScopeTags } from "../../../../../shared/sentry";
 
 export const RegisterResultModalContent = () => {
 	const {
@@ -19,7 +20,8 @@ export const RegisterResultModalContent = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "RegisterResultModalContent");
-			scope.setTag("locale", mentionMeConfig.defaultLocale);
+			
+			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Heading level={1}>
 				{decode(registerResult.content["headline"] || "")}

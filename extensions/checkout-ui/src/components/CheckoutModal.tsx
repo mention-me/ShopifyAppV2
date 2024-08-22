@@ -18,6 +18,8 @@ import { RegisterResultModalContent } from "./pages/RegisterResultModalContent";
 import NoMatchModalContent from "./pages/NoMatchModalContent";
 import { consoleError } from "../../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
+import ModalContent from "./ModalContent";
+import { setScopeTags } from "../../../../shared/sentry";
 
 export const CHECKOUT_MODAL_ID = "been-referred-by-friend-modal";
 
@@ -28,19 +30,27 @@ export const CheckoutModal = () => {
 
 	const modalContent = useMemo(() => {
 		if (step === "search-by-name" || step === "duplicate-match" || step === "no-match") {
-			return <FindFriendModalContent />;
+			return <ModalContent componentName="FindFriendModal">
+				<FindFriendModalContent />
+			</ModalContent>;
 		}
 
 		if (step === "register") {
-			return <WhoAreYouModalContent />;
+			return <ModalContent componentName="FindFriendModal">
+				<WhoAreYouModalContent />
+			</ModalContent>;
 		}
 
 		if (step === "register-result") {
-			return <RegisterResultModalContent />;
+			return <ModalContent componentName="FindFriendModal">
+				<RegisterResultModalContent />
+			</ModalContent>;
 		}
 
 		if (step === "no-match-final") {
-			return <NoMatchModalContent />;
+			return <ModalContent componentName="FindFriendModal">
+				<NoMatchModalContent />
+			</ModalContent>;
 		}
 
 		consoleError("Unknown step", step);
@@ -51,7 +61,7 @@ export const CheckoutModal = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "CheckoutModal");
-			scope.setTag("locale", mentionMeConfig.defaultLocale);
+			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Modal
 				id={CHECKOUT_MODAL_ID}

@@ -17,7 +17,7 @@ import { isValidEnvironment } from "../../../shared/utils";
 import { useRefereeSearchContent } from "./hooks/useRefereeSearchContent";
 import type { Appearance } from "@shopify/ui-extensions/src/surfaces/checkout/components/shared";
 import { TextSize } from "@shopify/ui-extensions/build/ts/surfaces/checkout/components/shared";
-import { logError } from "../../../shared/sentry";
+import { logError, setScopeTags } from "../../../shared/sentry";
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
 
@@ -109,7 +109,7 @@ const CheckoutUI = () => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "CheckoutUI");
-			scope.setTag("locale", mentionMeConfig.defaultLocale);
+			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<BlockStack spacing="base">
 				<View>

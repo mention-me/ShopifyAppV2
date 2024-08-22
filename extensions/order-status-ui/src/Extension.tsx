@@ -20,7 +20,7 @@ import { useContext } from "react";
 import { ReferrerJourneyContext } from "./context/ReferrerJourneyContext";
 import useReferrerEntryPoint from "./hooks/useReferrerEntryPoint";
 import { consoleError } from "../../../shared/logging";
-import { logError } from "../../../shared/sentry";
+import { logError, setScopeTags } from "../../../shared/sentry";
 
 
 import { ExtensionType } from "../../../shared/types";
@@ -86,7 +86,8 @@ const Extension = ({ extensionType }: Props) => {
 	return (
 		<ErrorBoundary beforeCapture={(scope) => {
 			scope.setTag("component", "OrderExtension");
-			scope.setTag("locale", mentionMeConfig.defaultLocale);
+
+			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<View background="base">
 				<BlockStack border="base"
