@@ -3,6 +3,7 @@ import { ErrorBoundary } from "@sentry/react";
 import { ReactNode, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { setScopeTags } from "../../../../shared/sentry";
+import { consoleError } from "../../../../shared/logging";
 
 interface Props {
 	readonly componentName: string;
@@ -18,7 +19,9 @@ const ModalContent = ({ componentName, children }: Props) => {
 							 title={translate("checkout.modal.error")} />;
 
 	return (
-		<ErrorBoundary beforeCapture={(scope) => {
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError(componentName, "Error boundary caught error", error);
+
 			scope.setTag("component", componentName);
 
 			setScopeTags(scope, mentionMeConfig);

@@ -5,6 +5,7 @@ import { CHECKOUT_MODAL_ID } from "../CheckoutModal";
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
 import { setScopeTags } from "../../../../../shared/sentry";
+import { consoleError } from "../../../../../shared/logging";
 
 const NoMatchModalContent = () => {
 	const { ui } = useApi();
@@ -28,7 +29,9 @@ const NoMatchModalContent = () => {
 	}, [setNameSearchResult, setStep]);
 
 	return (
-		<ErrorBoundary beforeCapture={(scope) => {
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError("NoMatchModalContent", "Error boundary caught error", error);
+
 			scope.setTag("component", "NoMatchModalContent");
 
 			setScopeTags(scope, mentionMeConfig);

@@ -107,7 +107,9 @@ const CheckoutUI = () => {
 	}
 
 	return (
-		<ErrorBoundary beforeCapture={(scope) => {
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError("CheckoutUI", "Error boundary caught error", error);
+
 			scope.setTag("component", "CheckoutUI");
 			setScopeTags(scope, mentionMeConfig);
 		}}>

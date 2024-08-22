@@ -59,7 +59,9 @@ export const CheckoutModal = () => {
 	}, [step, translate]);
 
 	return (
-		<ErrorBoundary beforeCapture={(scope) => {
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError("CheckoutModal", "Error boundary caught error", error);
+
 			scope.setTag("component", "CheckoutModal");
 			setScopeTags(scope, mentionMeConfig);
 		}}>

@@ -16,6 +16,7 @@ import { isValidEmail } from "../../../../../shared/utils";
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
 import { setScopeTags } from "../../../../../shared/sentry";
+import { consoleError } from "../../../../../shared/logging";
 
 export const FindFriendModalContent = () => {
 	const {
@@ -100,7 +101,9 @@ export const FindFriendModalContent = () => {
 	}, [refereeContentApiResponse, nameSearchResult]);
 
 	return (
-		<ErrorBoundary beforeCapture={(scope) => {
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError("FindFriendModalContent", "Error boundary caught error", error);
+
 			scope.setTag("component", "FindFriendModalContent");
 
 			setScopeTags(scope, mentionMeConfig);

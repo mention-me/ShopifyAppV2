@@ -6,6 +6,7 @@ import DiscountCard from "./components/DiscountCard";
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
 import { setScopeTags } from "../../../../../shared/sentry";
+import { consoleError } from "../../../../../shared/logging";
 
 export const RegisterResultModalContent = () => {
 	const {
@@ -18,9 +19,11 @@ export const RegisterResultModalContent = () => {
 	}
 
 	return (
-		<ErrorBoundary beforeCapture={(scope) => {
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError("RegisterResultModalContent", "Error boundary caught error", error);
+
 			scope.setTag("component", "RegisterResultModalContent");
-			
+
 			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Heading level={1}>

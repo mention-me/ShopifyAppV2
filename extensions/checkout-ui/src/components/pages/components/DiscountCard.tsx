@@ -64,7 +64,9 @@ const DiscountCard = () => {
 	}
 
 	return (
-		<ErrorBoundary beforeCapture={(scope) => {
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError("DiscountCard", "Error boundary caught error", error);
+
 			scope.setTag("component", "DiscountCard");
 
 			setScopeTags(scope, mentionMeConfig);

@@ -84,7 +84,9 @@ const Extension = ({ extensionType }: Props) => {
 	}
 
 	return (
-		<ErrorBoundary beforeCapture={(scope) => {
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError("OrderExtension", "Error boundary caught error", error);
+
 			scope.setTag("component", "OrderExtension");
 
 			setScopeTags(scope, mentionMeConfig);
