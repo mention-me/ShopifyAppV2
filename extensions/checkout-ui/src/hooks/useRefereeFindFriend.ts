@@ -8,6 +8,11 @@ import { useShop, useLanguage, useExtensionEditor } from "@shopify/ui-extensions
 import useLocale from "../../../../shared/hooks/useLocale";
 import { consoleError } from "../../../../shared/logging";
 
+/**
+ * A simple regex to check if an input might be an email.
+ */
+const EMAIL_REGEX = /^(\S+)@(\S+)$/;
+
 export const useRefereeFindFriend = () => {
 	const {
 		partnerCode,
@@ -95,8 +100,15 @@ export const useRefereeFindFriend = () => {
 						return;
 					}
 
+					let type = "no-match";
+					// Jump to the no-match-final step if the name is an email or if we're already in the no-match or
+					// duplicate match steps.
+					if (step === "no-match" || step === "duplicate-match" || EMAIL_REGEX.test(name)) {
+						type = "no-match-final";
+					}
+
 					setNameSearchResult({
-						type: step === "no-match" || step === "duplicate-match" ? "no-match-final" : "no-match",
+						type,
 						result: json,
 						content,
 					});
