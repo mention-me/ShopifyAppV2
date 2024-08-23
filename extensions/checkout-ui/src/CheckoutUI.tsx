@@ -17,7 +17,7 @@ import { isValidEnvironment } from "../../../shared/utils";
 import { useRefereeSearchContent } from "./hooks/useRefereeSearchContent";
 import type { Appearance } from "@shopify/ui-extensions/src/surfaces/checkout/components/shared";
 import { TextSize } from "@shopify/ui-extensions/build/ts/surfaces/checkout/components/shared";
-import { logError, setScopeTags } from "../../../shared/sentry";
+import { logError } from "../../../shared/sentry";
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
 
@@ -32,7 +32,6 @@ const CheckoutUI = () => {
 	const purchasingCompany = usePurchasingCompany();
 
 	const {
-		mentionMeConfig,
 		partnerCode,
 		environment,
 		loadingRefereeContentApi,
@@ -111,7 +110,6 @@ const CheckoutUI = () => {
 			consoleError("CheckoutUI", "Error boundary caught error", error);
 
 			scope.setTag("component", "CheckoutUI");
-			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<BlockStack spacing="base">
 				<View>

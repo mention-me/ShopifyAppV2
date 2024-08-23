@@ -15,11 +15,10 @@ import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { isValidEmail } from "../../../../../shared/utils";
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
-import { setScopeTags } from "../../../../../shared/sentry";
 import { consoleError } from "../../../../../shared/logging";
 
 export const WhoAreYouModalContent = () => {
-	const { mentionMeConfig, nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);
+	const { nameSearchResult, loadingConsumerApi } = useContext(RefereeJourneyContext);
 
 	const translate = useTranslate();
 
@@ -54,8 +53,6 @@ export const WhoAreYouModalContent = () => {
 			consoleError("WhoAreYouModalContent", "Error boundary caught error", error);
 
 			scope.setTag("component", "WhoAreYouModalContent");
-
-			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Form
 				disabled={loadingConsumerApi}

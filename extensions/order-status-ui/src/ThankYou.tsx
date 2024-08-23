@@ -12,7 +12,7 @@ import {
 	useSubscription,
 } from "@shopify/ui-extensions-react/checkout";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
-import { setScopeTags, setupSentry } from "../../../shared/sentry";
+import { setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
@@ -67,8 +67,6 @@ const ThankYou = () => {
 			consoleError("ThankYou", "Error boundary caught error", error);
 
 			scope.setTag("component", "ThankYou");
-
-			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Extension extensionType="thank-you" />
 		</ErrorBoundary>

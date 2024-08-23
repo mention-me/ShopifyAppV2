@@ -15,13 +15,11 @@ import { isValidEmail } from "../../../../../shared/utils";
 
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
-import { setScopeTags } from "../../../../../shared/sentry";
 import { consoleError } from "../../../../../shared/logging";
 
 export const FindFriendModalContent = () => {
 	const {
 		loadingConsumerApi,
-		mentionMeConfig,
 		refereeContentApiResponse,
 		search,
 		setSearch,
@@ -105,8 +103,6 @@ export const FindFriendModalContent = () => {
 			consoleError("FindFriendModalContent", "Error boundary caught error", error);
 
 			scope.setTag("component", "FindFriendModalContent");
-
-			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Form
 				disabled={loadingConsumerApi}

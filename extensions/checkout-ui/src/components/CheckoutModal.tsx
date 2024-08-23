@@ -19,7 +19,6 @@ import NoMatchModalContent from "./pages/NoMatchModalContent";
 import { consoleError } from "../../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
 import ModalContent from "./ModalContent";
-import { setScopeTags } from "../../../../shared/sentry";
 
 export const CHECKOUT_MODAL_ID = "been-referred-by-friend-modal";
 
@@ -63,7 +62,6 @@ export const CheckoutModal = () => {
 			consoleError("CheckoutModal", "Error boundary caught error", error);
 
 			scope.setTag("component", "CheckoutModal");
-			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Modal
 				id={CHECKOUT_MODAL_ID}

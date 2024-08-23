@@ -11,7 +11,6 @@ import { useCallback, useContext, useState } from "react";
 import { RefereeJourneyContext } from "../../../context/RefereeJourneyContext";
 import { consoleError } from "../../../../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
-import { setScopeTags } from "../../../../../../shared/sentry";
 
 const DiscountCard = () => {
 	const applyDiscountCodeChange = useApplyDiscountCodeChange();
@@ -19,7 +18,6 @@ const DiscountCard = () => {
 	const translate = useTranslate();
 
 	const {
-		mentionMeConfig,
 		setStep,
 		registerResult,
 		setErrorState,
@@ -68,8 +66,6 @@ const DiscountCard = () => {
 			consoleError("DiscountCard", "Error boundary caught error", error);
 
 			scope.setTag("component", "DiscountCard");
-
-			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<InlineStack border="base"
 						 padding="base"

@@ -4,14 +4,12 @@ import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { CHECKOUT_MODAL_ID } from "../CheckoutModal";
 import { decode } from "entities";
 import { ErrorBoundary } from "@sentry/react";
-import { setScopeTags } from "../../../../../shared/sentry";
 import { consoleError } from "../../../../../shared/logging";
 
 const NoMatchModalContent = () => {
 	const { ui } = useApi();
 
 	const {
-		mentionMeConfig,
 		setStep,
 		nameSearchResult,
 		setNameSearchResult,
@@ -33,8 +31,6 @@ const NoMatchModalContent = () => {
 			consoleError("NoMatchModalContent", "Error boundary caught error", error);
 
 			scope.setTag("component", "NoMatchModalContent");
-
-			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Heading level={1}>
 				{decode(nameSearchResult.content.headline)}

@@ -50,8 +50,3 @@ export const logError = (context: string, message: string, error: Error) => {
 	consoleError(context, message, error);
 	captureException(error);
 };
-
-export const setScopeTags = (scope: Scope, mentionMeConfig: MentionMeShopifyConfig) => {
-	scope.setTag("locale", mentionMeConfig.defaultLocale);
-	scope.setTag("environment", mentionMeConfig.environment);
-}

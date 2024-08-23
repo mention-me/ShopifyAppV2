@@ -1,8 +1,6 @@
 import { Banner, useTranslate } from "@shopify/ui-extensions-react/checkout";
 import { ErrorBoundary } from "@sentry/react";
-import { ReactNode, useContext } from "react";
-import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import { setScopeTags } from "../../../../shared/sentry";
+import { ReactNode } from "react";
 import { consoleError } from "../../../../shared/logging";
 
 interface Props {
@@ -12,8 +10,6 @@ interface Props {
 
 const ModalContent = ({ componentName, children }: Props) => {
 	const translate = useTranslate();
-	const { mentionMeConfig } = useContext(RefereeJourneyContext);
-
 
 	const fallback = <Banner status="critical"
 							 title={translate("checkout.modal.error")} />;
@@ -23,8 +19,6 @@ const ModalContent = ({ componentName, children }: Props) => {
 			consoleError(componentName, "Error boundary caught error", error);
 
 			scope.setTag("component", componentName);
-
-			setScopeTags(scope, mentionMeConfig);
 		}}
 					   fallback={fallback}>
 			{children}

@@ -11,7 +11,7 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import Extension from "./Extension";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
-import { logError, setScopeTags, setupSentry } from "../../../shared/sentry";
+import { logError, setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 import { consoleError } from "../../../shared/logging";
 import { useEffect, useState } from "react";
@@ -109,8 +109,6 @@ const OrderStatus = () => {
 			consoleError("OrderStatus", "Error boundary caught error", error);
 
 			scope.setTag("component", "OrderStatus");
-
-			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<Extension extensionType="order-status" />
 		</ErrorBoundary>

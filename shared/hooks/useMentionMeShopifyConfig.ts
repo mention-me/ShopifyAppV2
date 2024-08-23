@@ -2,6 +2,7 @@ import { Environment, getDomainForEnvironment } from "../utils";
 import { useEffect, useState } from "react";
 import { APP_VERSION } from "../constants";
 import { ExtensionType } from "../types";
+import * as Sentry from "@sentry/react";
 
 export interface Image {
 	url: string;
@@ -36,6 +37,23 @@ export const useMentionMeShopifyConfig = ({myshopifyDomain, extension, extension
 		environment: null,
 		defaultLocale: "",
 	});
+
+	useEffect(() => {
+		Sentry.setTag("extensionLanguage", extensionLanguage);
+		Sentry.setTag("language", language);
+		Sentry.setTag("currency", currency);
+		Sentry.setTag("country", country);
+		Sentry.setTag("market", marketId);
+		Sentry.setTag("marketHandle", marketHandle);
+		Sentry.setTag("extension", extension);
+
+		if (mentionMeConfig?.shopId) {
+			Sentry.setTag("shopId", mentionMeConfig.shopId);
+			Sentry.setTag("locale", mentionMeConfig.defaultLocale);
+			Sentry.setTag("environment", mentionMeConfig.environment);
+			Sentry.setTag("defaultLocale", mentionMeConfig.defaultLocale);
+		}
+	}, [country, currency, extension, extensionLanguage, language, marketHandle, marketId, mentionMeConfig]);
 
 	const [loading, setLoading] = useState(true);
 

@@ -20,8 +20,6 @@ import { useContext } from "react";
 import { ReferrerJourneyContext } from "./context/ReferrerJourneyContext";
 import useReferrerEntryPoint from "./hooks/useReferrerEntryPoint";
 import { consoleError } from "../../../shared/logging";
-import { logError, setScopeTags } from "../../../shared/sentry";
-
 
 import { ExtensionType } from "../../../shared/types";
 import { ErrorBoundary } from "@sentry/react";
@@ -34,7 +32,6 @@ const Extension = ({ extensionType }: Props) => {
 	const translate = useTranslate();
 
 	const {
-		mentionMeConfig,
 		partnerCode,
 		environment,
 		errorState,
@@ -86,8 +83,6 @@ const Extension = ({ extensionType }: Props) => {
 			consoleError("OrderExtension", "Error boundary caught error", error);
 
 			scope.setTag("component", "OrderExtension");
-
-			setScopeTags(scope, mentionMeConfig);
 		}}>
 			<View background="base">
 				<BlockStack border="base"
