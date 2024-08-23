@@ -69,11 +69,9 @@ const Extension = ({ extensionType }: Props) => {
 	}
 
 	if (errorState) {
-		logError("Extension", "Error state", new Error(errorState));
-
 		if (editor) {
 			return <Banner status="critical"
-						   title={"Failed to load Mention Me journey: " + errorState} />;
+						   title="Failed to load Mention Me journey. An offer might not be available for your locale, or your integration is not enabled." />;
 		}
 
 		return null;

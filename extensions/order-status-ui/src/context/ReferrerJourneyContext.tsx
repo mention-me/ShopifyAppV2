@@ -14,8 +14,8 @@ type ReferrerJourneyState = {
 	setLoadingEntryPointApi: Dispatch<SetStateAction<boolean>>;
 	referrerEntryPointResponse: EntryPointOfferAndLink;
 	setReferrerEntryPointResponse: Dispatch<SetStateAction<EntryPointOfferAndLink>>;
-	errorState: string;
-	setErrorState: Dispatch<SetStateAction<string>>;
+	errorState: boolean;
+	setErrorState: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ReferrerJourneyContext = createContext<ReferrerJourneyState>(undefined);
@@ -31,7 +31,7 @@ export const ReferrerJourneyProvider = ({ orderId, mentionMeConfig, children }: 
 
 	const [referrerEntryPointResponse, setReferrerEntryPointResponse] = useState<EntryPointOfferAndLink>();
 
-	const [errorState, setErrorState] = useState<string>();
+	const [errorState, setErrorState] = useState<boolean>(false);
 
 	const state = useMemo(() => {
 		const { partnerCode, environment, defaultLocale } = mentionMeConfig;

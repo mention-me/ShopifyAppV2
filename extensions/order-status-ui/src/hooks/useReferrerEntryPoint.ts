@@ -16,6 +16,7 @@ import useLocale from "../../../../shared/hooks/useLocale";
 import { ReferrerJourneyContext } from "../context/ReferrerJourneyContext";
 import { consoleError } from "../../../../shared/logging";
 import { ExtensionType } from "../Extension";
+import { logError } from "../../../../shared/sentry";
 
 const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 	const { myshopifyDomain } = useShop();
@@ -109,9 +110,10 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 			);
 
 			if (!response.ok) {
-				consoleError("ReferrerEntryPoint", "Error calling entrypoint:", body, response);
+				const message = `Error calling Referrer EntryPoint with ${JSON.stringify(body)}. Response: ${response.status}, ${response.statusText}`;
+				logError("ReferrerEntryPoint", message, new Error(message));
 
-				setErrorState(response.statusText);
+				setErrorState(true);
 				setLoadingEntryPointApi(false);
 
 				return;
