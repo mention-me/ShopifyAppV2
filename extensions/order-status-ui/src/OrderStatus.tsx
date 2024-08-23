@@ -47,7 +47,7 @@ const OrderStatus = () => {
 		},
 	);
 
-	const [orderError, setOrderError] = useState(true);
+	const [orderError, setOrderError] = useState(false);
 
 	useEffect(() => {
 		if (!orderError) {
