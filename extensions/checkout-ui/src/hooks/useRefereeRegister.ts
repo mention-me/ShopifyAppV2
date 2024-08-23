@@ -7,6 +7,7 @@ import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { RefereeRegister } from "@api/consumer-api/dist/types";
 import { useExtensionEditor, useShop } from "@shopify/ui-extensions-react/checkout";
 import { consoleError } from "../../../../shared/logging";
+import { logError } from "../../../../shared/sentry";
 
 export const useRefereeRegister = () => {
 	const {
@@ -70,7 +71,8 @@ export const useRefereeRegister = () => {
 			setLoadingConsumerApi(false);
 
 			if (!response.ok) {
-				consoleError("RefereeRegister", "Response not ok when calling refereeRegister:", response);
+				const message = `Error calling Referee RefereeRegister API. Response: ${response.status}, ${response.statusText}`;
+				logError("RefereeRegister", message, new Error(message));
 
 				return;
 			}

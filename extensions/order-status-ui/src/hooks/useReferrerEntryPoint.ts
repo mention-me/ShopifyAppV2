@@ -110,7 +110,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 			);
 
 			if (!response.ok) {
-				const message = `Error calling Referrer EntryPoint. Locale: ${locale}, Response: ${response.status}, ${response.statusText}`;
+				const message = `Error calling Referrer EntryPoint. Response: ${response.status}, ${response.statusText}`;
 				logError("ReferrerEntryPoint", message, new Error(message));
 
 				setErrorState(true);

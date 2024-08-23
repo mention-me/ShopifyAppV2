@@ -8,6 +8,7 @@ import { useExtensionEditor, useShop } from "@shopify/ui-extensions-react/checko
 import useLocale from "../../../../shared/hooks/useLocale";
 import { useLanguage } from "@shopify/ui-extensions-react/checkout";
 import { consoleError } from "../../../../shared/logging";
+import { logError } from "../../../../shared/sentry";
 
 /**
  * Function to call the Mention Me Referee EntryPoint API.
@@ -71,7 +72,8 @@ export const useRefereeSearchContent = () => {
 				);
 
 				if (!response.ok) {
-					consoleError("RefereeSearchContext", "Error calling referrer search content API:", response);
+					const message = `Error calling Referee SearchContent API. Response: ${response.status}, ${response.statusText}`;
+					logError("ReferrerEntryPoint", message, new Error(message));
 
 					try {
 						const json = (await response.json()) as RefereeContent;

@@ -7,6 +7,7 @@ import { ReferrerFound } from "@api/consumer-api/dist/types";
 import { useShop, useLanguage, useExtensionEditor } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { consoleError } from "../../../../shared/logging";
+import { logError } from "../../../../shared/sentry";
 
 /**
  * A simple regex to check if an input might be an email.
@@ -114,6 +115,9 @@ export const useRefereeFindFriend = () => {
 					});
 					return;
 				}
+
+				const message = `Error calling Referee FindFriend API. Response: ${response.status}, ${response.statusText}`;
+				logError("RefereeFindFriend", message, new Error(message));
 
 				setNameSearchResult({
 					type: "error",
