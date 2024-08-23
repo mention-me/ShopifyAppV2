@@ -11,10 +11,11 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import Extension from "./Extension";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
-import { logError, setupSentry } from "../../../shared/sentry";
+import { logError, setScopeTags, setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 import { consoleError } from "../../../shared/logging";
 import { useEffect, useState } from "react";
+import { ErrorBoundary } from "@sentry/react";
 
 
 const OrderStatus = () => {
@@ -94,7 +95,15 @@ const OrderStatus = () => {
 
 	return <ReferrerJourneyProvider mentionMeConfig={mentionMeConfig}
 									orderId={order.id}>
-		<Extension extensionType="order-status" />
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError("OrderStatus", "Error boundary caught error", error);
+
+			scope.setTag("component", "OrderStatus");
+
+			setScopeTags(scope, mentionMeConfig);
+		}}>
+			<Extension extensionType="order-status" />
+		</ErrorBoundary>
 	</ReferrerJourneyProvider>;
 };
 

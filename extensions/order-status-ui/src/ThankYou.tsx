@@ -6,13 +6,16 @@ import {
 	useExtensionLanguage,
 	useLanguage,
 	useLocalizationCountry,
-	useLocalizationMarket, usePurchasingCompany,
+	useLocalizationMarket,
+	usePurchasingCompany,
 	useShop,
 	useSubscription,
 } from "@shopify/ui-extensions-react/checkout";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
-import { setupSentry } from "../../../shared/sentry";
+import { setScopeTags, setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
+import { consoleError } from "../../../shared/logging";
+import { ErrorBoundary } from "@sentry/react";
 
 const ThankYou = () => {
 	const { myshopifyDomain } = useShop();
@@ -60,7 +63,15 @@ const ThankYou = () => {
 
 	return <ReferrerJourneyProvider mentionMeConfig={mentionMeConfig}
 									orderId={order.id}>
-		<Extension extensionType="thank-you" />
+		<ErrorBoundary beforeCapture={(scope, error) => {
+			consoleError("ThankYou", "Error boundary caught error", error);
+
+			scope.setTag("component", "ThankYou");
+
+			setScopeTags(scope, mentionMeConfig);
+		}}>
+			<Extension extensionType="thank-you" />
+		</ErrorBoundary>
 	</ReferrerJourneyProvider>;
 };
 
