@@ -11,9 +11,10 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import Extension from "./Extension";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
-import { setupSentry } from "../../../shared/sentry";
+import { logError, setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 import { consoleError } from "../../../shared/logging";
+import { useEffect, useState } from "react";
 
 
 const OrderStatus = () => {
@@ -45,6 +46,37 @@ const OrderStatus = () => {
 			marketHandle: market?.handle,
 		},
 	);
+
+	const [orderError, setOrderError] = useState(true);
+
+	useEffect(() => {
+		if (!orderError) {
+			return;
+		}
+
+		if (order && order.id) {
+			const msg = "Order found from Shopify API after previously failing. Order ID: " + order.id;
+			logError("OrderStatus", msg, new Error(msg));
+
+			return;
+		}
+
+		if (order && !order.id) {
+			const msg = "Order found, but with no order id, from Shopify API after previously failing.";
+			logError("OrderStatus", msg, new Error(msg));
+
+			return;
+		}
+	}, [order, orderError]);
+
+	if (!order || !order.id) {
+		setOrderError(true);
+
+		const msg = `No order found from Shopify API. Order ID: [${order?.id}]`;
+		logError("OrderStatus", msg, new Error(msg));
+
+		return null;
+	}
 
 	if (purchasingCompany) {
 		consoleError("OrderStatus", "Purchasing company found. We're in a B2B situation. Mention Me features will be disabled.", purchasingCompany);
