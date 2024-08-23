@@ -70,14 +70,24 @@ const OrderStatus = () => {
 		}
 	}, [order, orderError]);
 
-	if (!order || !order.id) {
+	if (!order) {
 		setOrderError(true);
 
-		const msg = `No order found from Shopify API. Order ID: [${order?.id}]`;
+		const msg = `No order object from Shopify API.`;
 		logError("OrderStatus", msg, new Error(msg));
 
 		return null;
 	}
+
+	if (!order.id) {
+		setOrderError(true);
+
+		const msg = `Order object found, but no ID from Shopify API. Order ID: [${order?.id}], Order object: ${JSON.stringify(order)}`;
+		logError("OrderStatus", msg, new Error(msg));
+
+		return null;
+	}
+
 
 	if (purchasingCompany) {
 		consoleError("OrderStatus", "Purchasing company found. We're in a B2B situation. Mention Me features will be disabled.", purchasingCompany);
