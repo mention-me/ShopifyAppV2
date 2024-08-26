@@ -921,10 +921,10 @@
     unique-string "3.0.0"
     zod "3.22.3"
 
-"@shopify/cli@^3.65.3":
-  version "3.65.3"
-  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.65.3.tgz#1951d70fadf8d58c151f064d34593f47afa4443e"
-  integrity sha512-K4FLkqhPsYf3A3OvHzB11MoVewHeA8qDlAfaw0IePmNMgKhrDtBUvBkSHT7Ta2bzE1wJ58giPdiEUt+zxOOWhA==
+"@shopify/cli@^3.66.0":
+  version "3.66.0"
+  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.66.0.tgz#3ebae4fb930cb424f262db489a1ea3a039aa497d"
+  integrity sha512-WP2cWJUpM7XJUBCYgbenD5n4dlyLNkumHftrjk5ddQIm6wn38objUMEGyfJlV/iorVkMDP1FCps9H6N8+07/Bg==
   dependencies:
     "@ast-grep/napi" "0.11.0"
     esbuild "0.19.8"
