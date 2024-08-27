@@ -8,7 +8,7 @@ import {
 	useTranslate,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { RefereeJourneyContext } from "../../../context/RefereeJourneyContext";
 import { consoleError } from "../../../../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
@@ -18,6 +18,10 @@ const DiscountCard = () => {
 	const applyDiscountCodeChange = useApplyDiscountCodeChange();
 
 	const paymentOptions = useSelectedPaymentOptions();
+	const selectedPaymentOptions = useMemo(
+		() => paymentOptions.map((po) => `${po.type}: ${po.handle}`).join(", "),
+		[paymentOptions],
+	);
 
 	const translate = useTranslate();
 
@@ -56,7 +60,8 @@ const DiscountCard = () => {
 		}
 
 		if (result.type === "error") {
-			const msg = `Error from applyDiscountCodeChange: ${result.message}. Applying coupon ${couponCode}. Selected options are:` + paymentOptions.map((po) => `${po.type}: ${po.handle}`).join(", ");
+
+			const msg = `Error from applyDiscountCodeChange: ${result.message}. Applying coupon ${couponCode}. Selected options are:` + selectedPaymentOptions;
 
 			logError("DiscountCard", msg, new Error(msg));
 
@@ -65,7 +70,7 @@ const DiscountCard = () => {
 		}
 
 		throw new Error("Unexpected result from applyDiscountCodeChange");
-	}, [applyDiscountCodeChange, paymentOptions, registerResult, setErrorState, setStep, translate]);
+	}, [applyDiscountCodeChange, selectedPaymentOptions, registerResult, setErrorState, setStep, translate]);
 
 	if (!registerResult.result?.refereeReward?.couponCode) {
 		return null;
