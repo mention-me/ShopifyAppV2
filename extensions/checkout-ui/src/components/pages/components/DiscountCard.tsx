@@ -4,6 +4,7 @@ import {
 	InlineStack,
 	TextBlock,
 	useApplyDiscountCodeChange,
+	useSelectedPaymentOptions,
 	useTranslate,
 	View,
 } from "@shopify/ui-extensions-react/checkout";
@@ -11,9 +12,12 @@ import { useCallback, useContext, useState } from "react";
 import { RefereeJourneyContext } from "../../../context/RefereeJourneyContext";
 import { consoleError } from "../../../../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
+import { logError } from "../../../../../../shared/sentry";
 
 const DiscountCard = () => {
 	const applyDiscountCodeChange = useApplyDiscountCodeChange();
+
+	const paymentOptions = useSelectedPaymentOptions();
 
 	const translate = useTranslate();
 
@@ -31,7 +35,9 @@ const DiscountCard = () => {
 			return;
 		}
 
-		if (!registerResult?.result?.refereeReward.couponCode) {
+		const couponCode = registerResult?.result?.refereeReward.couponCode;
+
+		if (!couponCode) {
 			consoleError("DiscountCard", "Unable to apply code");
 			setErrorState("Unable to apply code");
 
@@ -41,7 +47,7 @@ const DiscountCard = () => {
 		setApplyingDiscount(true);
 		const result = await applyDiscountCodeChange({
 			type: "addDiscountCode",
-			code: registerResult?.result?.refereeReward.couponCode,
+			code: couponCode,
 		});
 
 		if (result.type === "success") {
@@ -50,12 +56,16 @@ const DiscountCard = () => {
 		}
 
 		if (result.type === "error") {
+			const msg = `Error from applyDiscountCodeChange: ${result.message}. Applying coupon ${couponCode}. Selected options are:` + paymentOptions.map((po) => `${po.type}: ${po.handle}`).join(", ");
+
+			logError("DiscountCard", msg, new Error(msg));
+
 			setErrorState(`${translate("register-result.error.applying-coupon")}: ${result.message}`);
 			return;
 		}
 
 		throw new Error("Unexpected result from applyDiscountCodeChange");
-	}, [applyDiscountCodeChange, registerResult, setErrorState, setStep, translate]);
+	}, [applyDiscountCodeChange, paymentOptions, registerResult, setErrorState, setStep, translate]);
 
 	if (!registerResult.result?.refereeReward?.couponCode) {
 		return null;
