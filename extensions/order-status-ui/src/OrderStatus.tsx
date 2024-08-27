@@ -21,6 +21,9 @@ import { ErrorBoundary } from "@sentry/react";
 const OrderStatus = () => {
 	const { myshopifyDomain } = useShop();
 
+	// Debug code for https://github.com/Shopify/ui-extensions/issues/2280#issuecomment-2311068495
+	const shop = useShop();
+
 	// Setup sentry as soon as possible so that we can catch failures.
 	setupSentry(myshopifyDomain, "order-status");
 
@@ -49,6 +52,16 @@ const OrderStatus = () => {
 	);
 
 	const [orderError, setOrderError] = useState(false);
+
+	// Debug code for https://github.com/Shopify/ui-extensions/issues/2280#issuecomment-2311068495
+	useEffect(() => {
+		if (!order || !order?.id) {
+			const msg = `No order data. The Shop data is: ${shop}`;
+			logError("OrderStatus", msg, new Error(msg));
+
+			return;
+		}
+	}, [order, shop]);
 
 	useEffect(() => {
 		if (!orderError) {
