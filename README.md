@@ -53,7 +53,7 @@ configuration has changed.
 
 Once ready to install the app, choose "Distribution" from the partners.shopify.com menu for this app.
 
-Select "Custom Distribution", and confirm the domain of one of your stores.
+Select "Custom Distribution", and confirm the "myshopify.com" domain of one of your stores, e.g. "my-store.myshopify.com".
 
 This will generate a URL which you can now use to install the app in your store.
 

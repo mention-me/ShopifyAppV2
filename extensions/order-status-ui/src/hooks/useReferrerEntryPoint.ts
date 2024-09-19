@@ -127,7 +127,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 
 		// There's a behaviour in the Shopify API where "money" is undefined until the order is fully loaded.
 		// See: https://github.com/Shopify/ui-extensions/issues/2203
-		if (partnerCode && environment && locale && money?.amount && money?.currencyCode) {
+		if (partnerCode && environment && locale && (money?.amount || money?.amount === 0) && money?.currencyCode) {
 			fetchReferrerEntryPoint();
 		}
 	}, [
