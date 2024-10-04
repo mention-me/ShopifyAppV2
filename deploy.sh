@@ -11,6 +11,8 @@ sed -i.bak "s/export const APP_VERSION = \".*\";/export const APP_VERSION = \"$V
 # Remove the backup file created by sed
 rm "$FILE.bak"
 
+yarn install
+
 for CONF_FILE in `find . -name "*.toml" -depth 1`; do
 	  APP_NAME=`echo $CONF_FILE | cut -d "." -f 4`
 
