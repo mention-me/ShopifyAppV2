@@ -3,6 +3,7 @@ import {
 	reactExtension,
 	useApi,
 	useCurrency,
+	useEmail,
 	useExtensionLanguage,
 	useLanguage,
 	useLocalizationCountry,
@@ -12,7 +13,7 @@ import {
 	useSubscription,
 } from "@shopify/ui-extensions-react/checkout";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
-import { setupSentry } from "../../../shared/sentry";
+import { logError, setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
@@ -31,6 +32,11 @@ const ThankYou = () => {
 	const language = useLanguage();
 	const country = useLocalizationCountry();
 	const market = useLocalizationMarket();
+	const email = useEmail();
+
+	if (!email) {
+		logError("ThankYou", "No email exists", new Error("useEmail hook did not receive an email address"));
+	}
 
 	// As per the B2B Checkout UI guide, we can identify B2B purchases by the presence of a purchasing company.
 	// In this case, we want to turn off Mention Me features.
