@@ -16,8 +16,7 @@ handle = "checkout-journey"
 
 [[extensions.targeting]]
 module = "./src/Checkout.tsx"
-target = "purchase.checkout.block.render"
-default_placement = "ORDER_SUMMARY3"
+target = "purchase.checkout.reductions.render-after"
 
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.
