@@ -4,6 +4,7 @@ import { APP_NAME, APP_VERSION, SHOPIFY_PREVIEW_MODE_FLAG } from "../../../../sh
 import { getDomainForEnvironment, isValidEnvironment, parseShopifyOrderId } from "../../../../shared/utils";
 import {
 	useBillingAddress,
+	useCustomer,
 	useDiscountAllocations,
 	useDiscountCodes,
 	useEmail,
@@ -38,6 +39,8 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 	const locale = useLocale({ shopifyLanguage: language.isoCode, defaultLocale });
 
 	const email = useEmail();
+	const customer = useCustomer();
+
 	const money = useTotalAmount();
 	const billingAddress = useBillingAddress();
 
@@ -62,6 +65,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 					emailAddress: email,
 					firstname: billingAddress?.firstName,
 					surname: billingAddress?.lastName,
+					customerId: customer ? customer.id : undefined,
 					customField: customField.join("|"),
 				},
 				request: {
