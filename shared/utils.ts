@@ -36,7 +36,7 @@ export const isValidEmail = (email: string): boolean => {
 	return /^\S+@\S+$/.test(email)
 }
 
-export const parseShopifyOrderId = (id: string) => {
+export const parseShopifyId = (id: string) => {
 	const idParts = id.split("/");
 	return idParts[idParts.length - 1];
 };

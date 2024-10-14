@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { EntryPointForReferrerType, EntryPointOfferAndLink } from "@api/entry-point-api/src/types";
 import { APP_NAME, APP_VERSION, SHOPIFY_PREVIEW_MODE_FLAG } from "../../../../shared/constants";
-import { getDomainForEnvironment, isValidEnvironment, parseShopifyOrderId } from "../../../../shared/utils";
+import { getDomainForEnvironment, isValidEnvironment, parseShopifyId } from "../../../../shared/utils";
 import {
 	useBillingAddress,
 	useCustomer,
@@ -65,7 +65,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 					emailAddress: email,
 					firstname: billingAddress?.firstName,
 					surname: billingAddress?.lastName,
-					customerId: customer ? customer.id : undefined,
+					uniqueIdentifier: customer ? parseShopifyId(customer.id) : undefined,
 					customField: customField.join("|"),
 				},
 				request: {
@@ -80,7 +80,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 					showCloseIcon: false,
 				},
 				order: {
-					orderIdentifier: parseShopifyOrderId(orderId),
+					orderIdentifier: parseShopifyId(orderId),
 					currencyCode: money?.currencyCode,
 					// When we're in the editor, don't record a value. This is to prevent these values being counted
 					// as real orders.
