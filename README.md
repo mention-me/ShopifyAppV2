@@ -63,3 +63,8 @@ The final step is to install the app. Installing the app will work, but you will
 to change settings like your Mention Me Partner Code.
 
 To do this, please contact support@mention-me.com and we will guide you through the process of doing this.
+
+## Hacking
+
+The method `bundleExtension` in `node_modules/@shopify/cli/dist/index.js` has a minify option. Set to false to get
+for the function `buildUIExtension` unminified code.
