@@ -1,4 +1,4 @@
-export const APP_VERSION = "UNCOMMITTED";
+export const APP_VERSION = "UNKNOWN";
 export const APP_NAME = "mention-me-shopify-app";
 /**
  * Shopify doesn't work with cookies, so we need a way to identify if someone is in test/debug mode or not.
