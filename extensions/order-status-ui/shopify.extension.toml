@@ -16,6 +16,7 @@ handle = "order-status-ui"
 
 [[extensions.targeting]]
 module = "./src/OrderStatus.tsx"
+# Changing this? Don't forget to change the .tsx file too.
 target = "customer-account.order-status.block.render"
 default_placement = "ORDER_STATUS1"
 

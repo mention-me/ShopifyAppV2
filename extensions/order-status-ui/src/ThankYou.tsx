@@ -79,6 +79,7 @@ const ThankYou = () => {
 	</ReferrerJourneyProvider>;
 };
 
+// Changing this? Don't forget to change the .toml file too.
 export default reactExtension(
 	"purchase.thank-you.block.render",
 	() => <ThankYou />,

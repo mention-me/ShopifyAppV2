@@ -56,4 +56,5 @@ const Extension = () => {
 	</RefereeJourneyProvider>;
 };
 
-export default reactExtension("purchase.checkout.block.render", () => <Extension />);
+// Changing this? Don't forget to change the .toml file too.
+export default reactExtension("purchase.checkout.reductions.render-after", () => <Extension />);

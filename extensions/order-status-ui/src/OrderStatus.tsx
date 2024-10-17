@@ -134,6 +134,7 @@ const OrderStatus = () => {
 	</ReferrerJourneyProvider>;
 };
 
+// Changing this? Don't forget to change the .toml file too.
 export default reactExtension(
 	"customer-account.order-status.block.render",
 	() => <OrderStatus />,
