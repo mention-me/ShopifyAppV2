@@ -12,7 +12,7 @@
         "react": "^18.2"
     },
     "devDependencies": {
-        "@types/react": "^18.3.11",
+        "@types/react": "^18.3.12",
         "react-reconciler": "^0.29.2"
     }
 }
