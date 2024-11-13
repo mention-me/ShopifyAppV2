@@ -36,10 +36,6 @@ const OrderStatus = () => {
 	const market = useLocalizationMarket();
 	const email = useEmail();
 
-	if (!email) {
-		logError("OrderStatus", "No email exists", new Error("useEmail hook did not receive an email address"));
-	}
-
 	// As per the B2B Checkout UI guide, we can identify B2B purchases by the presence of a purchasing company.
 	// In this case, we want to turn off Mention Me features.
 	// https://shopify.dev/docs/apps/build/b2b/create-checkout-ui
@@ -58,11 +54,12 @@ const OrderStatus = () => {
 	);
 
 	const [orderError, setOrderError] = useState(false);
+	const [emailError, setEmailError] = useState(false);
 
 	// Debug code for https://github.com/Shopify/ui-extensions/issues/2280#issuecomment-2311068495
 	useEffect(() => {
 		if (!order || !order?.id) {
-			const msg = `No order data. The Shop data is: ${shop}`;
+			const msg = `No order data. The Shop data is: ${JSON.stringify(shop)}`;
 			logError("OrderStatus", msg, new Error(msg));
 
 			return;
@@ -89,6 +86,29 @@ const OrderStatus = () => {
 		}
 	}, [order, orderError]);
 
+	// Debug code for https://github.com/Shopify/ui-extensions/issues/2068#issuecomment-2473982669
+	useEffect(() => {
+		if (!email) {
+			const msg = `No email received. The Shop data is: ${JSON.stringify(shop)}`;
+			logError("OrderStatus", msg, new Error(msg));
+
+			return;
+		}
+	}, [email, shop]);
+
+	useEffect(() => {
+		if (!emailError) {
+			return;
+		}
+
+		if (email) {
+			const msg = "Email found from Shopify API after previously failing. Email: " + email;
+			logError("OrderStatus", msg, new Error(msg));
+
+			return;
+		}
+	}, [email, emailError]);
+
 	if (!order) {
 		setOrderError(true);
 
@@ -107,6 +127,15 @@ const OrderStatus = () => {
 		return null;
 	}
 
+	if (!email) {
+		setEmailError(true);
+
+		const msg = `"useEmail hook did not receive an email address"`;
+		logError("OrderStatus", msg, new Error(msg));
+
+		// We have no email, do not show an experience.
+		return null;
+	}
 
 	if (purchasingCompany) {
 		consoleError("OrderStatus", "Purchasing company found. We're in a B2B situation. Mention Me features will be disabled.", purchasingCompany);
