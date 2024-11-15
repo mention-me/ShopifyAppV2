@@ -22,9 +22,6 @@ import { ErrorBoundary } from "@sentry/react";
 const OrderStatus = () => {
 	const { myshopifyDomain } = useShop();
 
-	// Debug code for https://github.com/Shopify/ui-extensions/issues/2280#issuecomment-2311068495
-	const shop = useShop();
-
 	// Setup sentry as soon as possible so that we can catch failures.
 	setupSentry(myshopifyDomain, "order-status");
 
@@ -34,6 +31,9 @@ const OrderStatus = () => {
 	const language = useLanguage();
 	const country = useLocalizationCountry();
 	const market = useLocalizationMarket();
+
+	// Debug code for https://github.com/Shopify/ui-extensions/issues/2280#issuecomment-2311068495
+	const shop = useShop();
 	const email = useEmail();
 
 	// As per the B2B Checkout UI guide, we can identify B2B purchases by the presence of a purchasing company.
