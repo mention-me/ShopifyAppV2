@@ -130,7 +130,7 @@ const OrderStatus = () => {
 	if (!email) {
 		setEmailError(true);
 
-		const msg = `"useEmail hook did not receive an email address"`;
+		const msg = `useEmail hook did not receive an email address`;
 		logError("OrderStatus", msg, new Error(msg));
 
 		// We have no email, do not show an experience.
