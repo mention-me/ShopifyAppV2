@@ -18,8 +18,6 @@ export const setupSentry = (shop: string, extension: string) => {
 				shop,
 			},
 		},
-		// We get a lot of errors from Shopify. So, let's only capture a small proportion (10%)
-		sampleRate: 0.1,
 	});
 
 	self.addEventListener(
