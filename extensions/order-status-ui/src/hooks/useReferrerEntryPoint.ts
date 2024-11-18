@@ -151,6 +151,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 		discountCodes,
 		discountAllocations,
 		extensionType,
+		customer
 	]);
 };
 
