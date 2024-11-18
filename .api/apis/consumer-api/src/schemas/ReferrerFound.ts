@@ -16,7 +16,6 @@ const ReferrerFound = {
     },
     "links": {
       "title": "Pagination of output and links to associated resources, including content-collection items.",
-      "description": "TODO: This is overcomplicated. We should just call it \"content\" and return content!",
       "type": "array",
       "items": ContentCollectionLink
     },

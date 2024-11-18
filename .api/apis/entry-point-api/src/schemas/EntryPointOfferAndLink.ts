@@ -24,7 +24,7 @@ const EntryPointOfferAndLink = {
     },
     "privacyNotice": {
       "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
-      "description": "e.g. \"Get a £20 gift card\"",
+      "description": "e.g. \"Our refer-a-friend programme is managed by Mention Me who will process your data and send you referral service emails.\"",
       "type": "string"
     },
     "privacyNoticeUrl": {

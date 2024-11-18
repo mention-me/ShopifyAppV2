@@ -57,7 +57,7 @@ const RequestType = {
       "description": "Your application version reference. Used for reporting and troubleshooting.",
       "type": "string",
       "examples": [
-        "v1.73"
+        "e.g. MyApp/v1.73"
       ]
     },
     "authenticationToken": {

@@ -31,7 +31,7 @@ const OrderType = {
       "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
       "type": "string",
       "examples": [
-        "2024-07-10T09:43:37+00:00"
+        "2024-11-18T12:43:17+00:00"
       ]
     },
     "couponCode": {

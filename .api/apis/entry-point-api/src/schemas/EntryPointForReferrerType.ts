@@ -1,4 +1,4 @@
-import AddressForSegmentationType from './AddressForSegmentationType.js';
+import AddressType from './AddressType.js';
 import CustomerType from './CustomerType.js';
 import ImplementationType from './ImplementationType.js';
 import OrderType from './OrderType.js';
@@ -33,9 +33,9 @@ const EntryPointForReferrerType = {
     },
     "address": {
       "title": "Address",
-      "description": "Information about the address of the customer (used for segmentation)",
+      "description": "Information about the address of the customer",
       "oneOf": [
-        AddressForSegmentationType
+        AddressType
       ]
     },
     "implementation": {

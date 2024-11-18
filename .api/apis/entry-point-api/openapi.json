@@ -154,7 +154,7 @@
                           "appVersion": {
                             "description": "Your application version reference. Used for reporting and troubleshooting.",
                             "type": "string",
-                            "example": "v1.73"
+                            "example": "e.g. MyApp/v1.73"
                           },
                           "authenticationToken": {
                             "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -203,7 +203,7 @@
                           "dateString": {
                             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                             "type": "string",
-                            "example": "2024-06-18T16:31:06+00:00"
+                            "example": "2024-11-18T12:43:18+00:00"
                           },
                           "couponCode": {
                             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -239,19 +239,44 @@
                   },
                   "address": {
                     "title": "Address",
-                    "description": "Information about the address of the customer (used for segmentation)",
+                    "description": "Information about the address of the customer",
                     "oneOf": [
                       {
                         "properties": {
+                          "addressLine1": {
+                            "description": "First line of address",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "addressLine2": {
+                            "description": "Second line of address",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "addressCity": {
+                            "description": "City part of address",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "addressCounty": {
+                            "description": "County or state part of address",
+                            "type": "string",
+                            "example": ""
+                          },
+                          "addressPostCode": {
+                            "description": "Post or ZIP code",
+                            "type": "string",
+                            "example": ""
+                          },
                           "addressCountry": {
-                            "description": "Country of address e.g. UK or France",
+                            "description": "Country of address",
                             "type": "string",
                             "example": ""
                           }
                         },
                         "type": "object",
-                        "title": "AddressForSegmentationType",
-                        "x-readme-ref-name": "AddressForSegmentationType"
+                        "title": "AddressType",
+                        "x-readme-ref-name": "AddressType"
                       }
                     ]
                   },
@@ -317,7 +342,7 @@
                     },
                     "privacyNotice": {
                       "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
-                      "description": "e.g. \"Get a £20 gift card\"",
+                      "description": "e.g. \"Our refer-a-friend programme is managed by Mention Me who will process your data and send you referral service emails.\"",
                       "type": "string"
                     },
                     "privacyNoticeUrl": {
@@ -477,7 +502,7 @@
                           "appVersion": {
                             "description": "Your application version reference. Used for reporting and troubleshooting.",
                             "type": "string",
-                            "example": "v1.73"
+                            "example": "e.g. MyApp/v1.73"
                           },
                           "authenticationToken": {
                             "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -700,7 +725,7 @@
                           "appVersion": {
                             "description": "Your application version reference. Used for reporting and troubleshooting.",
                             "type": "string",
-                            "example": "v1.73"
+                            "example": "e.g. MyApp/v1.73"
                           },
                           "authenticationToken": {
                             "description": "This is a hash signature for the request which authenticates it. Ask us for details of the mechanism for generating this token.",
@@ -867,7 +892,7 @@
                   "appVersion": {
                     "description": "Your application version reference. Used for reporting and troubleshooting.",
                     "type": "string",
-                    "example": "v1.73"
+                    "example": "e.g. MyApp/v1.73"
                   },
                   "authenticationToken": {
                     "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -916,7 +941,7 @@
                   "dateString": {
                     "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                     "type": "string",
-                    "example": "2024-06-18T16:31:06+00:00"
+                    "example": "2024-11-18T12:43:18+00:00"
                   },
                   "couponCode": {
                     "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -952,19 +977,44 @@
           },
           "address": {
             "title": "Address",
-            "description": "Information about the address of the customer (used for segmentation)",
+            "description": "Information about the address of the customer",
             "oneOf": [
               {
                 "properties": {
+                  "addressLine1": {
+                    "description": "First line of address",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "addressLine2": {
+                    "description": "Second line of address",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "addressCity": {
+                    "description": "City part of address",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "addressCounty": {
+                    "description": "County or state part of address",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "addressPostCode": {
+                    "description": "Post or ZIP code",
+                    "type": "string",
+                    "example": ""
+                  },
                   "addressCountry": {
-                    "description": "Country of address e.g. UK or France",
+                    "description": "Country of address",
                     "type": "string",
                     "example": ""
                   }
                 },
                 "type": "object",
-                "title": "AddressForSegmentationType",
-                "x-readme-ref-name": "AddressForSegmentationType"
+                "title": "AddressType",
+                "x-readme-ref-name": "AddressType"
               }
             ]
           },
@@ -1022,7 +1072,7 @@
           },
           "privacyNotice": {
             "title": "The privacyNotice text of the Offer - typically shown near the CTA if required by privacy regulation",
-            "description": "e.g. \"Get a £20 gift card\"",
+            "description": "e.g. \"Our refer-a-friend programme is managed by Mention Me who will process your data and send you referral service emails.\"",
             "type": "string"
           },
           "privacyNoticeUrl": {
@@ -1137,7 +1187,7 @@
                   "appVersion": {
                     "description": "Your application version reference. Used for reporting and troubleshooting.",
                     "type": "string",
-                    "example": "v1.73"
+                    "example": "e.g. MyApp/v1.73"
                   },
                   "authenticationToken": {
                     "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -1307,7 +1357,7 @@
                   "appVersion": {
                     "description": "Your application version reference. Used for reporting and troubleshooting.",
                     "type": "string",
-                    "example": "v1.73"
+                    "example": "e.g. MyApp/v1.73"
                   },
                   "authenticationToken": {
                     "description": "This is a hash signature for the request which authenticates it. Ask us for details of the mechanism for generating this token.",
@@ -1417,7 +1467,7 @@
           "appVersion": {
             "description": "Your application version reference. Used for reporting and troubleshooting.",
             "type": "string",
-            "example": "v1.73"
+            "example": "e.g. MyApp/v1.73"
           },
           "authenticationToken": {
             "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -1460,7 +1510,7 @@
           "dateString": {
             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
             "type": "string",
-            "example": "2024-06-18T16:31:06+00:00"
+            "example": "2024-11-18T12:43:18+00:00"
           },
           "couponCode": {
             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -1492,17 +1542,42 @@
         "title": "OrderType",
         "x-readme-ref-name": "OrderType"
       },
-      "AddressForSegmentationType": {
+      "AddressType": {
         "properties": {
+          "addressLine1": {
+            "description": "First line of address",
+            "type": "string",
+            "example": ""
+          },
+          "addressLine2": {
+            "description": "Second line of address",
+            "type": "string",
+            "example": ""
+          },
+          "addressCity": {
+            "description": "City part of address",
+            "type": "string",
+            "example": ""
+          },
+          "addressCounty": {
+            "description": "County or state part of address",
+            "type": "string",
+            "example": ""
+          },
+          "addressPostCode": {
+            "description": "Post or ZIP code",
+            "type": "string",
+            "example": ""
+          },
           "addressCountry": {
-            "description": "Country of address e.g. UK or France",
+            "description": "Country of address",
             "type": "string",
             "example": ""
           }
         },
         "type": "object",
-        "title": "AddressForSegmentationType",
-        "x-readme-ref-name": "AddressForSegmentationType"
+        "title": "AddressType",
+        "x-readme-ref-name": "AddressType"
       },
       "ImplementationType": {
         "properties": {
@@ -1598,7 +1673,7 @@
           "appVersion": {
             "description": "Your application version reference. Used for reporting and troubleshooting.",
             "type": "string",
-            "example": "v1.73"
+            "example": "e.g. MyApp/v1.73"
           },
           "authenticationToken": {
             "description": "This is a hash signature for the request which authenticates it. Ask us for details of the mechanism for generating this token.",
@@ -1612,8 +1687,15 @@
       }
     }
   },
-  "x-readme": {
-    "explorer-enabled": true,
-    "proxy-enabled": true
-  }
+  "tags": [
+    {
+      "name": "Referrer"
+    },
+    {
+      "name": "Referee"
+    },
+    {
+      "name": "Dashboard"
+    }
+  ]
 }

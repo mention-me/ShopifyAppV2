@@ -8,7 +8,7 @@ Add SDK setup information and usage examples here so your users get started in a
 
 Here's some additional info about the generated SDK:
 
-`api` version: 7.0.0-beta.7
-Generated at 2024-06-18T20:30:18.591Z
+`api` version: 7.0.0-beta.10
+Generated at 2024-11-18T13:48:07.350Z
 
 --->

@@ -35,13 +35,16 @@ module.exports = tseslint.config(
 			"react/react-in-jsx-scope": "off",
 			"react/jsx-uses-react": "off",
 			"react/jsx-wrap-multilines": "off",
+			"react/jsx-no-literals": "off",
 			"react/jsx-indent": "off",
 			"react/jsx-indent-props": "off",
 			"react/jsx-max-depth": "off",
 			"react/jsx-no-bind": "off",
 			"react/jsx-newline": "off",
+			"react/jsx-one-expression-per-line": "off",
 			"react/jsx-filename-extension": "off",
 			"react/jsx-closing-bracket-location": "off",
+			"react/jsx-max-props-per-line": "off",
 			"react/function-component-definition": [
 				2,
 				{

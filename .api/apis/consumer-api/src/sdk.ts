@@ -7,7 +7,7 @@ export default class SDK {
   core: APICore;
 
   constructor() {
-    this.core = new APICore(definition, 'consumer-api/v2 (api/7.0.0-beta.8)');
+    this.core = new APICore(definition, 'consumer-api/v2 (api/7.0.0-beta.10)');
   }
 
   /**
@@ -71,12 +71,14 @@ export default class SDK {
   }
 
   /**
-   * Tell us that an order took place so that we can reward any appropriate referrer, track
-   * the order and optimise the performance of the referral scheme.
+   * Tell us that an order took place.
    *
+   * We will use the order to:
    *
-   * We'll transform the request in to something that the existing tag persister can
-   * understand.
+   * - Record the customer is an existing customer and no longer eligible for introductory
+   * rewards - Reward a referrer if this purchase was as a result of a referral
+   *
+   * We will also use the data to optimise your referral scheme.
    *
    * @summary Record order
    */

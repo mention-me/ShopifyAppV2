@@ -4,26 +4,27 @@ import { ReactNode } from "react";
 import { consoleError } from "../../../../shared/logging";
 
 interface Props {
-	readonly componentName: string;
-	readonly children: React.PropsWithChildren<ReactNode>;
+    readonly componentName: string;
+    readonly children: React.PropsWithChildren<ReactNode>;
 }
 
 const ModalContent = ({ componentName, children }: Props) => {
-	const translate = useTranslate();
+    const translate = useTranslate();
 
-	const fallback = <Banner status="critical"
-							 title={translate("checkout.modal.error")} />;
+    const fallback = <Banner status="critical" title={translate("checkout.modal.error")} />;
 
-	return (
-		<ErrorBoundary beforeCapture={(scope, error) => {
-			consoleError(componentName, "Error boundary caught error", error);
+    return (
+        <ErrorBoundary
+            beforeCapture={(scope, error) => {
+                consoleError(componentName, "Error boundary caught error", error);
 
-			scope.setTag("component", componentName);
-		}}
-					   fallback={fallback}>
-			{children}
-		</ErrorBoundary>
-	);
+                scope.setTag("component", componentName);
+            }}
+            fallback={fallback}
+        >
+            {children}
+        </ErrorBoundary>
+    );
 };
 
 export default ModalContent;

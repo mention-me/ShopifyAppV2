@@ -4,20 +4,20 @@
     {
       "private": true,
       "identifier": "entry-point-api",
-      "source": "https://developers.mention-me.com/openapi/65b2cd4272c67300721386c6",
-      "integrity": "sha512-vdaBl3mdKuTS9DpyQy1ec78sj2zoKumhLttFoD09eXaMKj3B9NKEbLwHZasTfcmA87hGfSIszIjHMkV8obhYGQ==",
-      "installerVersion": "7.0.0-beta.7",
+      "source": "@mention-me/v2.0#3b3ja1jm3n0p6f2",
+      "integrity": "sha512-XW6Recczg4zlkHQ16R448jxfRW6ktch9nPYueP5otarI4ewBtH76REc9oPNkTP+CGLR/VD+UiGG6gvwEnkW7cQ==",
+      "installerVersion": "7.0.0-beta.10",
       "language": "js",
-      "createdAt": "2024-06-18T20:30:18.591Z"
+      "createdAt": "2024-11-18T13:48:07.350Z"
     },
     {
       "private": true,
       "identifier": "consumer-api",
-      "source": "@mention-me/v2.0#34zv38c29lyfnluiu",
-      "integrity": "sha512-fgnmi+7uPgqQw3GcH4mdW2T57zKQ2WHGI5TwwAoTfEBGsASh51o2vwWOd6dWp5Kysdbq1IqYaX6tbcIG4HShqA==",
-      "installerVersion": "7.0.0-beta.8",
+      "source": "@mention-me/v2.0#cfufm3n0p6ky",
+      "integrity": "sha512-uAn3G4l6xDmu+ayn3aRor9z4LPg5WbPyOK6sMo7shCM3sW2oIHZEDcXCLS4IlQHN0MS8BRJER4l1nIMB8LGKVw==",
+      "installerVersion": "7.0.0-beta.10",
       "language": "js",
-      "createdAt": "2024-07-10T09:45:39.465Z"
+      "createdAt": "2024-11-18T13:49:43.257Z"
     }
   ]
 }

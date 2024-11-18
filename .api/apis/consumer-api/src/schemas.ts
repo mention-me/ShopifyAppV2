@@ -5,6 +5,7 @@ import Content from './schemas/Content.js';
 import ContentCollectionLink from './schemas/ContentCollectionLink.js';
 import CustomerType from './schemas/CustomerType.js';
 import DashboardReward from './schemas/DashboardReward.js';
+import EnrolCustomerType from './schemas/EnrolCustomerType.js';
 import EnrolRefereeType from './schemas/EnrolRefereeType.js';
 import EnrolReferrerType from './schemas/EnrolReferrerType.js';
 import GetApiNameSearch from './schemas/GetApiNameSearch.js';
@@ -28,4 +29,4 @@ import RequestWithVariationType from './schemas/RequestWithVariationType.js';
 import Reward from './schemas/Reward.js';
 import ShareLink from './schemas/ShareLink.js';
 import TermsLinks from './schemas/TermsLinks.js';
-export { AddressForSegmentationType, AddressType, ConfirmOrderType, Content, ContentCollectionLink, CustomerType, DashboardReward, EnrolRefereeType, EnrolReferrerType, GetApiNameSearch, GetApiNameSearchContent, GetApiReferrerDashboard, Offer, OrderType, PostApiOrder, PostApiReferrerEnrol, PostApiRegisterReferee, RefereeContent, RefereeRegister, RefereeReward, ReferralDashboardOffer, ReferralShareOffer, ReferralStats, ReferrerFound, ReferrerIdentifier, RequestType, RequestWithVariationType, Reward, ShareLink, TermsLinks }
+export { AddressForSegmentationType, AddressType, ConfirmOrderType, Content, ContentCollectionLink, CustomerType, DashboardReward, EnrolCustomerType, EnrolRefereeType, EnrolReferrerType, GetApiNameSearch, GetApiNameSearchContent, GetApiReferrerDashboard, Offer, OrderType, PostApiOrder, PostApiReferrerEnrol, PostApiRegisterReferee, RefereeContent, RefereeRegister, RefereeReward, ReferralDashboardOffer, ReferralShareOffer, ReferralStats, ReferrerFound, ReferrerIdentifier, RequestType, RequestWithVariationType, Reward, ShareLink, TermsLinks }

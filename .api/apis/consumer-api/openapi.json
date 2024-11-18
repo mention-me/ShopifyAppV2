@@ -23,7 +23,7 @@
           "Record Order"
         ],
         "summary": "Record order",
-        "description": "Tell us that an order took place so that we can reward any appropriate referrer, track the order and optimise the performance of the referral scheme.\n\n\nWe'll transform the request in to something that the existing tag persister can understand.",
+        "description": "Tell us that an order took place.\n\nWe will use the order to:\n\n- Record the customer is an existing customer and no longer eligible for introductory rewards - Reward a referrer if this purchase was as a result of a referral\n\nWe will also use the data to optimise your referral scheme.",
         "operationId": "post_api_order",
         "parameters": [
           {
@@ -84,7 +84,7 @@
                           "dateString": {
                             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                             "type": "string",
-                            "example": "2024-07-10T09:43:37+00:00"
+                            "example": "2024-11-18T12:43:17+00:00"
                           },
                           "couponCode": {
                             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -219,7 +219,7 @@
                           "appVersion": {
                             "description": "Your application version reference. Used for reporting and troubleshooting.",
                             "type": "string",
-                            "example": "v1.73"
+                            "example": "e.g. MyApp/v1.73"
                           },
                           "authenticationToken": {
                             "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -387,11 +387,16 @@
                             "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
                             "type": "string",
                             "example": ""
+                          },
+                          "hasEngaged": {
+                            "description": "Has this customer been informed of their privacy rights, and actively engaged in the offer? Mention Me expects you to set this as false when you first show the offer, and true when someone has actively engaged, e.g. after clicking a call to action. If no value is provided, we will use the default defined on the offer.",
+                            "type": "boolean",
+                            "example": false
                           }
                         },
                         "type": "object",
-                        "title": "CustomerType",
-                        "x-readme-ref-name": "CustomerType"
+                        "title": "EnrolCustomerType",
+                        "x-readme-ref-name": "EnrolCustomerType"
                       }
                     ]
                   },
@@ -443,7 +448,7 @@
                           "appVersion": {
                             "description": "Your application version reference. Used for reporting and troubleshooting.",
                             "type": "string",
-                            "example": "v1.73"
+                            "example": "e.g. MyApp/v1.73"
                           },
                           "authenticationToken": {
                             "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -492,7 +497,7 @@
                           "dateString": {
                             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                             "type": "string",
-                            "example": "2024-07-10T09:43:37+00:00"
+                            "example": "2024-11-18T12:43:17+00:00"
                           },
                           "couponCode": {
                             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -528,7 +533,7 @@
                   },
                   "address": {
                     "title": "Address",
-                    "description": "Information about the address of the customer (used for segmentation)",
+                    "description": "Information about the address of the customer, for segmentation",
                     "oneOf": [
                       {
                         "properties": {
@@ -1500,7 +1505,6 @@
                     },
                     "links": {
                       "title": "Pagination of output and links to associated resources, including content-collection items.",
-                      "description": "TODO: This is overcomplicated. We should just call it \"content\" and return content!",
                       "type": "array",
                       "items": {
                         "properties": {
@@ -1730,7 +1734,7 @@
                           "appVersion": {
                             "description": "Your application version reference. Used for reporting and troubleshooting.",
                             "type": "string",
-                            "example": "v1.73"
+                            "example": "e.g. MyApp/v1.73"
                           },
                           "authenticationToken": {
                             "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -1997,7 +2001,7 @@
                   "dateString": {
                     "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                     "type": "string",
-                    "example": "2024-07-10T09:43:37+00:00"
+                    "example": "2024-11-18T12:43:17+00:00"
                   },
                   "couponCode": {
                     "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -2132,7 +2136,7 @@
                   "appVersion": {
                     "description": "Your application version reference. Used for reporting and troubleshooting.",
                     "type": "string",
-                    "example": "v1.73"
+                    "example": "e.g. MyApp/v1.73"
                   },
                   "authenticationToken": {
                     "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -2245,11 +2249,16 @@
                     "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
                     "type": "string",
                     "example": ""
+                  },
+                  "hasEngaged": {
+                    "description": "Has this customer been informed of their privacy rights, and actively engaged in the offer? Mention Me expects you to set this as false when you first show the offer, and true when someone has actively engaged, e.g. after clicking a call to action. If no value is provided, we will use the default defined on the offer.",
+                    "type": "boolean",
+                    "example": false
                   }
                 },
                 "type": "object",
-                "title": "CustomerType",
-                "x-readme-ref-name": "CustomerType"
+                "title": "EnrolCustomerType",
+                "x-readme-ref-name": "EnrolCustomerType"
               }
             ]
           },
@@ -2301,7 +2310,7 @@
                   "appVersion": {
                     "description": "Your application version reference. Used for reporting and troubleshooting.",
                     "type": "string",
-                    "example": "v1.73"
+                    "example": "e.g. MyApp/v1.73"
                   },
                   "authenticationToken": {
                     "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -2350,7 +2359,7 @@
                   "dateString": {
                     "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
                     "type": "string",
-                    "example": "2024-07-10T09:43:37+00:00"
+                    "example": "2024-11-18T12:43:17+00:00"
                   },
                   "couponCode": {
                     "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -2386,7 +2395,7 @@
           },
           "address": {
             "title": "Address",
-            "description": "Information about the address of the customer (used for segmentation)",
+            "description": "Information about the address of the customer, for segmentation",
             "oneOf": [
               {
                 "properties": {
@@ -2936,7 +2945,6 @@
           },
           "links": {
             "title": "Pagination of output and links to associated resources, including content-collection items.",
-            "description": "TODO: This is overcomplicated. We should just call it \"content\" and return content!",
             "type": "array",
             "items": {
               "properties": {
@@ -3118,7 +3126,7 @@
                   "appVersion": {
                     "description": "Your application version reference. Used for reporting and troubleshooting.",
                     "type": "string",
-                    "example": "v1.73"
+                    "example": "e.g. MyApp/v1.73"
                   },
                   "authenticationToken": {
                     "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -3345,7 +3353,7 @@
           "dateString": {
             "description": "The date on which the transaction took place (typically the current date/time). Use ISO8601 format (e.g. 2016-11-30T17:52:50Z)",
             "type": "string",
-            "example": "2024-07-10T09:43:37+00:00"
+            "example": "2024-11-18T12:43:17+00:00"
           },
           "couponCode": {
             "description": "If a coupon was used in the transaction, the coupon code the consumer used",
@@ -3468,7 +3476,7 @@
           "appVersion": {
             "description": "Your application version reference. Used for reporting and troubleshooting.",
             "type": "string",
-            "example": "v1.73"
+            "example": "e.g. MyApp/v1.73"
           },
           "authenticationToken": {
             "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -3517,6 +3525,58 @@
         "title": "AddressType",
         "x-readme-ref-name": "AddressType"
       },
+      "EnrolCustomerType": {
+        "required": [
+          "emailAddress",
+          "firstname",
+          "surname"
+        ],
+        "properties": {
+          "emailAddress": {
+            "description": "Customer email address",
+            "type": "string",
+            "example": "jane.doe@example.com"
+          },
+          "title": {
+            "description": "Customer title such as Mr, Miss, Dr or Sir",
+            "type": "string",
+            "example": ""
+          },
+          "firstname": {
+            "description": "Customer firstname",
+            "type": "string",
+            "example": ""
+          },
+          "surname": {
+            "description": "Customer surname",
+            "type": "string",
+            "example": ""
+          },
+          "uniqueIdentifier": {
+            "description": "Your unique identifier for this customer e.g. CustomerId",
+            "type": "string",
+            "example": ""
+          },
+          "segment": {
+            "description": "Customer segment - a string containing segment data about this customer, e.g. vip or employee. You can concatenate multiple segments together if you wish using hyphens.",
+            "type": "string",
+            "example": ""
+          },
+          "customField": {
+            "description": "Custom field - a string containing custom data about this customer, e.g. SEGMENT001 or Package B",
+            "type": "string",
+            "example": ""
+          },
+          "hasEngaged": {
+            "description": "Has this customer been informed of their privacy rights, and actively engaged in the offer? Mention Me expects you to set this as false when you first show the offer, and true when someone has actively engaged, e.g. after clicking a call to action. If no value is provided, we will use the default defined on the offer.",
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "type": "object",
+        "title": "EnrolCustomerType",
+        "x-readme-ref-name": "EnrolCustomerType"
+      },
       "RequestWithVariationType": {
         "required": [
           "partnerCode",
@@ -3561,7 +3621,7 @@
           "appVersion": {
             "description": "Your application version reference. Used for reporting and troubleshooting.",
             "type": "string",
-            "example": "v1.73"
+            "example": "e.g. MyApp/v1.73"
           },
           "authenticationToken": {
             "description": "This is a generated token using a salted hash of the email address of the customer with a secret key. Please ask us for your secret key. ",
@@ -3978,5 +4038,22 @@
         "x-readme-ref-name": "Content"
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Record Order"
+    },
+    {
+      "name": "Enrol Referrer"
+    },
+    {
+      "name": "Get referrer dashboard"
+    },
+    {
+      "name": "Find referrer by name"
+    },
+    {
+      "name": "Link new customer to referrer"
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 import AddressForSegmentationType from './AddressForSegmentationType.js';
-import CustomerType from './CustomerType.js';
+import EnrolCustomerType from './EnrolCustomerType.js';
 import OrderType from './OrderType.js';
 import RequestWithVariationType from './RequestWithVariationType.js';
 
@@ -13,7 +13,7 @@ const EnrolReferrerType = {
       "title": "Customer",
       "description": "Information about the referrer to enrol",
       "oneOf": [
-        CustomerType
+        EnrolCustomerType
       ]
     },
     "request": {
@@ -32,7 +32,7 @@ const EnrolReferrerType = {
     },
     "address": {
       "title": "Address",
-      "description": "Information about the address of the customer (used for segmentation)",
+      "description": "Information about the address of the customer, for segmentation",
       "oneOf": [
         AddressForSegmentationType
       ]

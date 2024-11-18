@@ -8,6 +8,7 @@ export type Content = FromSchema<typeof schemas.Content>;
 export type ContentCollectionLink = FromSchema<typeof schemas.ContentCollectionLink>;
 export type CustomerType = FromSchema<typeof schemas.CustomerType>;
 export type DashboardReward = FromSchema<typeof schemas.DashboardReward>;
+export type EnrolCustomerType = FromSchema<typeof schemas.EnrolCustomerType>;
 export type EnrolRefereeType = FromSchema<typeof schemas.EnrolRefereeType>;
 export type EnrolReferrerType = FromSchema<typeof schemas.EnrolReferrerType>;
 export type GetApiNameSearchContentMetadataParam = FromSchema<typeof schemas.GetApiNameSearchContent.metadata>;

@@ -7,7 +7,7 @@ export default class SDK {
   core: APICore;
 
   constructor() {
-    this.core = new APICore(definition, 'entry-point-api/v2 (api/7.0.0-beta.7)');
+    this.core = new APICore(definition, 'entry-point-api/v2 (api/7.0.0-beta.10)');
   }
 
   /**

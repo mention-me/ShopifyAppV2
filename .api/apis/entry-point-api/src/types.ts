@@ -1,7 +1,7 @@
 import type { FromSchema } from '@readme/api-core/types';
 import type * as schemas from './schemas.js';
 
-export type AddressForSegmentationType = FromSchema<typeof schemas.AddressForSegmentationType>;
+export type AddressType = FromSchema<typeof schemas.AddressType>;
 export type CustomerType = FromSchema<typeof schemas.CustomerType>;
 export type EntryPointForDashboardType = FromSchema<typeof schemas.EntryPointForDashboardType>;
 export type EntryPointForRefereeType = FromSchema<typeof schemas.EntryPointForRefereeType>;
