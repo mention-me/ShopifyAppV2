@@ -79,6 +79,9 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 					wrapContentWithBranding: true,
 					showCloseIcon: false,
 				},
+				address: {
+					addressPostCode: billingAddress?.zip,
+				},
 				order: {
 					orderIdentifier: parseShopifyId(orderId),
 					currencyCode: money?.currencyCode,
@@ -144,6 +147,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 		email,
 		billingAddress?.firstName,
 		billingAddress?.lastName,
+		billingAddress?.zip,
 		orderId,
 		money,
 		setReferrerEntryPointResponse,
