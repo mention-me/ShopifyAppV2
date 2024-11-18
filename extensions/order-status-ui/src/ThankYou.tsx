@@ -37,7 +37,7 @@ const ThankYou = () => {
 	// Debug code for https://github.com/Shopify/ui-extensions/issues/2068#issuecomment-2473982669
 	const email = useEmail();
 	const shop = useShop();
-	const [emailError, setEmailError] = useState(false);
+	const [emailError, setEmailError] = useState(!!email);
 
 	// As per the B2B Checkout UI guide, we can identify B2B purchases by the presence of a purchasing company.
 	// In this case, we want to turn off Mention Me features.
