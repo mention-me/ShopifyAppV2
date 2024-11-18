@@ -53,38 +53,7 @@ const OrderStatus = () => {
 		},
 	);
 
-	const [orderError, setOrderError] = useState(false);
-	const [emailError, setEmailError] = useState(false);
-
-	// Debug code for https://github.com/Shopify/ui-extensions/issues/2280#issuecomment-2311068495
-	useEffect(() => {
-		if (!order || !order?.id) {
-			const msg = `No order data. The Shop data is: ${JSON.stringify(shop)}`;
-			logError("OrderStatus", msg, new Error(msg));
-
-			return;
-		}
-	}, [order, shop]);
-
-	useEffect(() => {
-		if (!orderError) {
-			return;
-		}
-
-		if (order && order.id) {
-			const msg = "Order found from Shopify API after previously failing. Order ID: " + order.id;
-			logError("OrderStatus", msg, new Error(msg));
-
-			return;
-		}
-
-		if (order && !order.id) {
-			const msg = "Order found, but with no order id, from Shopify API after previously failing.";
-			logError("OrderStatus", msg, new Error(msg));
-
-			return;
-		}
-	}, [order, orderError]);
+	const [emailError, setEmailError] = useState(!!email);
 
 	// Debug code for https://github.com/Shopify/ui-extensions/issues/2068#issuecomment-2473982669
 	useEffect(() => {
@@ -108,24 +77,6 @@ const OrderStatus = () => {
 			return;
 		}
 	}, [email, emailError]);
-
-	if (!order) {
-		setOrderError(true);
-
-		const msg = `No order object from Shopify API.`;
-		logError("OrderStatus", msg, new Error(msg));
-
-		return null;
-	}
-
-	if (!order.id) {
-		setOrderError(true);
-
-		const msg = `Order object found, but no ID from Shopify API. Order ID: [${order?.id}], Order object: ${JSON.stringify(order)}`;
-		logError("OrderStatus", msg, new Error(msg));
-
-		return null;
-	}
 
 	if (!email) {
 		setEmailError(true);
