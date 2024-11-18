@@ -13,7 +13,7 @@ rm "$FILE.bak"
 
 yarn install
 
-for CONF_FILE in `find . -name "*.toml" -depth 1`; do
+for CONF_FILE in `find . -name "*.toml" -depth 1 | sort -h`; do
 	  APP_NAME=`echo $CONF_FILE | cut -d "." -f 4`
 
 		if [ "$APP_NAME" == "custom-example" ]; then
