@@ -71,7 +71,7 @@ const ThankYou = () => {
 		}
 
 		if (email) {
-			const msg = "Email found from Shopify API after previously failing. Email: " + email;
+			const msg = "Email found from Shopify API after previously failing.";
 			logError("OrderStatus", msg, new Error(msg));
 
 			return;
