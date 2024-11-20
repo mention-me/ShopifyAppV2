@@ -11,7 +11,7 @@ const isValidLocale = (locale: string) => {
  * @param shopifyCountry
  * @param defaultLocale
  */
-const useLocale = (shopifyLanguageOrLocale: string, shopifyCountry: string, defaultLocale: string) => {
+const useLocale = (shopifyLanguageOrLocale: string, shopifyCountry: string|undefined, defaultLocale: string) => {
 	const language = shopifyLanguageOrLocale.replace("-", "_");
 
 	if (isValidLocale(shopifyLanguageOrLocale)) {
@@ -19,9 +19,11 @@ const useLocale = (shopifyLanguageOrLocale: string, shopifyCountry: string, defa
 	}
 
 	// The shopifyLanguageOrLocale isn't a valid locale. If the language + country code is, let's use that instead.
-	const locale = `${language}_${shopifyCountry}`;
-	if (isValidLocale(locale)) {
-		return locale;
+	if (shopifyCountry) {
+		const locale = `${language}_${shopifyCountry}`;
+		if (isValidLocale(locale)) {
+			return locale;
+		}
 	}
 
 	// This wasn't a valid locale either - so let's return the default.

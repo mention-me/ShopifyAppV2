@@ -36,9 +36,9 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 	const editor = useExtensionEditor();
 
 	const { isoCode: languageOrLocale } = useLanguage();
-	const { isoCode: country } = useLocalizationCountry();
+	const country = useLocalizationCountry();
 
-	const locale = useLocale(languageOrLocale, country, defaultLocale);
+	const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale);
 
 	const email = useEmail();
 	const customer = useCustomer();
