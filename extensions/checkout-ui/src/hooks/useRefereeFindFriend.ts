@@ -24,6 +24,7 @@ export const useRefereeFindFriend = () => {
 		partnerCode,
 		environment,
 		defaultLocale,
+		localeChoiceMethod,
 		setLoadingConsumerApi,
 		setNameSearchResult,
 		step,
@@ -38,7 +39,7 @@ export const useRefereeFindFriend = () => {
 	const { isoCode: languageOrLocale } = useLanguage();
 	const country = useLocalizationCountry();
 
-	const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale);
+	const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale, localeChoiceMethod);
 
 	return useCallback(async () => {
 		setLoadingConsumerApi(true);

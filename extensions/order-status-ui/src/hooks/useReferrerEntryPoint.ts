@@ -28,6 +28,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 		partnerCode,
 		environment,
 		defaultLocale,
+		localeChoiceMethod,
 		setLoadingEntryPointApi,
 		setReferrerEntryPointResponse,
 		setErrorState,
@@ -38,7 +39,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 	const { isoCode: languageOrLocale } = useLanguage();
 	const country = useLocalizationCountry();
 
-	const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale);
+	const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale, localeChoiceMethod);
 
 	const email = useEmail();
 	const customer = useCustomer();

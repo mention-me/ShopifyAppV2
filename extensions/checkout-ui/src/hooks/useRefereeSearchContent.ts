@@ -23,6 +23,7 @@ export const useRefereeSearchContent = () => {
 		partnerCode,
 		environment,
 		defaultLocale,
+		localeChoiceMethod,
 		setLoadingRefereeContentApi,
 		setRefereeContentApiResponse,
 		setErrorState,
@@ -35,7 +36,7 @@ export const useRefereeSearchContent = () => {
 	const { isoCode: languageOrLocale } = useLanguage();
 	const country = useLocalizationCountry();
 
-	const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale);
+	const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale, localeChoiceMethod);
 
 	useEffect(() => {
 		const fetchRefereeJourneyContent = async () => {

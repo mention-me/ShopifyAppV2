@@ -36,6 +36,7 @@ type RefereeJourneyState = {
 	partnerCode?: string;
 	environment?: Environment;
 	defaultLocale?: string;
+	localeChoiceMethod?: string;
 	step: Step;
 	setStep: Dispatch<SetStateAction<Step>>;
 	mentionMeConfig: MentionMeShopifyConfig;
@@ -78,12 +79,13 @@ export const RefereeJourneyProvider = ({ mentionMeConfig, children }: Props) => 
 
 
 	const state = useMemo(() => {
-		const { partnerCode, environment, defaultLocale } = mentionMeConfig;
+		const { partnerCode, environment, defaultLocale, localeChoiceMethod } = mentionMeConfig;
 
 		return {
 			partnerCode,
 			environment,
 			defaultLocale,
+			localeChoiceMethod,
 			step,
 			setStep,
 			mentionMeConfig,

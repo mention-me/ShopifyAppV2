@@ -15,6 +15,7 @@ export interface MentionMeShopifyConfig {
     environment?: Environment;
     partnerCode?: string;
     defaultLocale?: string;
+    localeChoiceMethod?: string;
     refereeBannerImage?: Image;
 }
 
