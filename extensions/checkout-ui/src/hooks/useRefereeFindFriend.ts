@@ -4,7 +4,12 @@ import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { SITUATION } from "../Checkout";
 import { ReferrerFound } from "@api/consumer-api/dist/types";
-import { useShop, useLanguage, useExtensionEditor } from "@shopify/ui-extensions-react/checkout";
+import {
+	useShop,
+	useLanguage,
+	useExtensionEditor,
+	useLocalizationCountry,
+} from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { consoleError } from "../../../../shared/logging";
 import { logError } from "../../../../shared/sentry";
@@ -30,9 +35,10 @@ export const useRefereeFindFriend = () => {
 
 	const editor = useExtensionEditor();
 
-	const { isoCode } = useLanguage();
+	const { isoCode: languageOrLocale } = useLanguage();
+	const { isoCode: country } = useLocalizationCountry();
 
-	const locale = useLocale({shopifyLanguage: isoCode, defaultLocale});
+	const locale = useLocale(languageOrLocale, country, defaultLocale);
 
 	return useCallback(async () => {
 		setLoadingConsumerApi(true);

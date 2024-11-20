@@ -10,6 +10,7 @@ import {
 	useEmail,
 	useExtensionEditor,
 	useLanguage,
+	useLocalizationCountry,
 	useShop,
 	useTotalAmount,
 } from "@shopify/ui-extensions-react/checkout";
@@ -34,9 +35,10 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 
 	const editor = useExtensionEditor();
 
-	const language = useLanguage();
+	const { isoCode: languageOrLocale } = useLanguage();
+	const { isoCode: country } = useLocalizationCountry();
 
-	const locale = useLocale({ shopifyLanguage: language.isoCode, defaultLocale });
+	const locale = useLocale(languageOrLocale, country, defaultLocale);
 
 	const email = useEmail();
 	const customer = useCustomer();

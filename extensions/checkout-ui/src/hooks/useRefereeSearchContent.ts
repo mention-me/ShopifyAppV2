@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { useExtensionEditor, useShop } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
-import { useLanguage } from "@shopify/ui-extensions-react/checkout";
+import { useLanguage, useLocalizationCountry } from "@shopify/ui-extensions-react/checkout";
 import { consoleError } from "../../../../shared/logging";
 import { logError } from "../../../../shared/sentry";
 
@@ -32,9 +32,10 @@ export const useRefereeSearchContent = () => {
 
 	const editor = useExtensionEditor();
 
-	const { isoCode } = useLanguage();
+	const { isoCode: languageOrLocale } = useLanguage();
+	const { isoCode: country } = useLocalizationCountry();
 
-	const locale = useLocale({shopifyLanguage: isoCode, defaultLocale});
+	const locale = useLocale(languageOrLocale, country, defaultLocale);
 
 	useEffect(() => {
 		const fetchRefereeJourneyContent = async () => {
