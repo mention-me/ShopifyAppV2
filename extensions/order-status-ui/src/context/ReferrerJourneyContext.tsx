@@ -10,6 +10,7 @@ type ReferrerJourneyState = {
 	partnerCode: string;
 	environment: Environment;
 	defaultLocale: string;
+	localeChoiceMethod: string;
 	loadingEntryPointApi: boolean;
 	setLoadingEntryPointApi: Dispatch<SetStateAction<boolean>>;
 	referrerEntryPointResponse: EntryPointOfferAndLink;
@@ -34,7 +35,7 @@ export const ReferrerJourneyProvider = ({ orderId, mentionMeConfig, children }: 
 	const [errorState, setErrorState] = useState<boolean>(false);
 
 	const state = useMemo(() => {
-		const { partnerCode, environment, defaultLocale } = mentionMeConfig;
+		const { partnerCode, environment, defaultLocale, localeChoiceMethod } = mentionMeConfig;
 
 		return {
 			mentionMeConfig,
@@ -42,6 +43,7 @@ export const ReferrerJourneyProvider = ({ orderId, mentionMeConfig, children }: 
 			partnerCode,
 			environment,
 			defaultLocale,
+			localeChoiceMethod,
 			loadingEntryPointApi,
 			setLoadingEntryPointApi,
 			referrerEntryPointResponse,

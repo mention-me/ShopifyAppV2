@@ -10,8 +10,15 @@ const isValidLocale = (locale: string) => {
  * @param shopifyLanguageOrLocale
  * @param shopifyCountry
  * @param defaultLocale
+ * @param localeChoiceMethod
  */
-const useLocale = (shopifyLanguageOrLocale: string, shopifyCountry: string|undefined, defaultLocale: string) => {
+const useLocale = (shopifyLanguageOrLocale: string, shopifyCountry: string|undefined, defaultLocale: string, localeChoiceMethod: string) => {
+	if (localeChoiceMethod === "forced") {
+		return defaultLocale;
+	}
+
+	// Otherwise, Shopify gets to decide the locale
+
 	const language = shopifyLanguageOrLocale.replace("-", "_");
 
 	if (isValidLocale(shopifyLanguageOrLocale)) {
