@@ -17,7 +17,7 @@
         "@sentry/browser": "^8.40.0",
         "@sentry/react": "^8.40.0",
         "@shopify/app": "^3.58.2",
-        "@shopify/cli": "^3.69.4",
+        "@shopify/cli": "^3.70.0",
         "react": "^18"
     },
     "trustedDependencies": [
