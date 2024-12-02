@@ -1034,10 +1034,10 @@
     "@remote-ui/react" "^5.0.2"
     "@types/react" ">=18.2.67"
 
-"@shopify/ui-extensions@^2024.7":
-  version "2024.10.0"
-  resolved "https://registry.npmjs.org/@shopify/ui-extensions/-/ui-extensions-2024.10.0.tgz"
-  integrity sha512-vJUYkJxwj/isWVj6PFzYdGqtqvtLewmUo4RROrBV93xsQqx/KG1Xqe7oEDLyHdeCKvIBwz8KpvApvmuBUI1ZpQ==
+"@shopify/ui-extensions@^2024.10":
+  version "2024.10.1"
+  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions/-/ui-extensions-2024.10.1.tgz#7765f84090445f4b5de71ca63c9ceec72547dce0"
+  integrity sha512-wG9TU4EZE6PR7jPmJzynoQSTiMs+TsuzFlIF1M7BT3QZKWEf48Ru3Q45FFlPXLmVRuNRshaXBtNbU9mtjfyOFw==
   dependencies:
     "@remote-ui/async-subscription" "^2.1.12"
     "@remote-ui/core" "^2.2.4"
