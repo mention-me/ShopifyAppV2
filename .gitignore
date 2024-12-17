@@ -1,10 +1,10 @@
 # Environment Configuration
-.env
+.env.mention-me
 .env.*
 
 # Client specific configuration
 shopify.app.*.toml
-!shopify.app.toml
+!shopify.app.mention-me.toml
 !shopify.app.custom-example.toml
 
 # Dependency directory

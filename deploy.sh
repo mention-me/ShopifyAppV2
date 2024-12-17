@@ -16,7 +16,7 @@ yarn install
 for CONF_FILE in `find . -name "*.toml" -depth 1 | sort -h`; do
 	  APP_NAME=`echo $CONF_FILE | cut -d "." -f 4`
 
-		if [ "$APP_NAME" == "custom-example" ]; then
+		if [ "$APP_NAME" = "custom-example" ]; then
 			echo "Skipping $APP_NAME"
 			continue
 		fi
