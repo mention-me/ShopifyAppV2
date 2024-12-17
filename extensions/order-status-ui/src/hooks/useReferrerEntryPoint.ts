@@ -83,7 +83,12 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 					showCloseIcon: false,
 				},
 				address: {
+					addressLine1: billingAddress?.address1,
+					addressLine2: billingAddress?.address2,
+					addressCity: billingAddress?.city,
+					addressCounty: billingAddress?.provinceCode,
 					addressPostCode: billingAddress?.zip,
+					addressCountry: billingAddress?.countryCode,
 				},
 				order: {
 					orderIdentifier: parseShopifyId(orderId),
