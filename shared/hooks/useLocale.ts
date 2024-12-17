@@ -21,7 +21,7 @@ const useLocale = (shopifyLanguageOrLocale: string, shopifyCountry: string|undef
 
 	const language = shopifyLanguageOrLocale.replace("-", "_");
 
-	if (isValidLocale(shopifyLanguageOrLocale)) {
+	if (isValidLocale(language)) {
 		return language;
 	}
 
