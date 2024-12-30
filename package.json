@@ -29,7 +29,7 @@
         "extensions/*"
     ],
     "devDependencies": {
-        "@eslint/compat": "^1.2.3",
+        "@eslint/compat": "^1.2.4",
         "@shopify/eslint-plugin": "^46.0.0",
         "eslint": "8",
         "eslint-plugin-react": "^7.37.2",
