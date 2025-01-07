@@ -51,8 +51,10 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 	const discountAllocations = useDiscountAllocations();
 
 	useEffect(() => {
-		// The Mention Me API only supports 1 discount code. We take the first one.
-		const code = discountCodes && discountCodes.length > 0 ? discountCodes[0].code : "";
+		// The Mention Me API supports multiple discount codes, comma separated.
+		const codes = discountCodes.map((discountCode) => {
+			return discountCode.code;
+		}).join(",");
 
 		const discountAmount = discountAllocations.reduce((total, currentValue) => {
 			return total + currentValue.discountedAmount.amount;
@@ -98,7 +100,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 					total: editor ? "0" : String(money?.amount),
 					// Use the time of the request instead of explicitly setting a time.
 					dateString: "",
-					couponCode: code,
+					couponCode: codes,
 					discountAmount: String(discountAmount),
 				},
 			};
