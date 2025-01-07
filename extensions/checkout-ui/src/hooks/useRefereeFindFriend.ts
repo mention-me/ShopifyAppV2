@@ -56,7 +56,7 @@ export const useRefereeFindFriend = () => {
 
 		const { name, email } = search;
 
-		const url = getDomainForEnvironment(environment);
+		const url = getDomainForEnvironment(myshopifyDomain, environment);
 
 		const params = new URLSearchParams({
 			"request[partnerCode]": partnerCode,

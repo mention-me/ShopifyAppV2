@@ -115,7 +115,7 @@ const useReferrerEntryPoint = (extensionType: ExtensionType) => {
 				return;
 			}
 
-			const url = getDomainForEnvironment(environment);
+			const url = getDomainForEnvironment(myshopifyDomain, environment);
 
 			const response = await fetch(`https://${url}/api/entry-point/v2/offer`,
 				{

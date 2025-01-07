@@ -54,7 +54,7 @@ export const useRefereeSearchContent = () => {
 				return;
 			}
 
-			const url = getDomainForEnvironment(environment);
+			const url = getDomainForEnvironment(myshopifyDomain, environment);
 
 			const params = new URLSearchParams({
 				"request[partnerCode]": partnerCode,

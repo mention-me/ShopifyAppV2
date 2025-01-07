@@ -10,12 +10,18 @@ export const isValidEnvironment = (env: unknown): env is Environment => {
 	return validEnvironments.includes(env as Environment);
 }
 
-export const getDomainForEnvironment = (environment: Environment): string => {
+/**
+ * Get the domain to look up configuration from. For the "mention-me-checkout-extensibility-beta" store we override it
+ * to use local environments.
+ */
+export const getDomainForEnvironment = (myshopifyDomain: string, environment: Environment): string => {
+	if (myshopifyDomain === "mention-me-checkout-extensibility-beta.myshopify.com") {
+		return "mentionme.dev";
+	}
+
 	let url = "demo.mention-me.com";
 	if (environment === "production") {
 		url = "mention-me.com";
-	} else if (environment === "local") {
-		url = "mentionme.dev";
 	}
 
 	return url;

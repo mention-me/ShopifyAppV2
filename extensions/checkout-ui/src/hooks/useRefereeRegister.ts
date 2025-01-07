@@ -36,7 +36,7 @@ export const useRefereeRegister = () => {
 
 		setLoadingConsumerApi(true);
 
-		const url = getDomainForEnvironment(environment);
+		const url = getDomainForEnvironment(myshopifyDomain, environment);
 
 		if (!nameSearchResult.result) {
 			throw new Error("Expected nameSearchResult result to be defined");
