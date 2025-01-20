@@ -15,7 +15,7 @@ handle = "checkout-journey"
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/extension-targets-overview
 
 [[extensions.targeting]]
-module = "./src/Checkout.tsx"
+module = "./src/Extension.tsx"
 # Changing this? Don't forget to change the .tsx file too.
 target = "purchase.checkout.reductions.render-after"
 

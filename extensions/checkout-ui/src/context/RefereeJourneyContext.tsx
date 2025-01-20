@@ -77,7 +77,6 @@ export const RefereeJourneyProvider = ({ mentionMeConfig, children }: Props) => 
 
 	const [errorState, setErrorState] = useState<string>();
 
-
 	const state = useMemo(() => {
 		const { partnerCode, environment, defaultLocale, localeChoiceMethod } = mentionMeConfig;
 
