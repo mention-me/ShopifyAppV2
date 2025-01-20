@@ -7,7 +7,7 @@ name = "Mention Me"
 handle = "mention-me-1"
 
 [webhooks]
-api_version = "2024-04"
+api_version = "2025-01"
 
   [[webhooks.subscriptions]]
   uri = "https://mention-me.com/shopify/webhooks/customers/data_request"
