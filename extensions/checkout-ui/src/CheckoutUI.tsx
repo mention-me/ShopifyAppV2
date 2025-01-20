@@ -45,7 +45,7 @@ const CheckoutUI = () => {
         text_size: TextSize;
     }> = useSettings();
 
-    useRefereeSearchContent();
+    const {loadingRefereeContentApi, refereeContentApiResponse } = useRefereeSearchContent();
 
     const showBeenReferredByFriendLink = useMemo(() => {
         return !errorState && step !== "completed-success";

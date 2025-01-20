@@ -9,6 +9,8 @@ import useLocale from "../../../../shared/hooks/useLocale";
 import { useLanguage, useLocalizationCountry } from "@shopify/ui-extensions-react/checkout";
 import { consoleError } from "../../../../shared/logging";
 import { logError } from "../../../../shared/sentry";
+import { useQuery } from "@tanstack/react-query";
+import { MentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeShopifyConfig";
 
 /**
  * Function to call the Mention Me Referee EntryPoint API.
@@ -24,8 +26,6 @@ export const useRefereeSearchContent = () => {
 		environment,
 		defaultLocale,
 		localeChoiceMethod,
-		setLoadingRefereeContentApi,
-		setRefereeContentApiResponse,
 		setErrorState,
 	} = useContext(RefereeJourneyContext);
 
@@ -38,75 +38,80 @@ export const useRefereeSearchContent = () => {
 
 	const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale, localeChoiceMethod);
 
-	useEffect(() => {
-		const fetchRefereeJourneyContent = async () => {
-			setLoadingRefereeContentApi(true);
+	const url = getDomainForEnvironment(myshopifyDomain, environment);
 
+	const params = new URLSearchParams({
+		"request[partnerCode]": partnerCode,
+		"request[situation]": SITUATION,
+		"request[appName]": APP_NAME  + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
+		"request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
+		"request[localeCode]": locale,
+	});
+
+
+	const { isPending, error, data } = useQuery<RefereeContent>({
+		queryKey: ["refereeContent"],
+		queryFn: async (): Promise<RefereeContent> => {
 			if (!partnerCode || typeof partnerCode !== "string") {
-				return;
+				return undefined;
 			}
 
 			if (!isValidEnvironment(environment)) {
-				return;
+				return undefined;
 			}
 
 			if (!locale) {
-				return;
+				return undefined;
 			}
 
-			const url = getDomainForEnvironment(myshopifyDomain, environment);
+			const res = await fetch(`https://${url}/api/consumer/v2/referrer/search/content?${params.toString()}`,
+				{
+					method: "GET",
+					// Sadly, Shopify have disabled credentials. This means we can't use cookies for anti fraud.
+					// However, we'll pass it anyway, just in case they change their mind.
+					credentials: "include",
+					headers: { accept: "application/json", "Content-Type": "application/json" },
+				},
+			);
 
-			const params = new URLSearchParams({
-				"request[partnerCode]": partnerCode,
-				"request[situation]": SITUATION,
-				"request[appName]": APP_NAME  + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
-				"request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
-				"request[localeCode]": locale,
-			});
+			return (await res.json()) as RefereeContent;
+		},
+	});
 
-			try {
-				const response = await fetch(`https://${url}/api/consumer/v2/referrer/search/content?${params.toString()}`,
-					{
-						method: "GET",
-						credentials: "include",
-						headers: { accept: "application/json", "Content-Type": "application/json" },
-					},
-				);
+	return {
+		loading: isPending,
+		refereeContentApiResponse: data,
+	}
 
-				if (!response.ok) {
-					const message = `Error calling Referee SearchContent API. Response: ${response.status}, ${response.statusText}`;
-					logError("ReferrerEntryPoint", message, new Error(message));
+			// 	if (!response.ok) {
+			// 		const message = `Error calling Referee SearchContent API. Response: ${response.status}, ${response.statusText}`;
+			// 		logError("ReferrerEntryPoint", message, new Error(message));
+			//
+			// 		try {
+			// 			const json = (await response.json()) as RefereeContent;
+			//
+			// 			if (json.errors) {
+			// 				consoleError("RefereeSearchContent", "Errors returned from Mention Me API:", json.errors.map((error) => error.message).join(", "));
+			// 			}
+			// 		} catch {
+			// 			// Do nothing
+			// 		}
+			//
+			// 		setErrorState(response.statusText);
+			// 		setLoadingRefereeContentApi(false);
+			//
+			// 		return;
+			// 	}
+			//
+			// 	const json = (await response.json()) ;
+			//
+			// 	setRefereeContentApiResponse(json);
+			// 	setLoadingRefereeContentApi(false);
+			// } catch (error) {
+			// 	consoleError("RefereeSearchContent", "Error calling referee search content API:", error);
+			//
+			// 	setErrorState(error?.message);
+			// 	setLoadingRefereeContentApi(false);
+			// }
 
-					try {
-						const json = (await response.json()) as RefereeContent;
-
-						if (json.errors) {
-							consoleError("RefereeSearchContent", "Errors returned from Mention Me API:", json.errors.map((error) => error.message).join(", "));
-						}
-					} catch {
-						// Do nothing
-					}
-
-					setErrorState(response.statusText);
-					setLoadingRefereeContentApi(false);
-
-					return;
-				}
-
-				const json = (await response.json()) as RefereeContent;
-
-				setRefereeContentApiResponse(json);
-				setLoadingRefereeContentApi(false);
-			} catch (error) {
-				consoleError("RefereeSearchContent", "Error calling referee search content API:", error);
-
-				setErrorState(error?.message);
-				setLoadingRefereeContentApi(false);
-			}
-		};
-
-		if (partnerCode && environment && locale) {
-			fetchRefereeJourneyContent();
-		}
-	}, [partnerCode, environment, setLoadingRefereeContentApi, myshopifyDomain, setRefereeContentApiResponse, locale, setErrorState, editor]);
 };
