@@ -48,21 +48,33 @@ export const useMentionMeShopifyConfig = ({
     Sentry.setTag("marketHandle", marketHandle);
     Sentry.setTag("extension", extension);
 
-    const url = getDomainForEnvironment(myshopifyDomain, "production");
-
-    const u = new URL(`https://${url}/shopify/app/config/${myshopifyDomain}`);
-    u.searchParams.append("extensionLanguage", extensionLanguage);
-    u.searchParams.append("language", language);
-    u.searchParams.append("currency", currency);
-    u.searchParams.append("country", country);
-    u.searchParams.append("market", marketId);
-    u.searchParams.append("marketHandle", marketHandle);
-    u.searchParams.append("extension", extension);
-    u.searchParams.append("version", APP_VERSION);
-
     const { isPending, error, data } = useQuery<MentionMeShopifyConfig>({
-        queryKey: ["shopifyConfig"],
+        queryKey: [
+            "shopifyConfig",
+            {
+                myshopifyDomain,
+                extension,
+                extensionLanguage,
+                language,
+                currency,
+                country,
+                marketId,
+                marketHandle,
+            },
+        ],
         queryFn: async (): Promise<MentionMeShopifyConfig> => {
+            const url = getDomainForEnvironment(myshopifyDomain, "production");
+
+            const u = new URL(`https://${url}/shopify/app/config/${myshopifyDomain}`);
+            u.searchParams.append("extensionLanguage", extensionLanguage);
+            u.searchParams.append("language", language);
+            u.searchParams.append("currency", currency);
+            u.searchParams.append("country", country);
+            u.searchParams.append("market", marketId);
+            u.searchParams.append("marketHandle", marketHandle);
+            u.searchParams.append("extension", extension);
+            u.searchParams.append("version", APP_VERSION);
+
             const res = await fetch(u.toString(), {
                 method: "GET",
                 // mode: "no-cors",
@@ -71,11 +83,9 @@ export const useMentionMeShopifyConfig = ({
 
             return (await res.json()) as MentionMeShopifyConfig;
         },
+		// https://tkdodo.eu/blog/react-query-error-handling#error-boundaries
+		throwOnError: true,
     });
-
-    if (error) {
-        throw new Error("An error has occurred: " + error.message);
-    }
 
     if (data) {
         Sentry.setTag("shopId", data.shopId);
@@ -86,6 +96,6 @@ export const useMentionMeShopifyConfig = ({
 
     return {
         loading: isPending,
-		mentionMeConfig: data,
+        mentionMeConfig: data,
     };
 };
