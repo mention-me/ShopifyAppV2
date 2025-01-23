@@ -35,11 +35,7 @@ import { MailingAddress } from "@shopify/ui-extensions/build/ts/surfaces/checkou
 
 export interface ReferrerEntryPointInputs {
     /* eslint-disable react/no-unused-prop-types */
-
-	// Bug: bug: https://community.shopify.dev/t/bug-billingaddress-is-no-longer-available-on-the-customer-order-status-page/6660
-	// eslint-disable-next-line react/require-default-props
-    readonly billingAddress?: MailingAddress;
-
+    readonly billingAddress: MailingAddress;
 	readonly country: Country;
     readonly customer: Pick<Customer, "id">;
     readonly discountAllocations: CartDiscountAllocation[];
