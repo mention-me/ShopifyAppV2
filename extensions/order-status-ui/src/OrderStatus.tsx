@@ -1,6 +1,10 @@
 import {
-    reactExtension,
     useCurrency,
+    useCustomer,
+    useDiscountAllocations,
+    useDiscountCodes,
+    useEmail,
+    useExtensionEditor,
     useExtensionLanguage,
     useLanguage,
     useLocalizationCountry,
@@ -8,15 +12,19 @@ import {
     useOrder,
     usePurchasingCompany,
     useShop,
-} from "@shopify/ui-extensions-react/checkout";
-import Extension from "./Extension";
+    useTotalAmount,
+    useTranslate,
+} from "@shopify/ui-extensions-react/customer-account";
+import ReferrerExperience from "./ReferrerExperience";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
 import { setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
 
-const OrderStatus = () => {
+export const OrderStatus = () => {
+    const translate = useTranslate();
+
     const { myshopifyDomain } = useShop();
 
     // Setup sentry as soon as possible so that we can catch failures.
@@ -45,6 +53,18 @@ const OrderStatus = () => {
         marketHandle: market?.handle,
     });
 
+    const editor = useExtensionEditor();
+
+    const { isoCode: languageOrLocale } = useLanguage();
+
+    const email = useEmail();
+    const customer = useCustomer();
+
+    const money = useTotalAmount();
+
+    const discountCodes = useDiscountCodes();
+    const discountAllocations = useDiscountAllocations();
+
     if (purchasingCompany) {
         consoleError(
             "OrderStatus",
@@ -56,7 +76,7 @@ const OrderStatus = () => {
     }
 
     if (loading) {
-        return <Extension.Skeleton />;
+        return <ReferrerExperience.Skeleton />;
     }
 
     if (!mentionMeConfig) {
@@ -72,11 +92,21 @@ const OrderStatus = () => {
                     scope.setTag("component", "OrderStatus");
                 }}
             >
-                <Extension extensionType="order-status" />
+                <ReferrerExperience
+                    billingAddress={undefined}
+                    country={country}
+                    customer={customer}
+					discountAllocations={discountAllocations}
+                    discountCodes={discountCodes}
+					editor={!!editor}
+					email={email}
+					extensionType="order-status"
+					languageOrLocale={languageOrLocale}
+					money={money}
+					myshopifyDomain={myshopifyDomain}
+					translate={translate}
+                />
             </ErrorBoundary>
         </ReferrerJourneyProvider>
     );
 };
-
-// Changing this? Don't forget to change the .toml file too.
-export default reactExtension("customer-account.order-status.block.render", () => <OrderStatus />);

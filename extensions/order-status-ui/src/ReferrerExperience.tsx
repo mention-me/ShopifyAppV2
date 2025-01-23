@@ -35,9 +35,13 @@ import { MailingAddress } from "@shopify/ui-extensions/build/ts/surfaces/checkou
 
 export interface ReferrerEntryPointInputs {
     /* eslint-disable react/no-unused-prop-types */
-    readonly billingAddress: MailingAddress;
-    readonly country: Country;
-    readonly customer: Customer;
+
+	// Bug: bug: https://community.shopify.dev/t/bug-billingaddress-is-no-longer-available-on-the-customer-order-status-page/6660
+	// eslint-disable-next-line react/require-default-props
+    readonly billingAddress?: MailingAddress;
+
+	readonly country: Country;
+    readonly customer: Pick<Customer, "id">;
     readonly discountAllocations: CartDiscountAllocation[];
     readonly discountCodes: CartDiscountCode[];
     readonly editor: boolean;
@@ -53,9 +57,9 @@ export interface ReferrerEntryPointInputs {
 const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
     const { editor, translate } = props;
 
-    const { partnerCode, environment, errorState, referrerEntryPointResponse } = useContext(ReferrerJourneyContext);
+    const { partnerCode, environment, errorState  } = useContext(ReferrerJourneyContext);
 
-    useReferrerEntryPoint(props);
+    const { loading, data } = useReferrerEntryPoint(props);
 
     // Now we're into the rendering part
 
@@ -100,7 +104,11 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
         return null;
     }
 
-    if (!referrerEntryPointResponse) {
+	if (loading) {
+		return <ReferrerExperience.Skeleton />;
+	}
+
+    if (!data) {
         return null;
     }
 
@@ -114,7 +122,7 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
         >
             <View background="base">
                 <BlockStack border="base" borderRadius="large">
-                    {referrerEntryPointResponse.imageUrl && (
+                    {data.imageUrl && (
                         <View
 
                         // maxInlineSize={Style.default(200)
@@ -122,27 +130,27 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                         // 	.when({ viewportInlineSize: { min: "medium" } }, 200)
                         // 	.when({ viewportInlineSize: { min: "large" } }, 200)}
                         >
-                            <Link external to={referrerEntryPointResponse.url}>
+                            <Link external to={data.url}>
                                 <Image
                                     borderRadius={["large", "large", "none", "none"]}
                                     fit="cover"
-                                    source={referrerEntryPointResponse.imageUrl}
+                                    source={data.imageUrl}
                                 />
                             </Link>
                         </View>
                     )}
                     <View borderRadius="large">
                         <BlockStack padding="loose" spacing="base">
-                            <Heading level={2}>{referrerEntryPointResponse.headline}</Heading>
-                            <TextBlock>{referrerEntryPointResponse.description}</TextBlock>
+                            <Heading level={2}>{data.headline}</Heading>
+                            <TextBlock>{data.description}</TextBlock>
                             <Pressable
                                 overlay={
                                     <Popover>
                                         <View maxInlineSize={400} padding="base">
                                             <TextBlock appearance="subdued">
-                                                {referrerEntryPointResponse.privacyNotice}{" "}
-                                                <Link external to={referrerEntryPointResponse.privacyNoticeUrl}>
-                                                    {referrerEntryPointResponse.privacyNoticeLinkText ||
+                                                {data.privacyNotice}{" "}
+                                                <Link external to={data.privacyNoticeUrl}>
+                                                    {data.privacyNoticeLinkText ||
                                                         "More info and your privacy rights"}
                                                 </Link>
                                             </TextBlock>
@@ -165,9 +173,9 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
 							See https://github.com/Shopify/ui-extensions/issues/1835#issuecomment-2113067449
 						 	And because Link can't be full width, the button is restricted in size :(
 						 	*/}
-                                <Link external to={referrerEntryPointResponse.url}>
+                                <Link external to={data.url}>
                                     <Button inlineAlignment="center">
-                                        {referrerEntryPointResponse.defaultCallToAction}
+                                        {data.defaultCallToAction}
                                     </Button>
                                 </Link>
                             </View>
