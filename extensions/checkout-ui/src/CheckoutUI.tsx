@@ -31,7 +31,7 @@ const CheckoutUI = () => {
     // https://shopify.dev/docs/apps/build/b2b/create-checkout-ui
     const purchasingCompany = usePurchasingCompany();
 
-    const { partnerCode, environment, loadingRefereeContentApi, refereeContentApiResponse, step, errorState } =
+    const { partnerCode, environment, step, errorState, loadingRefereeContentApi, refereeContentApiResponse } =
         useContext(RefereeJourneyContext);
 
     const {
@@ -45,7 +45,7 @@ const CheckoutUI = () => {
         text_size: TextSize;
     }> = useSettings();
 
-    const {loadingRefereeContentApi, refereeContentApiResponse } = useRefereeSearchContent();
+    useRefereeSearchContent();
 
     const showBeenReferredByFriendLink = useMemo(() => {
         return !errorState && step !== "completed-success";
