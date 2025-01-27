@@ -5,11 +5,11 @@ import Checkout from "./Checkout";
 const queryClient = new QueryClient();
 
 const Extension = () => {
-	return (
-		<QueryClientProvider client={queryClient}>
-			<Checkout />
-		</QueryClientProvider>
-	)
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Checkout />
+        </QueryClientProvider>
+    );
 };
 
 // Changing this? Don't forget to change the .toml file too.

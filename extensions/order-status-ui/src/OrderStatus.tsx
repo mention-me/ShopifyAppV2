@@ -15,7 +15,7 @@ import {
     useTotalAmount,
     useTranslate,
 } from "@shopify/ui-extensions-react/customer-account";
-import {useBillingAddress} from "@shopify/ui-extensions-react/checkout";
+import { useBillingAddress } from "@shopify/ui-extensions-react/checkout";
 
 import ReferrerExperience from "./ReferrerExperience";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
@@ -57,7 +57,7 @@ export const OrderStatus = () => {
 
     const editor = useExtensionEditor();
 
-	const billingAddress = useBillingAddress();
+    const billingAddress = useBillingAddress();
 
     const { isoCode: languageOrLocale } = useLanguage();
 
@@ -100,15 +100,15 @@ export const OrderStatus = () => {
                     billingAddress={billingAddress}
                     country={country}
                     customer={customer}
-					discountAllocations={discountAllocations}
+                    discountAllocations={discountAllocations}
                     discountCodes={discountCodes}
-					editor={!!editor}
-					email={email}
-					extensionType="order-status"
-					languageOrLocale={languageOrLocale}
-					money={money}
-					myshopifyDomain={myshopifyDomain}
-					translate={translate}
+                    editor={!!editor}
+                    email={email}
+                    extensionType="order-status"
+                    languageOrLocale={languageOrLocale}
+                    money={money}
+                    myshopifyDomain={myshopifyDomain}
+                    translate={translate}
                 />
             </ErrorBoundary>
         </ReferrerJourneyProvider>

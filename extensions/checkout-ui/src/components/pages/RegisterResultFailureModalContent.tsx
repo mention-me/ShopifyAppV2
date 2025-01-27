@@ -6,25 +6,21 @@ import { ErrorBoundary } from "@sentry/react";
 import { consoleError } from "../../../../../shared/logging";
 
 const RegisterResultFailureModalContent = () => {
-	const {
-		registerResult,
-	} = useContext(RefereeJourneyContext);
+    const { registerResult } = useContext(RefereeJourneyContext);
 
-	return (
-		<ErrorBoundary beforeCapture={(scope, error) => {
-			consoleError("RegisterResultFailureModalContent", "Error boundary caught error", error);
+    return (
+        <ErrorBoundary
+            beforeCapture={(scope, error) => {
+                consoleError("RegisterResultFailureModalContent", "Error boundary caught error", error);
 
-			scope.setTag("component", "RegisterResultFailureModalContent");
-		}}>
-			<Heading level={1}>
-				{registerResult.content["headline"]}
-			</Heading>
-			<TextBlock>
-				{registerResult.content["detail"]}
-			</TextBlock>
-			<DiscountCard />
-		</ErrorBoundary>
-	);
+                scope.setTag("component", "RegisterResultFailureModalContent");
+            }}
+        >
+            <Heading level={1}>{registerResult.content["headline"]}</Heading>
+            <TextBlock>{registerResult.content["detail"]}</TextBlock>
+            <DiscountCard />
+        </ErrorBoundary>
+    );
 };
 
 export default RegisterResultFailureModalContent;

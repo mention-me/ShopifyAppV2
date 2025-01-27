@@ -1,7 +1,7 @@
 import ReferrerExperience from "./ReferrerExperience";
 import {
     useApi,
-	useBillingAddress,
+    useBillingAddress,
     useCurrency,
     useCustomer,
     useDiscountAllocations,
@@ -61,7 +61,7 @@ export const ThankYou = () => {
 
     const { isoCode: languageOrLocale } = useLanguage();
 
-	const billingAddress = useBillingAddress();
+    const billingAddress = useBillingAddress();
 
     const email = useEmail();
     const customer = useCustomer();
@@ -93,7 +93,7 @@ export const ThankYou = () => {
                 }}
             >
                 <ReferrerExperience
-					billingAddress={billingAddress}
+                    billingAddress={billingAddress}
                     country={country}
                     customer={customer}
                     discountAllocations={discountAllocations}

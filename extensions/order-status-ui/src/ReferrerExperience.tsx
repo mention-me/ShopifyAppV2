@@ -36,7 +36,7 @@ import { MailingAddress } from "@shopify/ui-extensions/build/ts/surfaces/checkou
 export interface ReferrerEntryPointInputs {
     /* eslint-disable react/no-unused-prop-types */
     readonly billingAddress: MailingAddress;
-	readonly country: Country;
+    readonly country: Country;
     readonly customer: Pick<Customer, "id">;
     readonly discountAllocations: CartDiscountAllocation[];
     readonly discountCodes: CartDiscountCode[];
@@ -53,7 +53,7 @@ export interface ReferrerEntryPointInputs {
 const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
     const { editor, translate } = props;
 
-    const { partnerCode, environment, errorState  } = useContext(ReferrerJourneyContext);
+    const { partnerCode, environment, errorState } = useContext(ReferrerJourneyContext);
 
     const { loading, data } = useReferrerEntryPoint(props);
 
@@ -100,9 +100,9 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
         return null;
     }
 
-	if (loading) {
-		return <ReferrerExperience.Skeleton />;
-	}
+    if (loading) {
+        return <ReferrerExperience.Skeleton />;
+    }
 
     if (!data) {
         return null;
@@ -146,8 +146,7 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                                             <TextBlock appearance="subdued">
                                                 {data.privacyNotice}{" "}
                                                 <Link external to={data.privacyNoticeUrl}>
-                                                    {data.privacyNoticeLinkText ||
-                                                        "More info and your privacy rights"}
+                                                    {data.privacyNoticeLinkText || "More info and your privacy rights"}
                                                 </Link>
                                             </TextBlock>
                                         </View>
@@ -170,9 +169,7 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
 						 	And because Link can't be full width, the button is restricted in size :(
 						 	*/}
                                 <Link external to={data.url}>
-                                    <Button inlineAlignment="center">
-                                        {data.defaultCallToAction}
-                                    </Button>
+                                    <Button inlineAlignment="center">{data.defaultCallToAction}</Button>
                                 </Link>
                             </View>
                         </BlockStack>

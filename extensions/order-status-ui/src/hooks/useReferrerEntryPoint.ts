@@ -22,14 +22,8 @@ const useReferrerEntryPoint = ({
     country,
     extensionType,
 }: ReferrerEntryPointInputs) => {
-    const {
-        orderId,
-        partnerCode,
-        environment,
-        defaultLocale,
-        localeChoiceMethod,
-        setErrorState,
-    } = useContext(ReferrerJourneyContext);
+    const { orderId, partnerCode, environment, defaultLocale, localeChoiceMethod, setErrorState } =
+        useContext(ReferrerJourneyContext);
 
     const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale, localeChoiceMethod);
 
@@ -148,10 +142,10 @@ const useReferrerEntryPoint = ({
         },
     });
 
-	return {
-		loading: isPending,
-		data
-	}
+    return {
+        loading: isPending,
+        data,
+    };
 };
 
 export default useReferrerEntryPoint;
