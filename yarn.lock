@@ -1077,19 +1077,19 @@
     glob "^8.0.3"
     yaml "^2.3.0"
 
-"@shopify/ui-extensions-react@^2025.1":
-  version "2025.1.0"
-  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions-react/-/ui-extensions-react-2025.1.0.tgz#1e6ae77e5f1de1ea96857b26f1ee7532cad66489"
-  integrity sha512-E1wNj8gqdaDku1z1Bjd36A6tFVAUrUWiZlj9C/qfeXt2+V5GtzrrMmdYIfEgXIkdjgviO9B4+pSAfm/1Y9+pXg==
+"@shopify/ui-extensions-react@^2024.10":
+  version "2024.10.2"
+  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions-react/-/ui-extensions-react-2024.10.2.tgz#23f89f70f379acb52084afd2daf6356b5353737e"
+  integrity sha512-TF97qiPWtWIGtS9Rwl8CIhZ3uYD09oFHALQtksmHXsFoW6cK5/QPPXr9y9neac7nKJIqjzVYQxmRAba1T8y3nA==
   dependencies:
     "@remote-ui/async-subscription" "^2.1.12"
     "@remote-ui/react" "^5.0.2"
     "@types/react" ">=18.2.67"
 
-"@shopify/ui-extensions@^2025.1":
-  version "2025.1.0"
-  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions/-/ui-extensions-2025.1.0.tgz#beafa66db1b5fafa7be3083315a08f62575d19e5"
-  integrity sha512-Jl5/5vAwAxRb95c+dHximsfiDIMyreeWckjhCGxOclfwDPoy+wlaJ9GsvPqWuWlbi0lgz4fE7nz0vdGDA/QfAw==
+"@shopify/ui-extensions@^2024.10":
+  version "2024.10.2"
+  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions/-/ui-extensions-2024.10.2.tgz#839a8fd139698afe1f140c3c80de77d43c53c9df"
+  integrity sha512-aHlKqbJMqL5yI0YjVucNhWNXciMKiibPpnawMmiqqzfmflnmj2Oy0AMa6Hrwdum/rc4XE9EoLqKyoIva4wzmdA==
   dependencies:
     "@remote-ui/async-subscription" "^2.1.12"
     "@remote-ui/core" "^2.2.4"

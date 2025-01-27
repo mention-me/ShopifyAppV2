@@ -6,8 +6,8 @@
     "dependencies": {
         "@api/consumer-api": "file:./../../.api/apis/consumer-api",
         "@api/entry-point-api": "file:./../../.api/apis/entry-point-api",
-        "@shopify/ui-extensions": "^2025.1",
-        "@shopify/ui-extensions-react": "^2025.1",
+        "@shopify/ui-extensions": "^2024.10",
+        "@shopify/ui-extensions-react": "^2024.10",
         "react": "^18.2"
     },
     "devDependencies": {
