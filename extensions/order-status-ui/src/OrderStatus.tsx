@@ -57,7 +57,9 @@ export const OrderStatus = () => {
 
     const editor = useExtensionEditor();
 
-    const billingAddress = useBillingAddress();
+    // There's a bug somewhere in Shopify which means that the billing address is no longer available on the Order Status page.
+    // Raised here: https://community.shopify.dev/t/bug-billingaddress-is-no-longer-available-on-the-customer-order-status-page/6660
+    const billingAddress = undefined;
 
     const { isoCode: languageOrLocale } = useLanguage();
 
