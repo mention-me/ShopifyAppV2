@@ -5,13 +5,15 @@ import { RefereeContent } from "@api/consumer-api/src/types";
 import { useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import {
-	useExtensionEditor,
-	useLanguage,
-	useLocalizationCountry,
-	useShop,
+    useExtensionEditor,
+    useLanguage,
+    useLocalizationCountry,
+    useShop,
 } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { useQuery } from "@tanstack/react-query";
+import { consoleError } from "../../../../shared/logging";
+import { logError } from "../../../../shared/sentry";
 
 /**
  * Function to call the Mention Me Referee EntryPoint API.
@@ -27,6 +29,7 @@ export const useRefereeSearchContent = () => {
         environment,
         defaultLocale,
         localeChoiceMethod,
+        setErrorState,
         setLoadingRefereeContentApi,
         setRefereeContentApiResponse,
     } = useContext(RefereeJourneyContext);
@@ -73,11 +76,34 @@ export const useRefereeSearchContent = () => {
                 headers: { accept: "application/json", "Content-Type": "application/json" },
             });
 
+            if (!res.ok) {
+                const message = `Error calling Referee SearchContent API. Response: ${res.status}, ${res.statusText}`;
+                logError("RefereeEntryPoint", message, new Error(message));
+
+                try {
+                    const json = (await res.json()) as RefereeContent;
+
+                    if (json.errors) {
+                        consoleError(
+                            "RefereeSearchContent",
+                            "Errors returned from Mention Me API:",
+                            json.errors.map((error) => error.message).join(", ")
+                        );
+                    }
+                } catch {
+                    // Do nothing
+                }
+
+                setErrorState(res.statusText);
+
+                return null;
+            }
+
             return (await res.json()) as RefereeContent;
         },
         throwOnError: true,
     });
 
-    setLoadingRefereeContentApi(isPending);
     setRefereeContentApiResponse(data);
+    setLoadingRefereeContentApi(isPending);
 };

@@ -94,8 +94,6 @@ const CheckoutUI = () => {
     }
 
     if (!refereeContentApiResponse) {
-        consoleError("CheckoutUI", "No referee entry point response. Nothing to render.");
-
         return null;
     }
 
@@ -121,9 +119,9 @@ const CheckoutUI = () => {
                     {showBeenReferredByFriendLink && (
                         <Text appearance={linkAppearance} size={textSize}>
                             {/*
-					Link appearance is either the default (undefined) OR it inherits from a parent element when
-					using monochrome.
-					*/}
+							Link appearance is either the default (undefined) OR it inherits from a parent element when
+							using monochrome.
+							*/}
                             <Link appearance={linkAppearance ? "monochrome" : undefined} overlay={<CheckoutModal />}>
                                 {refereeContentApiResponse.entryCta}
                             </Link>
