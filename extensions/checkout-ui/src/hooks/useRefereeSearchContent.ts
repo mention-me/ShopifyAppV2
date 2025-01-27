@@ -2,13 +2,16 @@ import { SITUATION } from "../Checkout";
 import { APP_NAME, APP_VERSION, SHOPIFY_PREVIEW_MODE_FLAG } from "../../../../shared/constants";
 import { getDomainForEnvironment, isValidEnvironment } from "../../../../shared/utils";
 import { RefereeContent } from "@api/consumer-api/src/types";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
-import { useExtensionEditor, useShop } from "@shopify/ui-extensions-react/checkout";
+import {
+	useExtensionEditor,
+	useLanguage,
+	useLocalizationCountry,
+	useShop,
+} from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
-import { useLanguage, useLocalizationCountry } from "@shopify/ui-extensions-react/checkout";
-import { consoleError } from "../../../../shared/logging";
-import { logError } from "../../../../shared/sentry";
+import { useQuery } from "@tanstack/react-query";
 
 /**
  * Function to call the Mention Me Referee EntryPoint API.
@@ -19,94 +22,62 @@ import { logError } from "../../../../shared/sentry";
  * using Shopify components.
  */
 export const useRefereeSearchContent = () => {
-	const {
-		partnerCode,
-		environment,
-		defaultLocale,
-		localeChoiceMethod,
-		setLoadingRefereeContentApi,
-		setRefereeContentApiResponse,
-		setErrorState,
-	} = useContext(RefereeJourneyContext);
+    const {
+        partnerCode,
+        environment,
+        defaultLocale,
+        localeChoiceMethod,
+        setLoadingRefereeContentApi,
+        setRefereeContentApiResponse,
+    } = useContext(RefereeJourneyContext);
 
-	const { myshopifyDomain } = useShop();
+    const { myshopifyDomain } = useShop();
 
-	const editor = useExtensionEditor();
+    const editor = useExtensionEditor();
 
-	const { isoCode: languageOrLocale } = useLanguage();
-	const country = useLocalizationCountry();
+    const { isoCode: languageOrLocale } = useLanguage();
+    const country = useLocalizationCountry();
 
-	const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale, localeChoiceMethod);
+    const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale, localeChoiceMethod);
 
-	useEffect(() => {
-		const fetchRefereeJourneyContent = async () => {
-			setLoadingRefereeContentApi(true);
+    const url = getDomainForEnvironment(myshopifyDomain, environment);
 
-			if (!partnerCode || typeof partnerCode !== "string") {
-				return;
-			}
+    const { isPending, data } = useQuery<RefereeContent>({
+        queryKey: ["refereeContent", partnerCode, editor, myshopifyDomain, locale, environment],
+        queryFn: async (): Promise<RefereeContent> => {
+            if (!partnerCode || typeof partnerCode !== "string") {
+                return null;
+            }
 
-			if (!isValidEnvironment(environment)) {
-				return;
-			}
+            if (!isValidEnvironment(environment)) {
+                return null;
+            }
 
-			if (!locale) {
-				return;
-			}
+            if (!locale) {
+                return null;
+            }
 
-			const url = getDomainForEnvironment(myshopifyDomain, environment);
+            const params = new URLSearchParams({
+                "request[partnerCode]": partnerCode,
+                "request[situation]": SITUATION,
+                "request[appName]": APP_NAME + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
+                "request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
+                "request[localeCode]": locale,
+            });
 
-			const params = new URLSearchParams({
-				"request[partnerCode]": partnerCode,
-				"request[situation]": SITUATION,
-				"request[appName]": APP_NAME  + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
-				"request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
-				"request[localeCode]": locale,
-			});
+            const res = await fetch(`https://${url}/api/consumer/v2/referrer/search/content?${params.toString()}`, {
+                method: "GET",
+                // Sadly, Shopify have disabled credentials. This means we can't use cookies for anti fraud.
+                // However, we'll pass it anyway, just in case they change their mind.
+                credentials: "include",
+                headers: { accept: "application/json", "Content-Type": "application/json" },
+            });
 
-			try {
-				const response = await fetch(`https://${url}/api/consumer/v2/referrer/search/content?${params.toString()}`,
-					{
-						method: "GET",
-						credentials: "include",
-						headers: { accept: "application/json", "Content-Type": "application/json" },
-					},
-				);
+            return (await res.json()) as RefereeContent;
+        },
+        throwOnError: true,
+    });
 
-				if (!response.ok) {
-					const message = `Error calling Referee SearchContent API. Response: ${response.status}, ${response.statusText}`;
-					logError("ReferrerEntryPoint", message, new Error(message));
-
-					try {
-						const json = (await response.json()) as RefereeContent;
-
-						if (json.errors) {
-							consoleError("RefereeSearchContent", "Errors returned from Mention Me API:", json.errors.map((error) => error.message).join(", "));
-						}
-					} catch {
-						// Do nothing
-					}
-
-					setErrorState(response.statusText);
-					setLoadingRefereeContentApi(false);
-
-					return;
-				}
-
-				const json = (await response.json()) as RefereeContent;
-
-				setRefereeContentApiResponse(json);
-				setLoadingRefereeContentApi(false);
-			} catch (error) {
-				consoleError("RefereeSearchContent", "Error calling referee search content API:", error);
-
-				setErrorState(error?.message);
-				setLoadingRefereeContentApi(false);
-			}
-		};
-
-		if (partnerCode && environment && locale) {
-			fetchRefereeJourneyContent();
-		}
-	}, [partnerCode, environment, setLoadingRefereeContentApi, myshopifyDomain, setRefereeContentApiResponse, locale, setErrorState, editor]);
+    setLoadingRefereeContentApi(isPending);
+    setRefereeContentApiResponse(data);
 };
