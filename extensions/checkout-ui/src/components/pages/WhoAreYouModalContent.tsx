@@ -83,7 +83,7 @@ export const WhoAreYouModalContent = () => {
                         <Link external to={nameSearchResult.result.termsLinks.linkToTermsInLocale}>
                             {translate("who-are-you.terms.link")}
                         </Link>
-						.
+                        .
                     </TextBlock>
                 </BlockStack>
                 <BlockSpacer />

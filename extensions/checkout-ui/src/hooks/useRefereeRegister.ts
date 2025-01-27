@@ -10,95 +10,97 @@ import { consoleError } from "../../../../shared/logging";
 import { logError } from "../../../../shared/sentry";
 
 export const useRefereeRegister = () => {
-	const {
-		partnerCode,
-		environment,
-		setStep,
-		setLoadingConsumerApi,
-		nameSearchResult,
-		setRegisterResult,
-	} = useContext(RefereeJourneyContext);
+    const { partnerCode, environment, setStep, setLoadingConsumerApi, nameSearchResult, setRegisterResult } =
+        useContext(RefereeJourneyContext);
 
-	const { myshopifyDomain } = useShop();
+    const { myshopifyDomain } = useShop();
 
-	const editor = useExtensionEditor();
+    const editor = useExtensionEditor();
 
-	return useCallback(async (email: string) => {
-		if (!partnerCode || typeof partnerCode !== "string") {
-			consoleError("RefereeRegister", "Mention Me partner code not provided", partnerCode);
-			return;
-		}
+    return useCallback(
+        async (email: string) => {
+            if (!partnerCode || typeof partnerCode !== "string") {
+                consoleError("RefereeRegister", "Mention Me partner code not provided", partnerCode);
+                return;
+            }
 
-		if (!isValidEnvironment(environment)) {
-			consoleError("RefereeRegister", "Invalid environment", environment);
-			return;
-		}
+            if (!isValidEnvironment(environment)) {
+                consoleError("RefereeRegister", "Invalid environment", environment);
+                return;
+            }
 
-		setLoadingConsumerApi(true);
+            setLoadingConsumerApi(true);
 
-		const url = getDomainForEnvironment(myshopifyDomain, environment);
+            const url = getDomainForEnvironment(myshopifyDomain, environment);
 
-		if (!nameSearchResult.result) {
-			throw new Error("Expected nameSearchResult result to be defined");
-		}
+            if (!nameSearchResult.result) {
+                throw new Error("Expected nameSearchResult result to be defined");
+            }
 
-		try {
-			const body: EnrolRefereeType = {
-				request: {
-					partnerCode: partnerCode,
-					situation: SITUATION,
-					appName: APP_NAME + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
-					appVersion: `${myshopifyDomain}/${APP_VERSION}`,
-				},
-				customer: {
-					emailAddress: email,
-				},
-				referrerMentionMeIdentifier: nameSearchResult.result.referrer.referrerMentionMeIdentifier,
-				referrerToken: nameSearchResult.result.referrer.referrerToken,
-			};
+            try {
+                const body: EnrolRefereeType = {
+                    request: {
+                        partnerCode: partnerCode,
+                        situation: SITUATION,
+                        appName: APP_NAME + (editor ? `/${SHOPIFY_PREVIEW_MODE_FLAG}` : ""),
+                        appVersion: `${myshopifyDomain}/${APP_VERSION}`,
+                    },
+                    customer: {
+                        emailAddress: email,
+                    },
+                    referrerMentionMeIdentifier: nameSearchResult.result.referrer.referrerMentionMeIdentifier,
+                    referrerToken: nameSearchResult.result.referrer.referrerToken,
+                };
 
-			const response = await fetch(`https://${url}/api/consumer/v2/referee/register`,
-				{
-					method: "POST",
-					credentials: "include",
-					headers: { accept: "application/json", "Content-Type": "application/json" },
-					body: JSON.stringify(body),
-				},
-			);
+                const response = await fetch(`https://${url}/api/consumer/v2/referee/register`, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { accept: "application/json", "Content-Type": "application/json" },
+                    body: JSON.stringify(body),
+                });
 
-			const json = (await response.json()) as RefereeRegister;
+                const json = (await response.json()) as RefereeRegister;
 
-			setLoadingConsumerApi(false);
+                setLoadingConsumerApi(false);
 
-			if (!response.ok) {
-				const message = `Error calling Referee RefereeRegister API. Response: ${response.status}, ${response.statusText}`;
-				logError("RefereeRegister", message, new Error(message));
+                if (!response.ok) {
+                    const message = `Error calling Referee RefereeRegister API. Response: ${response.status}, ${response.statusText}`;
+                    logError("RefereeRegister", message, new Error(message));
 
-				return;
-			}
+                    return;
+                }
 
-			const content = json.content.resource.reduce((acc, curr) => {
-				acc[curr.key] = curr.content;
+                const content = json.content.resource.reduce((acc, curr) => {
+                    acc[curr.key] = curr.content;
 
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-				return acc;
-			}, {});
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                    return acc;
+                }, {});
 
-			if (response.ok && response.status === 200) {
-				setRegisterResult(
-					{
-						result: json,
-						content,
-					},
-				);
-				setStep("register-result");
-				return;
-			}
+                if (response.ok && response.status === 200) {
+                    setRegisterResult({
+                        result: json,
+                        content,
+                    });
+                    setStep("register-result");
+                    return;
+                }
 
-			consoleError("RefereeRegister", "Unexpected response from API", json);
-			return;
-		} catch (error) {
-			consoleError("RefereeRegister", "Error caught calling registerReferee:", error);
-		}
-	}, [partnerCode, environment, setLoadingConsumerApi, nameSearchResult.result, myshopifyDomain, setRegisterResult, setStep, editor]);
+                consoleError("RefereeRegister", "Unexpected response from API", json);
+                return;
+            } catch (error) {
+                consoleError("RefereeRegister", "Error caught calling registerReferee:", error);
+            }
+        },
+        [
+            partnerCode,
+            environment,
+            setLoadingConsumerApi,
+            nameSearchResult.result,
+            myshopifyDomain,
+            setRegisterResult,
+            setStep,
+            editor,
+        ]
+    );
 };

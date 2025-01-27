@@ -1,31 +1,31 @@
 export type Environment = "production" | "demo" | "local";
 
 export const isValidEnvironment = (env: unknown): env is Environment => {
-	if (!env || typeof env !== "string") {
-		return false;
-	}
+    if (!env || typeof env !== "string") {
+        return false;
+    }
 
-	const validEnvironments: Environment[] = ["production", "demo", "local"];
+    const validEnvironments: Environment[] = ["production", "demo", "local"];
 
-	return validEnvironments.includes(env as Environment);
-}
+    return validEnvironments.includes(env as Environment);
+};
 
 /**
  * Get the domain to look up configuration from. For the "mention-me-checkout-extensibility-beta" store we override it
  * to use local environments.
  */
 export const getDomainForEnvironment = (myshopifyDomain: string, environment: Environment): string => {
-	if (myshopifyDomain === "mention-me-checkout-extensibility-beta.myshopify.com") {
-		return "mentionme.dev";
-	}
+    if (myshopifyDomain === "mention-me-checkout-extensibility-beta.myshopify.com") {
+        return "mentionme.dev";
+    }
 
-	let url = "demo.mention-me.com";
-	if (environment === "production") {
-		url = "mention-me.com";
-	}
+    let url = "demo.mention-me.com";
+    if (environment === "production") {
+        url = "mention-me.com";
+    }
 
-	return url;
-}
+    return url;
+};
 
 /**
  * Check if a string is a valid email address.
@@ -39,10 +39,10 @@ export const getDomainForEnvironment = (myshopifyDomain: string, environment: En
  * @param email
  */
 export const isValidEmail = (email: string): boolean => {
-	return /^\S+@\S+$/.test(email)
-}
+    return /^\S+@\S+$/.test(email);
+};
 
 export const parseShopifyId = (id: string) => {
-	const idParts = id.split("/");
-	return idParts[idParts.length - 1];
+    const idParts = id.split("/");
+    return idParts[idParts.length - 1];
 };

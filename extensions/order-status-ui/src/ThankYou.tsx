@@ -1,8 +1,13 @@
-import Extension from "./Extension";
+import ReferrerExperience from "./ReferrerExperience";
 import {
-    reactExtension,
     useApi,
+    useBillingAddress,
     useCurrency,
+    useCustomer,
+    useDiscountAllocations,
+    useDiscountCodes,
+    useEmail,
+    useExtensionEditor,
     useExtensionLanguage,
     useLanguage,
     useLocalizationCountry,
@@ -10,6 +15,8 @@ import {
     usePurchasingCompany,
     useShop,
     useSubscription,
+    useTotalAmount,
+    useTranslate,
 } from "@shopify/ui-extensions-react/checkout";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
 import { setupSentry } from "../../../shared/sentry";
@@ -17,7 +24,9 @@ import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeSho
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
 
-const ThankYou = () => {
+export const ThankYou = () => {
+    const translate = useTranslate();
+
     const { myshopifyDomain } = useShop();
 
     // Setup sentry as soon as possible so that we can catch failures.
@@ -48,12 +57,26 @@ const ThankYou = () => {
         marketHandle: market?.handle,
     });
 
+    const editor = useExtensionEditor();
+
+    const { isoCode: languageOrLocale } = useLanguage();
+
+    const billingAddress = useBillingAddress();
+
+    const email = useEmail();
+    const customer = useCustomer();
+
+    const money = useTotalAmount();
+
+    const discountCodes = useDiscountCodes();
+    const discountAllocations = useDiscountAllocations();
+
     if (purchasingCompany) {
         return null;
     }
 
     if (loading) {
-        return <Extension.Skeleton />;
+        return <ReferrerExperience.Skeleton />;
     }
 
     if (!mentionMeConfig) {
@@ -69,11 +92,21 @@ const ThankYou = () => {
                     scope.setTag("component", "ThankYou");
                 }}
             >
-                <Extension extensionType="thank-you" />
+                <ReferrerExperience
+                    billingAddress={billingAddress}
+                    country={country}
+                    customer={customer}
+                    discountAllocations={discountAllocations}
+                    discountCodes={discountCodes}
+                    editor={!!editor}
+                    email={email}
+                    extensionType="thank-you"
+                    languageOrLocale={languageOrLocale}
+                    money={money}
+                    myshopifyDomain={myshopifyDomain}
+                    translate={translate}
+                />
             </ErrorBoundary>
         </ReferrerJourneyProvider>
     );
 };
-
-// Changing this? Don't forget to change the .toml file too.
-export default reactExtension("purchase.thank-you.block.render", () => <ThankYou />);

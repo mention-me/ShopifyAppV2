@@ -23,3 +23,6 @@ logs
 # extensions build output
 extensions/*/build
 extensions/*/dist
+
+
+.shopify/

@@ -12,10 +12,11 @@ import {
     SkeletonImage,
     SkeletonTextBlock,
     TextBlock,
-    useExtensionEditor,
-    useTranslate,
+    useTranslate as useTranslateCheckout,
     View,
 } from "@shopify/ui-extensions-react/checkout";
+
+import { useTranslate as useTranslateCustomerAccount } from "@shopify/ui-extensions-react/customer-account";
 import { useContext } from "react";
 import { ReferrerJourneyContext } from "./context/ReferrerJourneyContext";
 import useReferrerEntryPoint from "./hooks/useReferrerEntryPoint";
@@ -23,20 +24,40 @@ import { consoleError } from "../../../shared/logging";
 
 import { ExtensionType } from "../../../shared/types";
 import { ErrorBoundary } from "@sentry/react";
+import {
+    CartDiscountAllocation,
+    CartDiscountCode,
+    Country,
+    Customer,
+    Money,
+} from "@shopify/ui-extensions/build/ts/surfaces/checkout/api/standard/standard";
+import { MailingAddress } from "@shopify/ui-extensions/build/ts/surfaces/checkout/api/shared";
 
-interface Props {
+export interface ReferrerEntryPointInputs {
+    /* eslint-disable react/no-unused-prop-types */
+    readonly billingAddress: MailingAddress;
+    readonly country: Country;
+    readonly customer: Pick<Customer, "id">;
+    readonly discountAllocations: CartDiscountAllocation[];
+    readonly discountCodes: CartDiscountCode[];
+    readonly editor: boolean;
+    readonly email: string;
     readonly extensionType: ExtensionType;
+    readonly languageOrLocale: string;
+    readonly money: Money;
+    readonly myshopifyDomain: string;
+    readonly translate: ReturnType<typeof useTranslateCheckout> | ReturnType<typeof useTranslateCustomerAccount>;
+    /* eslint-enable react/no-unused-prop-types */
 }
 
-const Extension = ({ extensionType }: Props) => {
-    const translate = useTranslate();
+const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
+    const { editor, translate } = props;
 
-    const { partnerCode, environment, errorState, referrerEntryPointResponse } = useContext(ReferrerJourneyContext);
+    const { partnerCode, environment, errorState } = useContext(ReferrerJourneyContext);
 
-    useReferrerEntryPoint(extensionType);
+    const { loading, data } = useReferrerEntryPoint(props);
 
     // Now we're into the rendering part
-    const editor = useExtensionEditor();
 
     if (!environment || typeof environment !== "string") {
         if (editor) {
@@ -79,7 +100,11 @@ const Extension = ({ extensionType }: Props) => {
         return null;
     }
 
-    if (!referrerEntryPointResponse) {
+    if (loading) {
+        return <ReferrerExperience.Skeleton />;
+    }
+
+    if (!data) {
         return null;
     }
 
@@ -93,7 +118,7 @@ const Extension = ({ extensionType }: Props) => {
         >
             <View background="base">
                 <BlockStack border="base" borderRadius="large">
-                    {referrerEntryPointResponse.imageUrl && (
+                    {data.imageUrl && (
                         <View
 
                         // maxInlineSize={Style.default(200)
@@ -101,28 +126,27 @@ const Extension = ({ extensionType }: Props) => {
                         // 	.when({ viewportInlineSize: { min: "medium" } }, 200)
                         // 	.when({ viewportInlineSize: { min: "large" } }, 200)}
                         >
-                            <Link external to={referrerEntryPointResponse.url}>
+                            <Link external to={data.url}>
                                 <Image
                                     borderRadius={["large", "large", "none", "none"]}
                                     fit="cover"
-                                    source={referrerEntryPointResponse.imageUrl}
+                                    source={data.imageUrl}
                                 />
                             </Link>
                         </View>
                     )}
                     <View borderRadius="large">
                         <BlockStack padding="loose" spacing="base">
-                            <Heading level={2}>{referrerEntryPointResponse.headline}</Heading>
-                            <TextBlock>{referrerEntryPointResponse.description}</TextBlock>
+                            <Heading level={2}>{data.headline}</Heading>
+                            <TextBlock>{data.description}</TextBlock>
                             <Pressable
                                 overlay={
                                     <Popover>
                                         <View maxInlineSize={400} padding="base">
                                             <TextBlock appearance="subdued">
-                                                {referrerEntryPointResponse.privacyNotice}{" "}
-                                                <Link external to={referrerEntryPointResponse.privacyNoticeUrl}>
-                                                    {referrerEntryPointResponse.privacyNoticeLinkText ||
-                                                        "More info and your privacy rights"}
+                                                {data.privacyNotice}{" "}
+                                                <Link external to={data.privacyNoticeUrl}>
+                                                    {data.privacyNoticeLinkText || "More info and your privacy rights"}
                                                 </Link>
                                             </TextBlock>
                                         </View>
@@ -144,10 +168,8 @@ const Extension = ({ extensionType }: Props) => {
 							See https://github.com/Shopify/ui-extensions/issues/1835#issuecomment-2113067449
 						 	And because Link can't be full width, the button is restricted in size :(
 						 	*/}
-                                <Link external to={referrerEntryPointResponse.url}>
-                                    <Button inlineAlignment="center">
-                                        {referrerEntryPointResponse.defaultCallToAction}
-                                    </Button>
+                                <Link external to={data.url}>
+                                    <Button inlineAlignment="center">{data.defaultCallToAction}</Button>
                                 </Link>
                             </View>
                         </BlockStack>
@@ -159,7 +181,7 @@ const Extension = ({ extensionType }: Props) => {
 };
 
 // eslint-disable-next-line react/display-name,react/no-multi-comp
-Extension.Skeleton = () => {
+ReferrerExperience.Skeleton = () => {
     return (
         <View background="base">
             <BlockStack border="base" borderRadius="large">
@@ -193,4 +215,4 @@ Extension.Skeleton = () => {
     );
 };
 
-export default Extension;
+export default ReferrerExperience;
