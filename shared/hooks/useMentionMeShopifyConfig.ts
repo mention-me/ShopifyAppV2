@@ -48,7 +48,7 @@ export const useMentionMeShopifyConfig = ({
     Sentry.setTag("marketHandle", marketHandle);
     Sentry.setTag("extension", extension);
 
-    const { isPending, error, data } = useQuery<MentionMeShopifyConfig>({
+    const { isPending, data } = useQuery<MentionMeShopifyConfig>({
         queryKey: [
             "shopifyConfig",
             {
@@ -83,8 +83,8 @@ export const useMentionMeShopifyConfig = ({
 
             return (await res.json()) as MentionMeShopifyConfig;
         },
-		// https://tkdodo.eu/blog/react-query-error-handling#error-boundaries
-		throwOnError: true,
+        // https://tkdodo.eu/blog/react-query-error-handling#error-boundaries
+        throwOnError: true,
     });
 
     if (data) {
