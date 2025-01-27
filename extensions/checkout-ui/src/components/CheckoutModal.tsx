@@ -64,6 +64,10 @@ export const CheckoutModal = () => {
         return <Banner status="critical" title={translate("checkout.modal.error")} />;
     }, [step, translate]);
 
+    if (!refereeContentApiResponse) {
+        return null;
+    }
+
     return (
         <ErrorBoundary
             beforeCapture={(scope, error) => {
