@@ -40,8 +40,6 @@ type RefereeJourneyState = {
     step: Step;
     setStep: Dispatch<SetStateAction<Step>>;
     mentionMeConfig: MentionMeShopifyConfig;
-    loadingRefereeContentApi: boolean;
-    setLoadingRefereeContentApi: Dispatch<SetStateAction<boolean>>;
     loadingConsumerApi: boolean;
     setLoadingConsumerApi: Dispatch<SetStateAction<boolean>>;
     refereeContentApiResponse: RefereeContent;
@@ -65,7 +63,6 @@ interface Props {
 
 export const RefereeJourneyProvider = ({ mentionMeConfig, children }: Props) => {
     const [step, setStep] = useState<RefereeJourneyState["step"]>("search-by-name");
-    const [loadingRefereeContentApi, setLoadingRefereeContentApi] = useState(true);
     const [loadingConsumerApi, setLoadingConsumerApi] = useState(false);
 
     const [refereeContentApiResponse, setRefereeContentApiResponse] = useState<EntryPointLink>();
@@ -88,8 +85,6 @@ export const RefereeJourneyProvider = ({ mentionMeConfig, children }: Props) => 
             step,
             setStep,
             mentionMeConfig,
-            loadingRefereeContentApi,
-            setLoadingRefereeContentApi,
             loadingConsumerApi,
             setLoadingConsumerApi,
             refereeContentApiResponse,
@@ -106,7 +101,6 @@ export const RefereeJourneyProvider = ({ mentionMeConfig, children }: Props) => 
     }, [
         mentionMeConfig,
         step,
-        loadingRefereeContentApi,
         loadingConsumerApi,
         refereeContentApiResponse,
         search,

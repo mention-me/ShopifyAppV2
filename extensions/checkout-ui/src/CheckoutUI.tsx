@@ -31,8 +31,7 @@ const CheckoutUI = () => {
     // https://shopify.dev/docs/apps/build/b2b/create-checkout-ui
     const purchasingCompany = usePurchasingCompany();
 
-    const { partnerCode, environment, step, errorState, loadingRefereeContentApi, refereeContentApiResponse } =
-        useContext(RefereeJourneyContext);
+    const { partnerCode, environment, step, errorState } = useContext(RefereeJourneyContext);
 
     const {
         link_appearance: linkAppearance,
@@ -45,7 +44,7 @@ const CheckoutUI = () => {
         text_size: TextSize;
     }> = useSettings();
 
-    useRefereeSearchContent();
+    const { loading, refereeSearchContent } = useRefereeSearchContent();
 
     const showBeenReferredByFriendLink = useMemo(() => {
         return !errorState && step !== "completed-success";
@@ -61,7 +60,7 @@ const CheckoutUI = () => {
         return null;
     }
 
-    if (loadingRefereeContentApi) {
+    if (loading) {
         return <CheckoutUI.Skeleton />;
     }
 
@@ -93,7 +92,7 @@ const CheckoutUI = () => {
         return null;
     }
 
-    if (!refereeContentApiResponse) {
+    if (!refereeSearchContent) {
         consoleError("CheckoutUI", "No referee entry point response. Nothing to render.");
 
         return null;
@@ -121,11 +120,11 @@ const CheckoutUI = () => {
                     {showBeenReferredByFriendLink && (
                         <Text appearance={linkAppearance} size={textSize}>
                             {/*
-					Link appearance is either the default (undefined) OR it inherits from a parent element when
-					using monochrome.
-					*/}
+							Link appearance is either the default (undefined) OR it inherits from a parent element when
+							using monochrome.
+							*/}
                             <Link appearance={linkAppearance ? "monochrome" : undefined} overlay={<CheckoutModal />}>
-                                {refereeContentApiResponse.entryCta}
+                                {refereeSearchContent.entryCta}
                             </Link>
                         </Text>
                     )}

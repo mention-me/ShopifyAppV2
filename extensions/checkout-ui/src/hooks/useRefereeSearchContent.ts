@@ -5,10 +5,10 @@ import { RefereeContent } from "@api/consumer-api/src/types";
 import { useContext } from "react";
 import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import {
-	useExtensionEditor,
-	useLanguage,
-	useLocalizationCountry,
-	useShop,
+    useExtensionEditor,
+    useLanguage,
+    useLocalizationCountry,
+    useShop,
 } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { useQuery } from "@tanstack/react-query";
@@ -22,14 +22,8 @@ import { useQuery } from "@tanstack/react-query";
  * using Shopify components.
  */
 export const useRefereeSearchContent = () => {
-    const {
-        partnerCode,
-        environment,
-        defaultLocale,
-        localeChoiceMethod,
-        setLoadingRefereeContentApi,
-        setRefereeContentApiResponse,
-    } = useContext(RefereeJourneyContext);
+    const { partnerCode, environment, defaultLocale, localeChoiceMethod, setRefereeContentApiResponse } =
+        useContext(RefereeJourneyContext);
 
     const { myshopifyDomain } = useShop();
 
@@ -78,6 +72,10 @@ export const useRefereeSearchContent = () => {
         throwOnError: true,
     });
 
-    setLoadingRefereeContentApi(isPending);
     setRefereeContentApiResponse(data);
+
+    return {
+        loading: isPending,
+        refereeSearchContent: data,
+    };
 };
