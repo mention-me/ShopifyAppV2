@@ -12,6 +12,8 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { useQuery } from "@tanstack/react-query";
+import { consoleError } from "../../../../shared/logging";
+import { logError } from "../../../../shared/sentry";
 
 /**
  * Function to call the Mention Me Referee EntryPoint API.
@@ -22,8 +24,15 @@ import { useQuery } from "@tanstack/react-query";
  * using Shopify components.
  */
 export const useRefereeSearchContent = () => {
-    const { partnerCode, environment, defaultLocale, localeChoiceMethod, setRefereeContentApiResponse } =
-        useContext(RefereeJourneyContext);
+    const {
+        partnerCode,
+        environment,
+        defaultLocale,
+        localeChoiceMethod,
+        setErrorState,
+        setLoadingRefereeContentApi,
+        setRefereeContentApiResponse,
+    } = useContext(RefereeJourneyContext);
 
     const { myshopifyDomain } = useShop();
 
@@ -67,15 +76,34 @@ export const useRefereeSearchContent = () => {
                 headers: { accept: "application/json", "Content-Type": "application/json" },
             });
 
+            if (!res.ok) {
+                const message = `Error calling Referee SearchContent API. Response: ${res.status}, ${res.statusText}`;
+                logError("RefereeEntryPoint", message, new Error(message));
+
+                try {
+                    const json = (await res.json()) as RefereeContent;
+
+                    if (json.errors) {
+                        consoleError(
+                            "RefereeSearchContent",
+                            "Errors returned from Mention Me API:",
+                            json.errors.map((error) => error.message).join(", ")
+                        );
+                    }
+                } catch {
+                    // Do nothing
+                }
+
+                setErrorState(res.statusText);
+
+                return null;
+            }
+
             return (await res.json()) as RefereeContent;
         },
         throwOnError: true,
     });
 
     setRefereeContentApiResponse(data);
-
-    return {
-        loading: isPending,
-        refereeSearchContent: data,
-    };
+    setLoadingRefereeContentApi(isPending);
 };

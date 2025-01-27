@@ -31,7 +31,8 @@ const CheckoutUI = () => {
     // https://shopify.dev/docs/apps/build/b2b/create-checkout-ui
     const purchasingCompany = usePurchasingCompany();
 
-    const { partnerCode, environment, step, errorState } = useContext(RefereeJourneyContext);
+    const { partnerCode, environment, step, errorState, loadingRefereeContentApi, refereeContentApiResponse } =
+        useContext(RefereeJourneyContext);
 
     const {
         link_appearance: linkAppearance,
@@ -44,7 +45,7 @@ const CheckoutUI = () => {
         text_size: TextSize;
     }> = useSettings();
 
-    const { loading, refereeSearchContent } = useRefereeSearchContent();
+    useRefereeSearchContent();
 
     const showBeenReferredByFriendLink = useMemo(() => {
         return !errorState && step !== "completed-success";
@@ -60,7 +61,7 @@ const CheckoutUI = () => {
         return null;
     }
 
-    if (loading) {
+    if (loadingRefereeContentApi) {
         return <CheckoutUI.Skeleton />;
     }
 
@@ -92,9 +93,7 @@ const CheckoutUI = () => {
         return null;
     }
 
-    if (!refereeSearchContent) {
-        consoleError("CheckoutUI", "No referee entry point response. Nothing to render.");
-
+    if (!refereeContentApiResponse) {
         return null;
     }
 
@@ -124,7 +123,7 @@ const CheckoutUI = () => {
 							using monochrome.
 							*/}
                             <Link appearance={linkAppearance ? "monochrome" : undefined} overlay={<CheckoutModal />}>
-                                {refereeSearchContent.entryCta}
+                                {refereeContentApiResponse.entryCta}
                             </Link>
                         </Text>
                     )}
