@@ -30,7 +30,7 @@
     ],
     "devDependencies": {
         "@eslint/compat": "^1.2.5",
-        "@shopify/eslint-plugin": "^46.0.0",
+        "@shopify/eslint-plugin": "^47.0.1",
         "eslint": "8",
         "eslint-plugin-react": "^7.37.4",
         "eslint-plugin-react-hooks": "^5.1.0",
