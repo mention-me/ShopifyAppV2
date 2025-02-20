@@ -1,6 +1,7 @@
 import ReferrerExperience from "./ReferrerExperience";
 import {
     useApi,
+    useAppliedGiftCards,
     useBillingAddress,
     useCurrency,
     useCustomer,
@@ -71,6 +72,8 @@ export const ThankYou = () => {
     const discountCodes = useDiscountCodes();
     const discountAllocations = useDiscountAllocations();
 
+    const giftCards = useAppliedGiftCards();
+
     if (purchasingCompany) {
         return null;
     }
@@ -101,6 +104,7 @@ export const ThankYou = () => {
                     editor={!!editor}
                     email={email}
                     extensionType="thank-you"
+                    giftCards={giftCards}
                     languageOrLocale={languageOrLocale}
                     money={money}
                     myshopifyDomain={myshopifyDomain}

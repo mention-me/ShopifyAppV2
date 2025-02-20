@@ -1,5 +1,6 @@
 import {
     useApi,
+    useAppliedGiftCards,
     useCurrency,
     useCustomer,
     useDiscountAllocations,
@@ -73,6 +74,8 @@ export const OrderStatus = () => {
     const discountCodes = useDiscountCodes();
     const discountAllocations = useDiscountAllocations();
 
+    const giftCards = useAppliedGiftCards();
+
     if (purchasingCompany) {
         consoleError(
             "OrderStatus",
@@ -109,6 +112,7 @@ export const OrderStatus = () => {
                     editor={!!editor}
                     email={email}
                     extensionType="order-status"
+                    giftCards={giftCards}
                     languageOrLocale={languageOrLocale}
                     money={money}
                     myshopifyDomain={myshopifyDomain}

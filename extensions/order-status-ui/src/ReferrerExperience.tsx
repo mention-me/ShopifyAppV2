@@ -27,6 +27,7 @@ import { ErrorBoundary } from "@sentry/react";
 import {
     CartDiscountAllocation,
     CartDiscountCode,
+    AppliedGiftCard,
     Country,
     Customer,
     Money,
@@ -40,6 +41,7 @@ export interface ReferrerEntryPointInputs {
     readonly customer: Pick<Customer, "id">;
     readonly discountAllocations: CartDiscountAllocation[];
     readonly discountCodes: CartDiscountCode[];
+    readonly giftCards: AppliedGiftCard[];
     readonly editor: boolean;
     readonly email: string;
     readonly extensionType: ExtensionType;

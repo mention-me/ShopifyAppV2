@@ -17,6 +17,7 @@ const useReferrerEntryPoint = ({
     editor,
     discountAllocations,
     discountCodes,
+    giftCards,
     customer,
     languageOrLocale,
     country,
@@ -44,16 +45,30 @@ const useReferrerEntryPoint = ({
             editor,
             discountCodes,
             discountAllocations,
+            giftCards,
             extensionType,
             customer,
         ],
         queryFn: async (): Promise<EntryPointOfferAndLink> => {
             // The Mention Me API supports multiple discount codes, comma separated.
-            const codes = discountCodes
-                .map((discountCode) => {
-                    return discountCode.code;
-                })
-                .join(",");
+            const codes = discountCodes.map((discountCode) => {
+                return discountCode.code;
+            });
+
+            /*
+             * Some clients use gift cards as a way to provide discounts. This isn't necessarily a good idea because
+             * Shopify's controls are more limited with gift cards. They also don't provide the full code in the API
+             * (probably because it's sensitive and might still have money on it) - they only provide the last 4
+             * characters.
+             *
+             * We capture this to try and provide a better debugging experience of tracking down when someone uses a
+             * gift card.
+             */
+            const giftCardChars = giftCards.map((giftCard) => {
+                return giftCard.lastCharacters;
+            });
+
+            const couponCodesList = codes.concat(giftCardChars);
 
             const discountAmount = discountAllocations.reduce((total, currentValue) => {
                 return total + currentValue.discountedAmount.amount;
@@ -106,7 +121,7 @@ const useReferrerEntryPoint = ({
                     total: editor ? "0" : String(money?.amount),
                     // Use the time of the request instead of explicitly setting a time.
                     dateString: "",
-                    couponCode: codes,
+                    couponCode: couponCodesList.join(","),
                     discountAmount: String(discountAmount),
                 },
             };
