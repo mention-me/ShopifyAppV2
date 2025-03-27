@@ -16,6 +16,8 @@ export const setupSentry = (shop: string, extension: string) => {
                 shop,
             },
         },
+        // Allow us to capture IP address so we can reference them in internal logging
+        sendDefaultPii: true,
     });
 
     self.addEventListener("unhandledrejection", (error) => {
