@@ -10,10 +10,10 @@
         "@shopify/ui-extensions-react": "^2025.1",
         "@tanstack/react-query": "^5.66.3",
         "entities": "^6.0.0",
-        "react": "^18.2"
+        "react": "^19.0"
     },
     "devDependencies": {
-        "@types/react": "^18.3.12",
+        "@types/react": "^19.0.12",
         "react-reconciler": "0.29.2"
     }
 }
