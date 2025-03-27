@@ -1102,10 +1102,10 @@
     glob "^8.0.3"
     yaml "^2.3.0"
 
-"@shopify/ui-extensions-react@^2024.10":
-  version "2024.10.2"
-  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions-react/-/ui-extensions-react-2024.10.2.tgz#23f89f70f379acb52084afd2daf6356b5353737e"
-  integrity sha512-TF97qiPWtWIGtS9Rwl8CIhZ3uYD09oFHALQtksmHXsFoW6cK5/QPPXr9y9neac7nKJIqjzVYQxmRAba1T8y3nA==
+"@shopify/ui-extensions-react@^2025.1":
+  version "2025.1.0"
+  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions-react/-/ui-extensions-react-2025.1.0.tgz#1e6ae77e5f1de1ea96857b26f1ee7532cad66489"
+  integrity sha512-E1wNj8gqdaDku1z1Bjd36A6tFVAUrUWiZlj9C/qfeXt2+V5GtzrrMmdYIfEgXIkdjgviO9B4+pSAfm/1Y9+pXg==
   dependencies:
     "@remote-ui/async-subscription" "^2.1.12"
     "@remote-ui/react" "^5.0.2"
