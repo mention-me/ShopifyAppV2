@@ -17,7 +17,7 @@
         "@sentry/browser": "^8.54.0",
         "@sentry/react": "^8.51.0",
         "@shopify/app": "^3.58.2",
-        "@shopify/cli": "^3.75.0",
+        "@shopify/cli": "^3.76.2",
         "react": "^18"
     },
     "trustedDependencies": [
@@ -29,12 +29,12 @@
         "extensions/*"
     ],
     "devDependencies": {
-        "@eslint/compat": "^1.2.6",
+        "@eslint/compat": "^1.2.7",
         "@shopify/eslint-plugin": "^47.0.1",
         "eslint": "8",
         "eslint-plugin-react": "^7.37.4",
-        "eslint-plugin-react-hooks": "^5.1.0",
-        "prettier": "3.5.1",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "prettier": "3.5.3",
         "typescript": "^5.4.5",
         "typescript-eslint": "8"
     },
