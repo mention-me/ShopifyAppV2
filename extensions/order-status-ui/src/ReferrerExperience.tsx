@@ -155,13 +155,13 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                                     </Popover>
                                 }
                             >
-                                <View background="subdued" borderRadius="large" padding="tight">
-                                    <InlineStack padding="extraTight" spacing="extraTight">
-                                        <TextBlock appearance="subdued">{translate("managed-by")}</TextBlock>
+                                <InlineStack padding={["extraTight", "none"]} spacing="extraTight">
+                                    <TextBlock appearance="subdued" size="small">
+                                        {translate("managed-by")}
+                                    </TextBlock>
 
-                                        <Icon source="question" />
-                                    </InlineStack>
-                                </View>
+                                    <Icon source="question" />
+                                </InlineStack>
                             </Pressable>
 
                             <View blockAlignment="center" minBlockSize="fill">
