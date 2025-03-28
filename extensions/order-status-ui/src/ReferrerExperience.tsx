@@ -121,16 +121,12 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
             <View background="base">
                 <BlockStack border="base" borderRadius="large">
                     {data.imageUrl && (
-                        <View
-
-                        // maxInlineSize={Style.default(200)
-                        // 	.when({ viewportInlineSize: { min: "small" } }, 200)
-                        // 	.when({ viewportInlineSize: { min: "medium" } }, 200)
-                        // 	.when({ viewportInlineSize: { min: "large" } }, 200)}
-                        >
+                        <View>
                             <Link external to={data.url}>
                                 <Image
+                                    aspectRatio={1.5}
                                     borderRadius={["large", "large", "none", "none"]}
+                                    cornerRadius={["large", "large", "none", "none"]}
                                     fit="cover"
                                     source={data.imageUrl}
                                 />
