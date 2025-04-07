@@ -32,7 +32,7 @@
         "@eslint/compat": "^1.2.7",
         "@shopify/eslint-plugin": "^48.0.2",
         "eslint": "8",
-        "eslint-plugin-react": "^7.37.4",
+        "eslint-plugin-react": "^7.37.5",
         "eslint-plugin-react-hooks": "^5.2.0",
         "prettier": "3.5.3",
         "typescript": "^5.4.5",
