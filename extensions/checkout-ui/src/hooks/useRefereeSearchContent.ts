@@ -69,7 +69,7 @@ export const useRefereeSearchContent = () => {
             });
 
             /**
-             * For these two partner codes, we want to pass an additional segment parameter. The segment parameter
+             * For these partner codes, we want to pass an additional segment parameter. The segment parameter
              * is being used in the case to influence the Campaign we choose for the referee journey, and therefore
              * what offer the referee gets.
              *
@@ -77,7 +77,7 @@ export const useRefereeSearchContent = () => {
              *
              * See: https://mention-me.slack.com/archives/C0KGV2916/p1744187537168899
              */
-            if (partnerCode === "mmaf551ce0" || partnerCode === "mmc4cb2f71") {
+            if (partnerCode === "mmaf551ce0") {
                 params.set("request[segment]", "VIP");
             }
 
