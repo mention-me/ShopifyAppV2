@@ -5,10 +5,10 @@ import { RefereeJourneyContext } from "../context/RefereeJourneyContext";
 import { SITUATION } from "../Checkout";
 import { ReferrerFound } from "@api/consumer-api/dist/types";
 import {
-	useExtensionEditor,
-	useLanguage,
-	useLocalizationCountry,
-	useShop,
+    useExtensionEditor,
+    useLanguage,
+    useLocalizationCountry,
+    useShop,
 } from "@shopify/ui-extensions-react/checkout";
 import useLocale from "../../../../shared/hooks/useLocale";
 import { consoleError } from "../../../../shared/logging";
@@ -65,6 +65,19 @@ export const useRefereeFindFriend = () => {
             "request[appVersion]": `${myshopifyDomain}/${APP_VERSION}`,
             "request[localeCode]": locale,
         });
+
+        /**
+         * For these two partner codes, we want to pass an additional segment parameter. The segment parameter
+         * is being used in the case to influence the Campaign we choose for the referee journey, and therefore
+         * what offer the referee gets.
+         *
+         * Changing this? Check useRefereeSearchContent.tsx as well.
+         *
+         * See: https://mention-me.slack.com/archives/C0KGV2916/p1744187537168899
+         */
+        if (partnerCode === "mmaf551ce0" || partnerCode === "mmc4cb2f71") {
+            params.set("request[segment]", "VIP");
+        }
 
         if (name) {
             params.set("name", name);
