@@ -725,7 +725,7 @@
     "@remote-ui/rpc" "^1.4.5"
     "@remote-ui/types" "^1.1.3"
 
-"@remote-ui/react@^5.0.2":
+"@remote-ui/react@^5.0.6":
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/@remote-ui/react/-/react-5.0.6.tgz#989fc162df85450f250938e7c05580e2cdb2e1c5"
   integrity sha512-oSeZm57ZsT17nB1wndhco+MeqfuytSnEhj2t0Hc9H5T87RUk04T2qzrFDoVg6vTEBpgjVMzYv1B/hRM4z3scaw==
@@ -1057,13 +1057,13 @@
     glob "^8.0.3"
     yaml "^2.3.0"
 
-"@shopify/ui-extensions-react@^2025.1":
-  version "2025.1.3"
-  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions-react/-/ui-extensions-react-2025.1.3.tgz#85d313ddf15d3ad04277f67566f65cb14183d9e7"
-  integrity sha512-kSD7lIkHa/YMWOnPMsNFwU/IWKUxkAAfHXRVMlvsy84+wd/oo8/epZHnaE8iz6dBmFhKJyJCiYYwoxmNOe5OWA==
+"@shopify/ui-extensions-react@^2025.4":
+  version "2025.4.0"
+  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions-react/-/ui-extensions-react-2025.4.0.tgz#5351169b7c612b0437936ce57748a99c6b6d725c"
+  integrity sha512-sFmoMHGgnKrok6wr8Db1xTyZUispON0J13HsGpkCWxneLVhBf0vH5mxHyFxBpnjR335DYqwlZph985SWh/Xyaw==
   dependencies:
-    "@remote-ui/async-subscription" "^2.1.12"
-    "@remote-ui/react" "^5.0.2"
+    "@remote-ui/async-subscription" "^2.1.16"
+    "@remote-ui/react" "^5.0.6"
     "@types/react" ">=18.2.67"
 
 "@shopify/ui-extensions@^2025.1":
