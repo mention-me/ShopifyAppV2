@@ -13,7 +13,8 @@ const useReferrerEntryPoint = ({
     myshopifyDomain,
     email,
     billingAddress,
-    money,
+    total,
+    subTotal,
     editor,
     discountAllocations,
     discountCodes,
@@ -41,7 +42,7 @@ const useReferrerEntryPoint = ({
             billingAddress?.lastName,
             billingAddress?.zip,
             orderId,
-            money,
+            total,
             editor,
             discountCodes,
             discountAllocations,
@@ -74,13 +75,13 @@ const useReferrerEntryPoint = ({
                 return total + currentValue.discountedAmount.amount;
             }, 0);
 
-            const customField = [myshopifyDomain];
+            const customField = [myshopifyDomain, subTotal.amount];
 
             if (!partnerCode || !environment || !locale) {
                 return null;
             }
 
-            if (!money || (!money.amount && money.amount !== 0) || !money.currencyCode) {
+            if (!total || (!total.amount && total.amount !== 0) || !total.currencyCode) {
                 // There's a behaviour in the Shopify API where "money" is undefined until the order is fully loaded.
                 // See: https://github.com/Shopify/ui-extensions/issues/2203
                 return null;
@@ -115,10 +116,10 @@ const useReferrerEntryPoint = ({
                 },
                 order: {
                     orderIdentifier: parseShopifyId(orderId),
-                    currencyCode: money?.currencyCode,
+                    currencyCode: total?.currencyCode,
                     // When we're in the editor, don't record a value. This is to prevent these values being counted
                     // as real orders.
-                    total: editor ? "0" : String(money?.amount),
+                    total: editor ? "0" : String(total?.amount),
                     // Use the time of the request instead of explicitly setting a time.
                     dateString: "",
                     couponCode: couponCodesList.join(","),

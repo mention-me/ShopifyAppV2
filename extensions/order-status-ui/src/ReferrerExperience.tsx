@@ -46,7 +46,8 @@ export interface ReferrerEntryPointInputs {
     readonly email: string;
     readonly extensionType: ExtensionType;
     readonly languageOrLocale: string;
-    readonly money: Money;
+    readonly total: Money;
+    readonly subTotal: Money | undefined;
     readonly myshopifyDomain: string;
     readonly translate: ReturnType<typeof useTranslateCheckout> | ReturnType<typeof useTranslateCustomerAccount>;
     /* eslint-enable react/no-unused-prop-types */

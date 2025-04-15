@@ -16,6 +16,7 @@ import {
     usePurchasingCompany,
     useShop,
     useSubscription,
+    useSubtotalAmount,
     useTotalAmount,
     useTranslate,
 } from "@shopify/ui-extensions-react/checkout";
@@ -67,7 +68,8 @@ export const ThankYou = () => {
     const email = useEmail();
     const customer = useCustomer();
 
-    const money = useTotalAmount();
+    const totalAmount = useTotalAmount();
+    const subTotalAmount = useSubtotalAmount();
 
     const discountCodes = useDiscountCodes();
     const discountAllocations = useDiscountAllocations();
@@ -106,8 +108,9 @@ export const ThankYou = () => {
                     extensionType="thank-you"
                     giftCards={giftCards}
                     languageOrLocale={languageOrLocale}
-                    money={money}
                     myshopifyDomain={myshopifyDomain}
+                    subTotal={subTotalAmount}
+                    total={totalAmount}
                     translate={translate}
                 />
             </ErrorBoundary>

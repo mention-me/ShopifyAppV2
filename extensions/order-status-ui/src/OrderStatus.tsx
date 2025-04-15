@@ -15,6 +15,7 @@ import {
     useOrder,
     usePurchasingCompany,
     useShop,
+    useSubscription,
     useTotalAmount,
     useTranslate,
 } from "@shopify/ui-extensions-react/customer-account";
@@ -66,7 +67,11 @@ export const OrderStatus = () => {
     const email = useEmail();
     const customer = useCustomer();
 
-    const money = useTotalAmount();
+    const totalAmount = useTotalAmount();
+
+    // Subtotal Amount isn't supported on the order status, but exists - so we can get it ourselves.
+    const api = useApi();
+    const subTotalAmount = useSubscription(api?.cost.subtotalAmount) || undefined;
 
     const discountCodes = useDiscountCodes();
     const discountAllocations = useDiscountAllocations();
@@ -111,8 +116,9 @@ export const OrderStatus = () => {
                     extensionType="order-status"
                     giftCards={giftCards}
                     languageOrLocale={languageOrLocale}
-                    money={money}
                     myshopifyDomain={myshopifyDomain}
+                    subTotal={subTotalAmount}
+                    total={totalAmount}
                     translate={translate}
                 />
             </ErrorBoundary>
