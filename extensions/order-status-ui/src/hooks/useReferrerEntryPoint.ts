@@ -15,6 +15,8 @@ const useReferrerEntryPoint = ({
     billingAddress,
     total,
     subTotal,
+    totalTaxAmount,
+    totalShippingAmount,
     editor,
     discountAllocations,
     discountCodes,
@@ -75,7 +77,11 @@ const useReferrerEntryPoint = ({
                 return total + currentValue.discountedAmount.amount;
             }, 0);
 
-            const customField = [myshopifyDomain, subTotal.amount];
+            const customField = [
+                myshopifyDomain,
+                subTotal.amount,
+                total.amount - totalTaxAmount.amount - totalShippingAmount.amount,
+            ];
 
             if (!partnerCode || !environment || !locale) {
                 return null;

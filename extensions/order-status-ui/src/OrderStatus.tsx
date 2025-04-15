@@ -70,8 +70,11 @@ export const OrderStatus = () => {
     const totalAmount = useTotalAmount();
 
     // Subtotal Amount isn't supported on the order status, but exists - so we can get it ourselves.
+    // Request is here: https://community.shopify.dev/t/support-for-usesubtotalamount-on-order-status-page/13618
     const api = useApi();
     const subTotalAmount = useSubscription(api?.cost.subtotalAmount) || undefined;
+    const shippingAmount = useSubscription(api?.cost.totalShippingAmount) || undefined;
+    const taxAmount = useSubscription(api?.cost.totalTaxAmount) || undefined;
 
     const discountCodes = useDiscountCodes();
     const discountAllocations = useDiscountAllocations();
@@ -119,6 +122,8 @@ export const OrderStatus = () => {
                     myshopifyDomain={myshopifyDomain}
                     subTotal={subTotalAmount}
                     total={totalAmount}
+                    totalShippingAmount={shippingAmount}
+                    totalTaxAmount={taxAmount}
                     translate={translate}
                 />
             </ErrorBoundary>

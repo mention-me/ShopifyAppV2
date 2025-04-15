@@ -48,6 +48,8 @@ export interface ReferrerEntryPointInputs {
     readonly languageOrLocale: string;
     readonly total: Money;
     readonly subTotal: Money | undefined;
+    readonly totalTaxAmount: Money | undefined;
+    readonly totalShippingAmount: Money | undefined;
     readonly myshopifyDomain: string;
     readonly translate: ReturnType<typeof useTranslateCheckout> | ReturnType<typeof useTranslateCustomerAccount>;
     /* eslint-enable react/no-unused-prop-types */

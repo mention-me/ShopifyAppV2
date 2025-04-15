@@ -18,6 +18,8 @@ import {
     useSubscription,
     useSubtotalAmount,
     useTotalAmount,
+    useTotalShippingAmount,
+    useTotalTaxAmount,
     useTranslate,
 } from "@shopify/ui-extensions-react/checkout";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
@@ -70,6 +72,8 @@ export const ThankYou = () => {
 
     const totalAmount = useTotalAmount();
     const subTotalAmount = useSubtotalAmount();
+    const taxAmount = useTotalTaxAmount();
+    const shippingAmount = useTotalShippingAmount();
 
     const discountCodes = useDiscountCodes();
     const discountAllocations = useDiscountAllocations();
@@ -111,6 +115,8 @@ export const ThankYou = () => {
                     myshopifyDomain={myshopifyDomain}
                     subTotal={subTotalAmount}
                     total={totalAmount}
+                    totalShippingAmount={shippingAmount}
+                    totalTaxAmount={taxAmount}
                     translate={translate}
                 />
             </ErrorBoundary>
