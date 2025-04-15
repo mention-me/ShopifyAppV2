@@ -26,8 +26,15 @@ const useReferrerEntryPoint = ({
     country,
     extensionType,
 }: ReferrerEntryPointInputs) => {
-    const { orderId, partnerCode, environment, defaultLocale, localeChoiceMethod, setErrorState } =
-        useContext(ReferrerJourneyContext);
+    const {
+        orderId,
+        partnerCode,
+        environment,
+        defaultLocale,
+        localeChoiceMethod,
+        orderTotalTrackingType,
+        setErrorState,
+    } = useContext(ReferrerJourneyContext);
 
     const locale = useLocale(languageOrLocale, country?.isoCode, defaultLocale, localeChoiceMethod);
 
@@ -77,11 +84,7 @@ const useReferrerEntryPoint = ({
                 return total + currentValue.discountedAmount.amount;
             }, 0);
 
-            const customField = [
-                myshopifyDomain,
-                subTotal.amount,
-                total.amount - totalTaxAmount.amount - totalShippingAmount.amount,
-            ];
+            const customField = [myshopifyDomain];
 
             if (!partnerCode || !environment || !locale) {
                 return null;
@@ -91,6 +94,13 @@ const useReferrerEntryPoint = ({
                 // There's a behaviour in the Shopify API where "money" is undefined until the order is fully loaded.
                 // See: https://github.com/Shopify/ui-extensions/issues/2203
                 return null;
+            }
+
+            let totalAmount: string;
+            if (orderTotalTrackingType === "sub_total") {
+                totalAmount = String(Math.max(total?.amount - totalTaxAmount?.amount - totalShippingAmount?.amount, 0));
+            } else {
+                totalAmount = String(total?.amount);
             }
 
             const body: EntryPointForReferrerType = {
@@ -125,7 +135,7 @@ const useReferrerEntryPoint = ({
                     currencyCode: total?.currencyCode,
                     // When we're in the editor, don't record a value. This is to prevent these values being counted
                     // as real orders.
-                    total: editor ? "0" : String(total?.amount),
+                    total: editor ? "0" : totalAmount,
                     // Use the time of the request instead of explicitly setting a time.
                     dateString: "",
                     couponCode: couponCodesList.join(","),

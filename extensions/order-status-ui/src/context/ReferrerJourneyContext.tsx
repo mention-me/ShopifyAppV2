@@ -8,6 +8,7 @@ type ReferrerJourneyState = {
     environment: Environment;
     defaultLocale: string;
     localeChoiceMethod: string;
+    orderTotalTrackingType: string;
     errorState: boolean;
     setErrorState: Dispatch<SetStateAction<boolean>>;
 };
@@ -24,7 +25,7 @@ export const ReferrerJourneyProvider = ({ orderId, mentionMeConfig, children }: 
     const [errorState, setErrorState] = useState<boolean>(false);
 
     const state = useMemo(() => {
-        const { partnerCode, environment, defaultLocale, localeChoiceMethod } = mentionMeConfig;
+        const { partnerCode, environment, defaultLocale, localeChoiceMethod, orderTotalTrackingType } = mentionMeConfig;
 
         return {
             orderId,
@@ -32,6 +33,7 @@ export const ReferrerJourneyProvider = ({ orderId, mentionMeConfig, children }: 
             environment,
             defaultLocale,
             localeChoiceMethod,
+            orderTotalTrackingType,
             errorState,
             setErrorState,
         };
