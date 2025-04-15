@@ -1,6 +1,7 @@
 import {
     useApi,
     useAppliedGiftCards,
+    useBillingAddress,
     useCurrency,
     useCustomer,
     useDiscountAllocations,
@@ -58,11 +59,7 @@ export const OrderStatus = () => {
 
     const editor = useExtensionEditor();
 
-    // There's a bug somewhere in Shopify which means that the billing address is no longer available on the Order Status page.
-    // Raised here: https://community.shopify.dev/t/bug-billingaddress-is-no-longer-available-on-the-customer-order-status-page/6660
-    // They've said that this should work instead (even though TypeScript says it won't)
-    const api = useApi();
-    const billingAddress = api?.billingAddress?.current || undefined;
+    const billingAddress = useBillingAddress();
 
     const { isoCode: languageOrLocale } = useLanguage();
 
