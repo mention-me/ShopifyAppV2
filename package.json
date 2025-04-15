@@ -15,9 +15,9 @@
         "@api/consumer-api": "file:.api/apis/consumer-api",
         "@api/entry-point-api": "file:.api/apis/entry-point-api",
         "@sentry/browser": "^9.10.1",
-        "@sentry/react": "^9.11.0",
+        "@sentry/react": "^9.12.0",
         "@shopify/app": "^3.58.2",
-        "@shopify/cli": "^3.77.1",
+        "@shopify/cli": "^3.78.0",
         "react": "^18"
     },
     "trustedDependencies": [
