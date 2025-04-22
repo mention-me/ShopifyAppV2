@@ -91,7 +91,7 @@ const useReferrerEntryPoint = ({
 
             const customField = [myshopifyDomain, totalAmount, subTotalAmount];
 
-            const orderTotal = orderTotalTrackingType === "sub_total" ? subTotal : total;
+            const orderTotal = orderTotalTrackingType === "sub_total" ? subTotal.amount : total.amount;
 
             if (!partnerCode || !environment || !locale) {
                 return null;
