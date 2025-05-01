@@ -77,7 +77,7 @@ export const useRefereeSearchContent = () => {
              *
              * See: https://mention-me.slack.com/archives/C0KGV2916/p1744187537168899
              */
-            if (partnerCode === "mmaf551ce0") {
+            if (partnerCode === "mmaf551ce0" || partnerCode === "mmc4cb2f71") {
                 params.set("request[segment]", "VIP");
             }
 
