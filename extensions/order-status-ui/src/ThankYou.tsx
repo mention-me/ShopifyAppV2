@@ -14,6 +14,7 @@ import {
     useLocalizationCountry,
     useLocalizationMarket,
     usePurchasingCompany,
+    useSettings,
     useShop,
     useSubscription,
     useSubtotalAmount,
@@ -80,6 +81,12 @@ export const ThankYou = () => {
 
     const giftCards = useAppliedGiftCards();
 
+    const {
+        image_location: imageLocation,
+    }: Partial<{
+        image_location: "Top" | "Above information notice" | "Above CTA" | "Below CTA";
+    }> = useSettings();
+
     if (purchasingCompany) {
         return null;
     }
@@ -93,7 +100,7 @@ export const ThankYou = () => {
     }
 
     return (
-        <ReferrerJourneyProvider mentionMeConfig={mentionMeConfig} orderId={order.id}>
+        <ReferrerJourneyProvider imageLocation={imageLocation} mentionMeConfig={mentionMeConfig} orderId={order.id}>
             <ErrorBoundary
                 beforeCapture={(scope, error) => {
                     consoleError("ThankYou", "Error boundary caught error", error);

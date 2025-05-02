@@ -12,7 +12,6 @@ import {
     SkeletonImage,
     SkeletonTextBlock,
     TextBlock,
-    useSettings,
     useTranslate as useTranslateCheckout,
     View,
 } from "@shopify/ui-extensions-react/checkout";
@@ -59,17 +58,9 @@ export interface ReferrerEntryPointInputs {
 const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
     const { editor, translate } = props;
 
-    const { partnerCode, environment, errorState } = useContext(ReferrerJourneyContext);
+    const { partnerCode, environment, errorState, imageLocation } = useContext(ReferrerJourneyContext);
 
     const { loading, data } = useReferrerEntryPoint(props);
-
-    let {
-        image_location,
-    }: Partial<{
-        image_location: "Top" | "Above information notice" | "Above CTA" | "Below CTA";
-    }> = useSettings();
-
-    image_location = image_location || "Top";
 
     // Now we're into the rendering part
 
@@ -132,7 +123,7 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
         >
             <View background="base">
                 <BlockStack border="base" borderRadius="large">
-                    {image_location === "Top" && data.imageUrl && (
+                    {imageLocation === "Top" && data.imageUrl && (
                         <View>
                             <Link external to={data.url}>
                                 <Image
@@ -150,7 +141,7 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                             <Heading level={2}>{data.headline}</Heading>
                             <TextBlock>{data.description}</TextBlock>
 
-                            {image_location === "Above information notice" && data.imageUrl && (
+                            {imageLocation === "Above information notice" && data.imageUrl && (
                                 <View>
                                     <Link external to={data.url}>
                                         <Image
@@ -187,7 +178,7 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                                 </InlineStack>
                             </Pressable>
 
-                            {image_location === "Above CTA" && data.imageUrl && (
+                            {imageLocation === "Above CTA" && data.imageUrl && (
                                 <View>
                                     <Link external to={data.url}>
                                         <Image
@@ -214,7 +205,7 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                         </BlockStack>
                     </View>
 
-                    {image_location === "Below CTA" && data.imageUrl && (
+                    {imageLocation === "Below CTA" && data.imageUrl && (
                         <View>
                             <Link external to={data.url}>
                                 <Image

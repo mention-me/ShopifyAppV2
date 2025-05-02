@@ -14,6 +14,7 @@ import {
     useLocalizationMarket,
     useOrder,
     usePurchasingCompany,
+    useSettings,
     useShop,
     useSubscription,
     useTotalAmount,
@@ -81,6 +82,12 @@ export const OrderStatus = () => {
 
     const giftCards = useAppliedGiftCards();
 
+    const {
+        image_location: imageLocation,
+    }: Partial<{
+        image_location: "Top" | "Above information notice" | "Above CTA" | "Below CTA";
+    }> = useSettings();
+
     if (purchasingCompany) {
         consoleError(
             "OrderStatus",
@@ -100,7 +107,7 @@ export const OrderStatus = () => {
     }
 
     return (
-        <ReferrerJourneyProvider mentionMeConfig={mentionMeConfig} orderId={order.id}>
+        <ReferrerJourneyProvider imageLocation={imageLocation} mentionMeConfig={mentionMeConfig} orderId={order.id}>
             <ErrorBoundary
                 beforeCapture={(scope, error) => {
                     consoleError("OrderStatus", "Error boundary caught error", error);

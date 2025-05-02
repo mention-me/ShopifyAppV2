@@ -1,8 +1,12 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useMemo, useState } from "react";
 import { Environment } from "../../../../shared/utils";
 import { MentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeShopifyConfig";
+import { useSettings } from "@shopify/ui-extensions-react/checkout";
+
+type ImageLocation = "Top" | "Above information notice" | "Above CTA" | "Below CTA";
 
 type ReferrerJourneyState = {
+    imageLocation: ImageLocation;
     orderId: string;
     partnerCode: string;
     environment: Environment;
@@ -16,18 +20,20 @@ type ReferrerJourneyState = {
 export const ReferrerJourneyContext = createContext<ReferrerJourneyState>(undefined);
 
 interface Props {
+    readonly imageLocation: ImageLocation | null;
     readonly orderId: string;
     readonly mentionMeConfig: MentionMeShopifyConfig;
     readonly children: ReactNode;
 }
 
-export const ReferrerJourneyProvider = ({ orderId, mentionMeConfig, children }: Props) => {
+export const ReferrerJourneyProvider = ({ imageLocation, orderId, mentionMeConfig, children }: Props) => {
     const [errorState, setErrorState] = useState<boolean>(false);
 
     const state = useMemo(() => {
         const { partnerCode, environment, defaultLocale, localeChoiceMethod, orderTotalTrackingType } = mentionMeConfig;
 
         return {
+            imageLocation: imageLocation ?? "Top",
             orderId,
             partnerCode,
             environment,
@@ -37,7 +43,7 @@ export const ReferrerJourneyProvider = ({ orderId, mentionMeConfig, children }: 
             errorState,
             setErrorState,
         };
-    }, [orderId, mentionMeConfig, errorState]);
+    }, [imageLocation, orderId, mentionMeConfig, errorState]);
 
     return <ReferrerJourneyContext.Provider value={state}>{children}</ReferrerJourneyContext.Provider>;
 };
