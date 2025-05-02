@@ -12,6 +12,7 @@ import {
     SkeletonImage,
     SkeletonTextBlock,
     TextBlock,
+    useSettings,
     useTranslate as useTranslateCheckout,
     View,
 } from "@shopify/ui-extensions-react/checkout";
@@ -25,9 +26,9 @@ import { consoleError } from "../../../shared/logging";
 import { ExtensionType } from "../../../shared/types";
 import { ErrorBoundary } from "@sentry/react";
 import {
+    AppliedGiftCard,
     CartDiscountAllocation,
     CartDiscountCode,
-    AppliedGiftCard,
     Country,
     Customer,
     Money,
@@ -61,6 +62,12 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
     const { partnerCode, environment, errorState } = useContext(ReferrerJourneyContext);
 
     const { loading, data } = useReferrerEntryPoint(props);
+
+    const {
+        image_location = "Below CTA",
+    }: Partial<{
+        image_location: "Top" | "Above information notice" | "Above CTA" | "Below CTA";
+    }> = useSettings();
 
     // Now we're into the rendering part
 
@@ -123,7 +130,7 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
         >
             <View background="base">
                 <BlockStack border="base" borderRadius="large">
-                    {data.imageUrl && (
+                    {image_location === "Top" && data.imageUrl && (
                         <View>
                             <Link external to={data.url}>
                                 <Image
@@ -140,6 +147,21 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                         <BlockStack padding="loose" spacing="base">
                             <Heading level={2}>{data.headline}</Heading>
                             <TextBlock>{data.description}</TextBlock>
+
+                            {image_location === "Above information notice" && data.imageUrl && (
+                                <View>
+                                    <Link external to={data.url}>
+                                        <Image
+                                            aspectRatio={1.5}
+                                            borderRadius={["large", "large", "large", "large"]}
+                                            cornerRadius={["large", "large", "large", "large"]}
+                                            fit="cover"
+                                            source={data.imageUrl}
+                                        />
+                                    </Link>
+                                </View>
+                            )}
+
                             <Pressable
                                 overlay={
                                     <Popover>
@@ -163,18 +185,46 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                                 </InlineStack>
                             </Pressable>
 
-                            <View blockAlignment="center" minBlockSize="fill">
+                            {image_location === "Above CTA" && data.imageUrl && (
+                                <View>
+                                    <Link external to={data.url}>
+                                        <Image
+                                            aspectRatio={1.5}
+                                            borderRadius={["large", "large", "large", "large"]}
+                                            cornerRadius={["large", "large", "large", "large"]}
+                                            fit="cover"
+                                            source={data.imageUrl}
+                                        />
+                                    </Link>
+                                </View>
+                            )}
+
+                            <View blockAlignment="center">
                                 {/*
-							Button can't support "external".
-							See https://github.com/Shopify/ui-extensions/issues/1835#issuecomment-2113067449
-						 	And because Link can't be full width, the button is restricted in size :(
-						 	*/}
+                                Button can't support "external".
+                                See https://github.com/Shopify/ui-extensions/issues/1835#issuecomment-2113067449
+                                And because Link can't be full width, the button is restricted in size :(
+                                */}
                                 <Link external to={data.url}>
                                     <Button inlineAlignment="center">{data.defaultCallToAction}</Button>
                                 </Link>
                             </View>
                         </BlockStack>
                     </View>
+
+                    {image_location === "Below CTA" && data.imageUrl && (
+                        <View>
+                            <Link external to={data.url}>
+                                <Image
+                                    aspectRatio={1.5}
+                                    borderRadius={["none", "none", "large", "large"]}
+                                    cornerRadius={["none", "none", "large", "large"]}
+                                    fit="cover"
+                                    source={data.imageUrl}
+                                />
+                            </Link>
+                        </View>
+                    )}
                 </BlockStack>
             </View>
         </ErrorBoundary>

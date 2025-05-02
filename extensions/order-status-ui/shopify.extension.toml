@@ -51,3 +51,13 @@ network_access = true
 # your extension. Learn more:
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#settings-definition
 
+
+[[extensions.settings.fields]]
+key = "image_location"
+type = "single_line_text_field"
+name = "Image location"
+description = "Choose the location of the image on the offer."
+
+[[extensions.settings.fields.validations]]
+name = "choices"
+value = "[\"Top\", \"Above information notice\", \"Above CTA\", \"Below CTA\"]"
