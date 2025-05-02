@@ -63,11 +63,13 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
 
     const { loading, data } = useReferrerEntryPoint(props);
 
-    const {
-        image_location = "Below CTA",
+    let {
+        image_location,
     }: Partial<{
         image_location: "Top" | "Above information notice" | "Above CTA" | "Below CTA";
     }> = useSettings();
+
+    image_location = image_location || "Top";
 
     // Now we're into the rendering part
 
