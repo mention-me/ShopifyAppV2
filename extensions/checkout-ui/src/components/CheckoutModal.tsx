@@ -97,7 +97,7 @@ export const CheckoutModal = () => {
                     {modalContent}
                     <BlockSpacer spacing="extraLoose" />
                     <View display="inline">
-                        <InlineLayout blockAlignment="start" columns="auto" maxBlockSize={5}>
+                        <InlineLayout blockAlignment="start" columns="auto">
                             <TextBlock size="small">{translate("powered-by")}</TextBlock>
                             <InlineSpacer spacing="extraTight" />
                             <Image fit="cover" source="https://static.mention-me.com/shopify-app/mention-me-logo.svg" />
