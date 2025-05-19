@@ -19,6 +19,11 @@ redirect_urls = [ ]
 [webhooks]
 api_version = "2025-01"
 
+  [[webhooks.subscriptions]]
+  topics = [ "orders/create" ]
+  uri = "https://mention-me.com/shopify/webhooks/orders/create"
+
+
 [pos]
 embedded = false
 
