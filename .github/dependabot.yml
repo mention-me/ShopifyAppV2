@@ -7,9 +7,6 @@ updates:
           day: monday
           time: "03:00"
           timezone: Europe/London
-      # Assignees can't be a team unfortunately
-      reviewers:
-          - "edhgoose"
       target-branch: "main"
 
     - package-ecosystem: "npm"
@@ -19,7 +16,4 @@ updates:
           day: monday
           time: "03:00"
           timezone: Europe/London
-      # Assignees can't be a team unfortunately
-      reviewers:
-          - "edhgoose"
       target-branch: "main"
