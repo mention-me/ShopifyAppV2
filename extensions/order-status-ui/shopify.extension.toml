@@ -40,12 +40,16 @@ network_access = true
 # products, customers, and more. Learn more:
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#metafields
 
-# [[extensions.metafields]]
-# namespace = "my_namespace"
-# key = "my_key"
-# [[extensions.metafields]]
-# namespace = "my_namespace"
-# key = "my_other_key"
+# The metafields for the extension
+# We grab the following metafields to use for segmentation - see useSegmentFromMetafields.ts
+[[extensions.metafields]]
+namespace = "mention-me"
+key = "segment"
+
+# One of our clients uses Loyalty Lion for metafields, so let's grab that.
+[[extensions.metafields]]
+namespace = "loyaltylion"
+key = "loyalty_tier"
 
 # Defines settings that will be collected from merchants installing
 # your extension. Learn more:
