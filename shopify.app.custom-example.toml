@@ -9,7 +9,7 @@ include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = ""
+scopes = "read_orders"
 
 [auth]
 redirect_urls = [ ]
@@ -20,7 +20,6 @@ api_version = "2025-01"
   [[webhooks.subscriptions]]
   topics = [ "orders/create" ]
   uri = "https://mention-me.com/shopify/webhooks/orders/create"
-
 
 [pos]
 embedded = false
