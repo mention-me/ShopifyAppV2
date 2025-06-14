@@ -1,6 +1,7 @@
 import {
     useApi,
     useAppliedGiftCards,
+    useAppMetafields,
     useBillingAddress,
     useCurrency,
     useCustomer,
@@ -27,6 +28,7 @@ import { setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
+import useSegmentFromMetafields from "./hooks/useSegmentFromMetafields";
 
 export const OrderStatus = () => {
     const translate = useTranslate();
@@ -35,6 +37,10 @@ export const OrderStatus = () => {
 
     // Setup sentry as soon as possible so that we can catch failures.
     setupSentry(myshopifyDomain, "order-status");
+
+    const appMetafields = useAppMetafields();
+
+    const segment = useSegmentFromMetafields(appMetafields);
 
     const order = useOrder();
     const currency = useCurrency();
@@ -72,7 +78,7 @@ export const OrderStatus = () => {
 
     // Subtotal Amount isn't supported on the order status, but exists - so we can get it ourselves.
     // Request is here: https://community.shopify.dev/t/support-for-usesubtotalamount-on-order-status-page/13618
-    const api = useApi();
+    const api = useApi("customer-account.order-status.block.render");
     const subTotalAmount = useSubscription(api?.cost.subtotalAmount) || undefined;
     const shippingAmount = useSubscription(api?.cost.totalShippingAmount) || undefined;
     const taxAmount = useSubscription(api?.cost.totalTaxAmount) || undefined;
@@ -127,6 +133,7 @@ export const OrderStatus = () => {
                     giftCards={giftCards}
                     languageOrLocale={languageOrLocale}
                     myshopifyDomain={myshopifyDomain}
+                    segment={segment}
                     subTotal={subTotalAmount}
                     total={totalAmount}
                     totalShippingAmount={shippingAmount}
