@@ -15,7 +15,7 @@
         "@api/consumer-api": "file:.api/apis/consumer-api",
         "@api/entry-point-api": "file:.api/apis/entry-point-api",
         "@sentry/browser": "^9.24.0",
-        "@sentry/react": "^9.27.0",
+        "@sentry/react": "^9.30.0",
         "@shopify/app": "^3.58.2",
         "@shopify/cli": "^3.80.7",
         "react": "^18"
