@@ -1,6 +1,7 @@
 import {
     useApi,
     useAppliedGiftCards,
+    useAppMetafields,
     useBillingAddress,
     useCurrency,
     useCustomer,
@@ -28,7 +29,6 @@ import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeSho
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
 import useSegmentFromMetafields from "./hooks/useSegmentFromMetafields";
-import { useAppMetafields } from "@shopify/ui-extensions-react/checkout";
 
 export const OrderStatus = () => {
     const translate = useTranslate();
