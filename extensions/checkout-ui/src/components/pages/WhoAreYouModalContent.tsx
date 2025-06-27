@@ -13,7 +13,7 @@ import { useCallback, useContext, useState } from "react";
 import { useRefereeRegister } from "../../hooks/useRefereeRegister";
 import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { isValidEmail } from "../../../../../shared/utils";
-import { decode } from "entities";
+import { decode, EntityLevel } from "entities";
 import { ErrorBoundary } from "@sentry/react";
 import { consoleError } from "../../../../../shared/logging";
 
@@ -58,8 +58,8 @@ export const WhoAreYouModalContent = () => {
         >
             <Form disabled={loadingConsumerApi} onSubmit={onSubmit}>
                 <BlockStack>
-                    <Heading level={1}>{decode(nameSearchResult.content.headline || "")}</Heading>
-                    <TextBlock>{decode(nameSearchResult.content.description || "")}</TextBlock>
+                    <Heading level={1}>{decode(nameSearchResult.content.headline || "", EntityLevel.HTML)}</Heading>
+                    <TextBlock>{decode(nameSearchResult.content.description || "", EntityLevel.HTML)}</TextBlock>
                     <TextField
                         error={errors?.email}
                         icon={{ source: "email", position: "end" }}
@@ -74,7 +74,8 @@ export const WhoAreYouModalContent = () => {
                     <TextBlock appearance="subdued">
                         {decode(
                             nameSearchResult.result.referrer.offer.privacyNotice ||
-                                translate("who-are-you.privacy.text")
+                                translate("who-are-you.privacy.text"),
+                            EntityLevel.HTML
                         )}{" "}
                         <Link external to={nameSearchResult.result.referrer.offer.privacyLink}>
                             {translate("who-are-you.privacy.link")}

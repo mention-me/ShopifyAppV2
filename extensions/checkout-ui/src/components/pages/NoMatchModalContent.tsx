@@ -2,7 +2,7 @@ import { BlockStack, Button, Heading, TextBlock, useApi, View } from "@shopify/u
 import { useCallback, useContext } from "react";
 import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import { CHECKOUT_MODAL_ID } from "../CheckoutModal";
-import { decode } from "entities";
+import { decode, EntityLevel } from "entities";
 import { ErrorBoundary } from "@sentry/react";
 import { consoleError } from "../../../../../shared/logging";
 
@@ -30,12 +30,12 @@ const NoMatchModalContent = () => {
                 scope.setTag("component", "NoMatchModalContent");
             }}
         >
-            <Heading level={1}>{decode(nameSearchResult.content.headline)}</Heading>
-            <TextBlock>{decode(nameSearchResult.content.description)}</TextBlock>
+            <Heading level={1}>{decode(nameSearchResult.content.headline, EntityLevel.HTML)}</Heading>
+            <TextBlock>{decode(nameSearchResult.content.description, EntityLevel.HTML)}</TextBlock>
 
             <BlockStack>
                 <View>
-                    <Button onPress={tryAgain}>{decode(nameSearchResult.content.back)}</Button>
+                    <Button onPress={tryAgain}>{decode(nameSearchResult.content.back, EntityLevel.HTML)}</Button>
                 </View>
                 <View>
                     <Button
@@ -45,7 +45,7 @@ const NoMatchModalContent = () => {
                             ui.overlay.close(CHECKOUT_MODAL_ID);
                         }}
                     >
-                        {decode(nameSearchResult.content.cta)}
+                        {decode(nameSearchResult.content.cta, EntityLevel.HTML)}
                     </Button>
                 </View>
             </BlockStack>

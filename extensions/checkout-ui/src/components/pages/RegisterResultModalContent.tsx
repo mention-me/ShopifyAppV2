@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { RefereeJourneyContext } from "../../context/RefereeJourneyContext";
 import RegisterResultFailureModalContent from "./RegisterResultFailureModalContent";
 import DiscountCard from "./components/DiscountCard";
-import { decode } from "entities";
+import { decode, EntityLevel } from "entities";
 import { ErrorBoundary } from "@sentry/react";
 import { consoleError } from "../../../../../shared/logging";
 
@@ -22,10 +22,10 @@ export const RegisterResultModalContent = () => {
                 scope.setTag("component", "RegisterResultModalContent");
             }}
         >
-            <Heading level={1}>{decode(registerResult.content["headline"] || "")}</Heading>
+            <Heading level={1}>{decode(registerResult.content["headline"] || "", EntityLevel.HTML)}</Heading>
             <TextBlock>
-                {decode(registerResult.content["fulfilled-also-emailed"] || "")}{" "}
-                {decode(registerResult.content["voucher-usage-restriction"] || "")}
+                {decode(registerResult.content["fulfilled-also-emailed"] || "", EntityLevel.HTML)}{" "}
+                {decode(registerResult.content["voucher-usage-restriction"] || "", EntityLevel.HTML)}
             </TextBlock>
             <DiscountCard />
         </ErrorBoundary>

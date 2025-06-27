@@ -13,7 +13,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { RefereeJourneyContext, RefereeSearch } from "../../context/RefereeJourneyContext";
 import { isValidEmail } from "../../../../../shared/utils";
 
-import { decode } from "entities";
+import { decode, EntityLevel } from "entities";
 import { ErrorBoundary } from "@sentry/react";
 import { consoleError } from "../../../../../shared/logging";
 
@@ -95,7 +95,7 @@ export const FindFriendModalContent = () => {
         const headline: string = nameSearchResult?.content?.headline || refereeContentApiResponse.headline;
         const description: string = nameSearchResult?.content?.description || refereeContentApiResponse.searchText;
 
-        return [decode(headline), decode(description)];
+        return [decode(headline, EntityLevel.HTML), decode(description, EntityLevel.HTML)];
     }, [refereeContentApiResponse, nameSearchResult]);
 
     return (

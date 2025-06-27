@@ -16,6 +16,7 @@ import {
     View,
 } from "@shopify/ui-extensions-react/checkout";
 
+import { decode, EntityLevel } from "entities";
 import { useTranslate as useTranslateCustomerAccount } from "@shopify/ui-extensions-react/customer-account";
 import { useContext } from "react";
 import { ReferrerJourneyContext } from "./context/ReferrerJourneyContext";
@@ -138,8 +139,8 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                     )}
                     <View borderRadius="large">
                         <BlockStack padding="loose" spacing="base">
-                            <Heading level={2}>{data.headline}</Heading>
-                            <TextBlock>{data.description}</TextBlock>
+                            <Heading level={2}>{decode(data.headline, EntityLevel.HTML)}</Heading>
+                            <TextBlock>{decode(data.description, EntityLevel.HTML)}</TextBlock>
 
                             {imageLocation === "Above information notice" && data.imageUrl && (
                                 <View>
@@ -162,7 +163,11 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                                             <TextBlock appearance="subdued">
                                                 {data.privacyNotice}{" "}
                                                 <Link external to={data.privacyNoticeUrl}>
-                                                    {data.privacyNoticeLinkText || "More info and your privacy rights"}
+                                                    {decode(
+                                                        data.privacyNoticeLinkText ||
+                                                            "More info and your privacy rights",
+                                                        EntityLevel.HTML
+                                                    )}
                                                 </Link>
                                             </TextBlock>
                                         </View>
@@ -199,7 +204,9 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                                 And because Link can't be full width, the button is restricted in size :(
                                 */}
                                 <Link external to={data.url}>
-                                    <Button inlineAlignment="center">{data.defaultCallToAction}</Button>
+                                    <Button inlineAlignment="center">
+                                        {decode(data.defaultCallToAction, EntityLevel.HTML)}
+                                    </Button>
                                 </Link>
                             </View>
                         </BlockStack>
