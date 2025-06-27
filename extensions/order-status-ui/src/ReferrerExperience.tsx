@@ -12,12 +12,10 @@ import {
     SkeletonImage,
     SkeletonTextBlock,
     TextBlock,
-    useTranslate as useTranslateCheckout,
     View,
 } from "@shopify/ui-extensions-react/checkout";
 
 import { decode, EntityLevel } from "entities";
-import { useTranslate as useTranslateCustomerAccount } from "@shopify/ui-extensions-react/customer-account";
 import { useContext } from "react";
 import { ReferrerJourneyContext } from "./context/ReferrerJourneyContext";
 import useReferrerEntryPoint from "./hooks/useReferrerEntryPoint";
@@ -34,6 +32,7 @@ import {
     Money,
 } from "@shopify/ui-extensions/build/ts/surfaces/checkout/api/standard/standard";
 import { MailingAddress } from "@shopify/ui-extensions/build/ts/surfaces/checkout/api/shared";
+import { I18nTranslate } from "@shopify/ui-extensions/src/surfaces/checkout/api/standard/standard";
 
 export interface ReferrerEntryPointInputs {
     /* eslint-disable react/no-unused-prop-types */
@@ -52,7 +51,7 @@ export interface ReferrerEntryPointInputs {
     readonly totalTaxAmount: Money | undefined;
     readonly totalShippingAmount: Money | undefined;
     readonly myshopifyDomain: string;
-    readonly translate: ReturnType<typeof useTranslateCheckout> | ReturnType<typeof useTranslateCustomerAccount>;
+    readonly translate: I18nTranslate;
     /* eslint-enable react/no-unused-prop-types */
 }
 
