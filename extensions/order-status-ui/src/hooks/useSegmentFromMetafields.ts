@@ -35,7 +35,12 @@ const useSegmentFromMetafields = (appMetafields: AppMetafieldEntry[]) => {
             })
             .filter((value) => value !== undefined && value !== null);
 
-        return [...new Set(segments)].join("|"); // Return unique segments
+        // Remove any duplicates from the segments array
+        const segmentSet = [...new Set(segments)];
+
+        console.log("Mention Me segments for this customer:", segmentSet);
+
+        return segmentSet.join("|");
     }, [appMetafields]);
 };
 
