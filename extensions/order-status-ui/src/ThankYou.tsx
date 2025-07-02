@@ -2,6 +2,7 @@ import ReferrerExperience from "./ReferrerExperience";
 import {
     useApi,
     useAppliedGiftCards,
+    useAppMetafields,
     useBillingAddress,
     useCurrency,
     useCustomer,
@@ -28,6 +29,7 @@ import { setupSentry } from "../../../shared/sentry";
 import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeShopifyConfig";
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
+import useSegmentFromMetafields from "./hooks/useSegmentFromMetafields";
 
 export const ThankYou = () => {
     const translate = useTranslate();
@@ -36,6 +38,10 @@ export const ThankYou = () => {
 
     // Setup sentry as soon as possible so that we can catch failures.
     setupSentry(myshopifyDomain, "thank-you");
+
+    const appMetafields = useAppMetafields();
+
+    const segment = useSegmentFromMetafields(appMetafields);
 
     const { orderConfirmation } = useApi("purchase.thank-you.block.render");
     const { order } = useSubscription(orderConfirmation);
@@ -120,6 +126,7 @@ export const ThankYou = () => {
                     giftCards={giftCards}
                     languageOrLocale={languageOrLocale}
                     myshopifyDomain={myshopifyDomain}
+                    segment={segment}
                     subTotal={subTotalAmount}
                     total={totalAmount}
                     totalShippingAmount={shippingAmount}

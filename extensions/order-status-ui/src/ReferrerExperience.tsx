@@ -47,6 +47,7 @@ export interface ReferrerEntryPointInputs {
     readonly extensionType: ExtensionType;
     readonly languageOrLocale: string;
     readonly total: Money;
+    readonly segment: string;
     readonly subTotal: Money | undefined;
     readonly totalTaxAmount: Money | undefined;
     readonly totalShippingAmount: Money | undefined;
