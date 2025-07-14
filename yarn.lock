@@ -912,10 +912,10 @@
     unique-string "3.0.0"
     zod "3.22.3"
 
-"@shopify/cli@^3.82.0":
-  version "3.82.0"
-  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.82.0.tgz#1a9e20253d68d51331c86948a46d624e7f207030"
-  integrity sha512-y+Sq21Zr+vJVQu7z2wNKXXI4NnkACuh/Tt/KrAX7C+NntmKLXl7CZEaVesmJ5shpksG2up1iY1MgMYsDPoNpUA==
+"@shopify/cli@^3.82.1":
+  version "3.82.1"
+  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.82.1.tgz#a3184f87ab4293b2e7cb3447b0c14d1aee843bf9"
+  integrity sha512-iIABwasf+aMSBIjaPsKlVSaLp3vcOIPcfiitdoMUJKQhjIVbq8KdwaAa/MLUMe5B+l230zjq/xGB8U3JeJY0eg==
   dependencies:
     "@ast-grep/napi" "0.33.0"
     esbuild "0.25.5"
