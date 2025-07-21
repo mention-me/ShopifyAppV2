@@ -8,7 +8,7 @@
         "@api/entry-point-api": "file:./../../.api/apis/entry-point-api",
         "@shopify/ui-extensions": "^2025.4",
         "@shopify/ui-extensions-react": "^2025.7",
-        "@tanstack/react-query": "^5.81.5",
+        "@tanstack/react-query": "^5.83.0",
         "entities": "^6.0.1",
         "react": "^18"
     },
