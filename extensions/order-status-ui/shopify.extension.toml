@@ -51,6 +51,11 @@ key = "segment"
 namespace = "loyaltylion"
 key = "loyalty_tier"
 
+# One of our clients uses Yotpo for metafields, so let's grab that.
+[[extensions.metafields]]
+namespace = "yotpo"
+key = "tier"
+
 # Defines settings that will be collected from merchants installing
 # your extension. Learn more:
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#settings-definition
