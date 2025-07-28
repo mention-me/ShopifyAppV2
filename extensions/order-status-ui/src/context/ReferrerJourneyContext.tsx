@@ -1,7 +1,6 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useMemo, useState } from "react";
 import { Environment } from "../../../../shared/utils";
 import { MentionMeShopifyConfig } from "../../../../shared/hooks/useMentionMeShopifyConfig";
-import { useSettings } from "@shopify/ui-extensions-react/checkout";
 
 type ImageLocation = "Top" | "Above information notice" | "Above CTA" | "Below CTA";
 
@@ -31,7 +30,8 @@ export const ReferrerJourneyProvider = ({ imageLocation, orderId, mentionMeConfi
     const [errorState, setErrorState] = useState<boolean>(false);
 
     const state = useMemo(() => {
-        const { partnerCode, environment, defaultLocale, localeChoiceMethod, orderTotalTrackingType, customCode } = mentionMeConfig;
+        const { partnerCode, environment, defaultLocale, localeChoiceMethod, orderTotalTrackingType, customCode } =
+            mentionMeConfig;
 
         return {
             imageLocation: imageLocation ?? "Top",

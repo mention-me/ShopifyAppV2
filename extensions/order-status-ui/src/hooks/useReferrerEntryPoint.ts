@@ -9,6 +9,37 @@ import { ReferrerEntryPointInputs } from "../ReferrerExperience";
 import { logError } from "../../../../shared/sentry";
 import { useQuery } from "@tanstack/react-query";
 
+// Create a safe execution context
+const safeEval = (code: string, partnerCode: string, environment: string, orderId: string) => {
+    // Create a function with limited scope
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+    const fn = new Function(
+        "partnerCode",
+        "environment",
+        "orderId",
+        `
+            "use strict";
+            try {
+                ${code}
+            } catch (e) {
+                console.error('Custom code execution error:', e);
+                return {};
+            }
+        `
+    );
+
+    try {
+        // Execute with only allowed parameters
+        const r = fn(partnerCode, environment, orderId);
+
+        if (r && typeof r === "object") {
+            return r;
+        }
+    } catch (e) {}
+
+    return {};
+};
+
 const useReferrerEntryPoint = ({
     myshopifyDomain,
     email,
@@ -71,30 +102,11 @@ const useReferrerEntryPoint = ({
             // Execute custom code if provided
             if (customCode) {
                 try {
-                    // Create a safe execution context
-                    const safeEval = (code: string, partnerCode: string, environment: string, orderId: string) => {
-                        // Create a function with limited scope
-                        const fn = new Function('partnerCode', 'environment', 'orderId', `
-                            "use strict";
-                            try {
-                                ${code}
-                            } catch (e) {
-                                console.error('Custom code execution error:', e);
-                                return {};
-                            }
-                        `);
-                        
-                        // Execute with only allowed parameters
-                        return fn(partnerCode, environment, orderId);
-                    };
-
                     const customResults = safeEval(customCode, partnerCode, environment, parseShopifyId(orderId));
-                    
+
                     // Only allow overriding segment
-                    if (customResults && typeof customResults === 'object' && 'segment' in customResults) {
-                        if (typeof customResults.segment === 'string') {
-                            finalSegment = customResults.segment;
-                        }
+                    if (customResults && "segment" in customResults && typeof customResults.segment === "string") {
+                        finalSegment = customResults.segment;
                     }
                 } catch (error) {
                     consoleError("ReferrerEntryPoint", "Custom code execution failed", error);
