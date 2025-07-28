@@ -37,7 +37,11 @@ const safeEval = (code: string, segment: string, cartLines?: any[]) => {
         if (r && typeof r === "object") {
             return r;
         }
-    } catch (e) {}
+
+        consoleError("safeEval", "Custom code did not return an object. It returned " + typeof r, r);
+    } catch (e) {
+        consoleError("safeEval", "Custom code execution failed", e);
+    }
 
     return {};
 };
