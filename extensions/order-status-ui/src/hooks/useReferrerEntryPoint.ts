@@ -8,10 +8,12 @@ import { consoleError } from "../../../../shared/logging";
 import { ReferrerEntryPointInputs } from "../ReferrerExperience";
 import { logError } from "../../../../shared/sentry";
 import { useQuery } from "@tanstack/react-query";
-import { CartLine } from "@shopify/ui-extensions/build/ts/surfaces/checkout/api/standard/standard";
 
 // Create a safe execution context
-const safeEval = (code: string, segment: string, cartLines?: CartLine[]) => {
+// CartLine is not "any", it's a CartLine type from Shopify, but we use "any" here because they don't allow
+// access to imports across different surfaces in the UI Extensions API. See here for more:
+// https://shopify.dev/docs/api/checkout-ui-extensions/latest/apis/cart-lines
+const safeEval = (code: string, segment: string, cartLines?: any[]) => {
     // Create a function with limited scope
     // eslint-disable-next-line @typescript-eslint/no-implied-eval
     const fn = new Function(
