@@ -3,6 +3,7 @@ import {
     useAppliedGiftCards,
     useAppMetafields,
     useBillingAddress,
+    useCartLines,
     useCurrency,
     useCustomer,
     useDiscountAllocations,
@@ -83,6 +84,8 @@ export const OrderStatus = () => {
     const shippingAmount = useSubscription(api?.cost.totalShippingAmount) || undefined;
     const taxAmount = useSubscription(api?.cost.totalTaxAmount) || undefined;
 
+    const cartLines = useCartLines();
+
     const discountCodes = useDiscountCodes();
     const discountAllocations = useDiscountAllocations();
 
@@ -123,6 +126,7 @@ export const OrderStatus = () => {
             >
                 <ReferrerExperience
                     billingAddress={billingAddress}
+                    cartLines={cartLines}
                     country={country}
                     customer={customer}
                     discountAllocations={discountAllocations}

@@ -4,6 +4,7 @@ import {
     useAppliedGiftCards,
     useAppMetafields,
     useBillingAddress,
+    useCartLines,
     useCurrency,
     useCustomer,
     useDiscountAllocations,
@@ -79,8 +80,10 @@ export const ThankYou = () => {
 
     const totalAmount = useTotalAmount();
     const subTotalAmount = useSubtotalAmount();
-    const taxAmount = useTotalTaxAmount();
     const shippingAmount = useTotalShippingAmount();
+    const taxAmount = useTotalTaxAmount();
+
+    const cartLines = useCartLines();
 
     const discountCodes = useDiscountCodes();
     const discountAllocations = useDiscountAllocations();
@@ -116,6 +119,7 @@ export const ThankYou = () => {
             >
                 <ReferrerExperience
                     billingAddress={billingAddress}
+                    cartLines={cartLines}
                     country={country}
                     customer={customer}
                     discountAllocations={discountAllocations}

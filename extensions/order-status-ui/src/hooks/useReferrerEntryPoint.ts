@@ -8,15 +8,15 @@ import { consoleError } from "../../../../shared/logging";
 import { ReferrerEntryPointInputs } from "../ReferrerExperience";
 import { logError } from "../../../../shared/sentry";
 import { useQuery } from "@tanstack/react-query";
+import { CartLine } from "@shopify/ui-extensions/build/ts/surfaces/checkout/api/standard/standard";
 
 // Create a safe execution context
-const safeEval = (code: string, partnerCode: string, environment: string, orderId: string) => {
+const safeEval = (code: string, segment: string, cartLines?: CartLine[]) => {
     // Create a function with limited scope
     // eslint-disable-next-line @typescript-eslint/no-implied-eval
     const fn = new Function(
-        "partnerCode",
-        "environment",
-        "orderId",
+        "segment",
+        "cartLines",
         `
             "use strict";
             try {
@@ -30,7 +30,7 @@ const safeEval = (code: string, partnerCode: string, environment: string, orderI
 
     try {
         // Execute with only allowed parameters
-        const r = fn(partnerCode, environment, orderId);
+        const r = fn(segment, cartLines);
 
         if (r && typeof r === "object") {
             return r;
@@ -41,22 +41,23 @@ const safeEval = (code: string, partnerCode: string, environment: string, orderI
 };
 
 const useReferrerEntryPoint = ({
-    myshopifyDomain,
-    email,
     billingAddress,
-    segment,
-    total,
-    subTotal,
-    totalTaxAmount,
-    totalShippingAmount,
-    editor,
+    cartLines,
+    country,
+    customer,
     discountAllocations,
     discountCodes,
-    giftCards,
-    customer,
-    languageOrLocale,
-    country,
+    editor,
     extensionType,
+    giftCards,
+    languageOrLocale,
+    myshopifyDomain,
+    segment,
+    subTotal,
+    total,
+    totalShippingAmount,
+    totalTaxAmount,
+    email,
 }: ReferrerEntryPointInputs) => {
     const {
         orderId,
@@ -74,27 +75,28 @@ const useReferrerEntryPoint = ({
     const { isPending, data } = useQuery<EntryPointOfferAndLink>({
         queryKey: [
             "referrerContent",
-            partnerCode,
-            environment,
-            myshopifyDomain,
-            locale,
-            setErrorState,
-            email,
             billingAddress?.firstName,
             billingAddress?.lastName,
             billingAddress?.zip,
-            orderId,
-            segment,
-            total,
-            subTotal,
-            totalTaxAmount,
-            totalShippingAmount,
-            editor,
-            discountCodes,
-            discountAllocations,
-            giftCards,
-            extensionType,
+            cartLines,
             customer,
+            discountAllocations,
+            discountCodes,
+            editor,
+            email,
+            environment,
+            extensionType,
+            giftCards,
+            locale,
+            myshopifyDomain,
+            orderId,
+            partnerCode,
+            segment,
+            setErrorState,
+            subTotal,
+            total,
+            totalShippingAmount,
+            totalTaxAmount,
         ],
         queryFn: async (): Promise<EntryPointOfferAndLink> => {
             let finalSegment = segment;
@@ -102,7 +104,7 @@ const useReferrerEntryPoint = ({
             // Execute custom code if provided
             if (customCode) {
                 try {
-                    const customResults = safeEval(customCode, partnerCode, environment, parseShopifyId(orderId));
+                    const customResults = safeEval(customCode, segment, cartLines);
 
                     // Only allow overriding segment
                     if (customResults && "segment" in customResults && typeof customResults.segment === "string") {
