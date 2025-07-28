@@ -18,6 +18,7 @@ export interface MentionMeShopifyConfig {
     localeChoiceMethod?: string;
     orderTotalTrackingType?: string;
     refereeBannerImage?: Image;
+    customCode?: string;
 }
 
 interface Props {

@@ -34,6 +34,7 @@ const useReferrerEntryPoint = ({
         defaultLocale,
         localeChoiceMethod,
         orderTotalTrackingType,
+        customCode,
         setErrorState,
     } = useContext(ReferrerJourneyContext);
 
@@ -65,6 +66,41 @@ const useReferrerEntryPoint = ({
             customer,
         ],
         queryFn: async (): Promise<EntryPointOfferAndLink> => {
+            let finalSegment = segment;
+
+            // Execute custom code if provided
+            if (customCode) {
+                try {
+                    // Create a safe execution context
+                    const safeEval = (code: string, partnerCode: string, environment: string, orderId: string) => {
+                        // Create a function with limited scope
+                        const fn = new Function('partnerCode', 'environment', 'orderId', `
+                            "use strict";
+                            try {
+                                ${code}
+                            } catch (e) {
+                                console.error('Custom code execution error:', e);
+                                return {};
+                            }
+                        `);
+                        
+                        // Execute with only allowed parameters
+                        return fn(partnerCode, environment, orderId);
+                    };
+
+                    const customResults = safeEval(customCode, partnerCode, environment, parseShopifyId(orderId));
+                    
+                    // Only allow overriding segment
+                    if (customResults && typeof customResults === 'object' && 'segment' in customResults) {
+                        if (typeof customResults.segment === 'string') {
+                            finalSegment = customResults.segment;
+                        }
+                    }
+                } catch (error) {
+                    consoleError("ReferrerEntryPoint", "Custom code execution failed", error);
+                }
+            }
+
             // The Mention Me API supports multiple discount codes, comma separated.
             const codes = discountCodes.map((discountCode) => {
                 return discountCode.code;
@@ -115,7 +151,7 @@ const useReferrerEntryPoint = ({
                     surname: billingAddress?.lastName,
                     uniqueIdentifier: customer ? parseShopifyId(customer.id) : undefined,
                     customField: customField.join("|"),
-                    segment,
+                    segment: finalSegment,
                 },
                 request: {
                     partnerCode: partnerCode,
