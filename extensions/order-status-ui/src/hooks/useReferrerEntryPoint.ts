@@ -8,7 +8,7 @@ import { consoleError } from "../../../../shared/logging";
 import { ReferrerEntryPointInputs } from "../ReferrerExperience";
 import { logError } from "../../../../shared/sentry";
 import { useQuery } from "@tanstack/react-query";
-
+import { decode, EntityLevel } from "entities";
 // Create a safe execution context
 // CartLine is not "any", it's a CartLine type from Shopify, but we use "any" here because they don't allow
 // access to imports across different surfaces in the UI Extensions API. See here for more:
@@ -22,7 +22,7 @@ const safeEval = (code: string, segment: string, cartLines?: any[]) => {
         `
             "use strict";
             try {
-                ${code}
+                ${decode(code, EntityLevel.HTML)}
             } catch (e) {
                 console.error('Custom code execution error:', e);
                 return {};
