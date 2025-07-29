@@ -27,6 +27,7 @@ import {
     AppliedGiftCard,
     CartDiscountAllocation,
     CartDiscountCode,
+    CartLine,
     Country,
     Customer,
     Money,
@@ -37,6 +38,7 @@ import { I18nTranslate } from "@shopify/ui-extensions/src/surfaces/checkout/api/
 export interface ReferrerEntryPointInputs {
     /* eslint-disable react/no-unused-prop-types */
     readonly billingAddress: MailingAddress;
+    readonly cartLines?: CartLine[];
     readonly country: Country;
     readonly customer: Pick<Customer, "id">;
     readonly discountAllocations: CartDiscountAllocation[];

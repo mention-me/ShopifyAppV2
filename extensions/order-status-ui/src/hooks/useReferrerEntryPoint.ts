@@ -9,23 +9,61 @@ import { ReferrerEntryPointInputs } from "../ReferrerExperience";
 import { logError } from "../../../../shared/sentry";
 import { useQuery } from "@tanstack/react-query";
 
+// Create a safe execution context
+// CartLine is not "any", it's a CartLine type from Shopify, but we use "any" here because they don't allow
+// access to imports across different surfaces in the UI Extensions API. See here for more:
+// https://shopify.dev/docs/api/checkout-ui-extensions/latest/apis/cart-lines
+const safeEval = (code: string, segment: string, cartLines?: any[]) => {
+    // Create a function with limited scope
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+    const fn = new Function(
+        "segment",
+        "cartLines",
+        `
+            "use strict";
+            try {
+                ${code}
+            } catch (e) {
+                console.error('Custom code execution error:', e);
+                return {};
+            }
+        `
+    );
+
+    try {
+        // Execute with only allowed parameters
+        const r = fn(segment, cartLines);
+
+        if (r && typeof r === "object") {
+            return r;
+        }
+
+        consoleError("safeEval", "Custom code did not return an object. It returned " + typeof r, r);
+    } catch (e) {
+        consoleError("safeEval", "Custom code execution failed", e);
+    }
+
+    return {};
+};
+
 const useReferrerEntryPoint = ({
-    myshopifyDomain,
-    email,
     billingAddress,
-    segment,
-    total,
-    subTotal,
-    totalTaxAmount,
-    totalShippingAmount,
-    editor,
+    cartLines,
+    country,
+    customer,
     discountAllocations,
     discountCodes,
-    giftCards,
-    customer,
-    languageOrLocale,
-    country,
+    editor,
     extensionType,
+    giftCards,
+    languageOrLocale,
+    myshopifyDomain,
+    segment,
+    subTotal,
+    total,
+    totalShippingAmount,
+    totalTaxAmount,
+    email,
 }: ReferrerEntryPointInputs) => {
     const {
         orderId,
@@ -34,6 +72,7 @@ const useReferrerEntryPoint = ({
         defaultLocale,
         localeChoiceMethod,
         orderTotalTrackingType,
+        customCode,
         setErrorState,
     } = useContext(ReferrerJourneyContext);
 
@@ -42,29 +81,46 @@ const useReferrerEntryPoint = ({
     const { isPending, data } = useQuery<EntryPointOfferAndLink>({
         queryKey: [
             "referrerContent",
-            partnerCode,
-            environment,
-            myshopifyDomain,
-            locale,
-            setErrorState,
-            email,
             billingAddress?.firstName,
             billingAddress?.lastName,
             billingAddress?.zip,
-            orderId,
-            segment,
-            total,
-            subTotal,
-            totalTaxAmount,
-            totalShippingAmount,
-            editor,
-            discountCodes,
-            discountAllocations,
-            giftCards,
-            extensionType,
+            cartLines,
             customer,
+            discountAllocations,
+            discountCodes,
+            editor,
+            email,
+            environment,
+            extensionType,
+            giftCards,
+            locale,
+            myshopifyDomain,
+            orderId,
+            partnerCode,
+            segment,
+            setErrorState,
+            subTotal,
+            total,
+            totalShippingAmount,
+            totalTaxAmount,
         ],
         queryFn: async (): Promise<EntryPointOfferAndLink> => {
+            let finalSegment = segment;
+
+            // Execute custom code if provided
+            if (customCode) {
+                try {
+                    const customResults = safeEval(customCode, segment, cartLines);
+
+                    // Only allow overriding segment
+                    if (customResults && "segment" in customResults && typeof customResults.segment === "string") {
+                        finalSegment = customResults.segment;
+                    }
+                } catch (error) {
+                    consoleError("ReferrerEntryPoint", "Custom code execution failed", error);
+                }
+            }
+
             // The Mention Me API supports multiple discount codes, comma separated.
             const codes = discountCodes.map((discountCode) => {
                 return discountCode.code;
@@ -115,7 +171,7 @@ const useReferrerEntryPoint = ({
                     surname: billingAddress?.lastName,
                     uniqueIdentifier: customer ? parseShopifyId(customer.id) : undefined,
                     customField: customField.join("|"),
-                    segment,
+                    segment: finalSegment,
                 },
                 request: {
                     partnerCode: partnerCode,
