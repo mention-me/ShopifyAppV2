@@ -1073,10 +1073,10 @@
     "@remote-ui/react" "^5.0.6"
     "@types/react" ">=18.2.67"
 
-"@shopify/ui-extensions@^2025.4":
-  version "2025.4.0"
-  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions/-/ui-extensions-2025.4.0.tgz#8d967017ac6467aecea5c89291124cd926caed7f"
-  integrity sha512-i8LxM3EnEwLBjB7bXAWBYLKYnngYfY+PKg8a2s/ll5/hvgWr8XOHNLsXe2aej69tyXVei5QtO4McNiFDU8jBKw==
+"@shopify/ui-extensions@^2025.7":
+  version "2025.7.1"
+  resolved "https://registry.yarnpkg.com/@shopify/ui-extensions/-/ui-extensions-2025.7.1.tgz#06333b8435a97740916c289781fbf10862019d7e"
+  integrity sha512-5L3lUB2Zb53yDKSrFRyNtkVnot2cOVxRr07srchDVy64whC7EmoYGlo5QmUQIiwaHNubo7++a/yFi1uOjiUdmg==
   dependencies:
     "@remote-ui/async-subscription" "^2.1.16"
     "@remote-ui/core" "^2.2.5"
