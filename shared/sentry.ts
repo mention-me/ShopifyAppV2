@@ -6,6 +6,11 @@ import { consoleError } from "./logging";
 export const setupSentry = (shop: string, extension: string) => {
     Sentry.init({
         dsn: "https://37a7e53e4779b0c510e05239d8b25822@sentry.devtools.mentionme.tech/7",
+        defaultIntegrations: false,
+        integrations: [
+            Sentry.eventFiltersIntegration(), // applies default filters for known useless errors
+            Sentry.dedupeIntegration(), // this avoids sending the same error twice, just in case
+        ],
         release: APP_VERSION,
         environment: "production",
         attachStacktrace: true,
