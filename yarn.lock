@@ -958,10 +958,10 @@
     unique-string "3.0.0"
     zod "3.22.3"
 
-"@shopify/cli@^3.83.3":
-  version "3.83.3"
-  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.83.3.tgz#663c32e3ef9ece0e47daa21dbf8b8b1040b8a247"
-  integrity sha512-p98L8+NxEdZF2vHiUKgxB63kJNSLeV+vp7aipyjkOYVMH7FCJQ4/JJBWQ+69D2zcJEj/S+QD+ciLt4rHifb4mg==
+"@shopify/cli@^3.84.0":
+  version "3.84.0"
+  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.84.0.tgz#424094f3550a1e99bc5b28f4ccec7a0983a68b8e"
+  integrity sha512-poVUfkVK7T9hEmbWHn/QX15m7b8m7TluzklmfQ8nYX2O0Id9go0Ziurfe/wpJuLk27/bZii3VHtrmyAPd4o1lQ==
   dependencies:
     "@ast-grep/napi" "0.33.0"
     esbuild "0.25.5"
