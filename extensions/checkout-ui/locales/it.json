@@ -1,49 +1,49 @@
 {
-	"checkout": {
-		"modal": {
-			"error": "Spiacenti, si è verificato un errore sconosciuto. Si prega di riprovare più tardi."
-		}
-	},
-	"success": {
-		"discount-applied": "Il tuo sconto è stato applicato."
-	},
-	"find-friend": {
-		"form": {
-			"error": {
-				"name": {
-					"missing": "Per favore, inserisci il nome del tuo amico."
-				},
-				"email": {
-					"missing-or-invalid": "Per favore, inserisci l'indirizzo email del tuo amico."
-				}
-			}
-		}
-	},
-	"register-result": {
-		"apply-discount": "Applica sconto",
-		"error": {
-			"applying-coupon": "Non siamo riusciti ad applicare il tuo sconto"
-		}
-	},
-	"who-are-you": {
-		"form": {
-			"label": {
-				"your-email": "Il tuo indirizzo email"
-			},
-			"error": {
-				"your-email": "Per favore, inserisci il tuo indirizzo email."
-			},
-			"terms-link": "Termini e condizioni",
-			"submit": "Richiedi la tua ricompensa"
-		},
-		"privacy": {
-			"text": "Il nostro programma di referenza è gestito da Mention Me che elaborerà i tuoi dati e ti invierà email di servizio di referenza.",
-			"link": "Maggiori informazioni e i tuoi diritti sulla privacy."
-		},
-		"terms": {
-			"text": "Accettando questa offerta, accetti i",
-			"link": "Termini e Condizioni"
-		}
-	},
-	"powered-by": "Alimentato da"
+    "checkout": {
+        "modal": {
+            "error": "Spiacenti, si è verificato un errore sconosciuto. Si prega di riprovare più tardi."
+        }
+    },
+    "success": {
+        "discount-applied": "Il tuo sconto è stato applicato."
+    },
+    "find-friend": {
+        "form": {
+            "error": {
+                "name": {
+                    "missing": "Per favore, inserisci il nome del tuo amico."
+                },
+                "email": {
+                    "missing-or-invalid": "Per favore, inserisci l'indirizzo email del tuo amico."
+                }
+            }
+        }
+    },
+    "register-result": {
+        "apply-discount": "Applica sconto",
+        "error": {
+            "applying-coupon": "Non siamo riusciti ad applicare il tuo sconto"
+        }
+    },
+    "who-are-you": {
+        "form": {
+            "label": {
+                "your-email": "Il tuo indirizzo email"
+            },
+            "error": {
+                "your-email": "Per favore, inserisci il tuo indirizzo email."
+            },
+            "terms-link": "Termini e condizioni",
+            "submit": "Richiedi la tua ricompensa"
+        },
+        "privacy": {
+            "text": "Il nostro programma di referenza è gestito da Mention Me che elaborerà i tuoi dati e ti invierà email di servizio di referenza.",
+            "link": "Maggiori informazioni e i tuoi diritti sulla privacy."
+        },
+        "terms": {
+            "text": "Accettando questa offerta, accetti i",
+            "link": "Termini e Condizioni"
+        }
+    },
+    "powered-by": "Alimentato da"
 }

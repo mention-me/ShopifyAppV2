@@ -1,49 +1,49 @@
 {
-	"checkout": {
-		"modal": {
-			"error": "Sorry, an unknown error has occurred. Please try again later."
-		}
-	},
-	"success": {
-		"discount-applied": "Your discount has been applied."
-	},
-	"find-friend": {
-		"form": {
-			"error": {
-				"name": {
-					"missing": "Please enter your friends name."
-				},
-				"email": {
-					"missing-or-invalid": "Please enter your friends email address."
-				}
-			}
-		}
-	},
-	"register-result": {
-		"apply-discount":  "Apply discount",
-		"error": {
-			"applying-coupon": "We were unable to apply your discount"
-		}
-	},
-	"who-are-you": {
-		"form": {
-			"label": {
-				"your-email": "Your email address"
-			},
-			"error": {
-				"your-email": "Please enter your email address."
-			},
-			"terms-link": "Terms and conditions",
-			"submit": "Claim your reward"
-		},
-		"privacy": {
-			"text": "Our refer-a-friend programme is managed by Mention Me who will process your data and send you referral service emails.",
-			"link": "More info and your privacy rights."
-		},
-		"terms": {
-			"text": "By accepting this offer you agree to the",
-			"link": "Terms and Conditions"
-		}
-	},
-	"powered-by": "Powered by"
+    "checkout": {
+        "modal": {
+            "error": "Sorry, an unknown error has occurred. Please try again later."
+        }
+    },
+    "success": {
+        "discount-applied": "Your discount has been applied."
+    },
+    "find-friend": {
+        "form": {
+            "error": {
+                "name": {
+                    "missing": "Please enter your friends name."
+                },
+                "email": {
+                    "missing-or-invalid": "Please enter your friends email address."
+                }
+            }
+        }
+    },
+    "register-result": {
+        "apply-discount": "Apply discount",
+        "error": {
+            "applying-coupon": "We were unable to apply your discount"
+        }
+    },
+    "who-are-you": {
+        "form": {
+            "label": {
+                "your-email": "Your email address"
+            },
+            "error": {
+                "your-email": "Please enter your email address."
+            },
+            "terms-link": "Terms and conditions",
+            "submit": "Claim your reward"
+        },
+        "privacy": {
+            "text": "Our refer-a-friend programme is managed by Mention Me who will process your data and send you referral service emails.",
+            "link": "More info and your privacy rights."
+        },
+        "terms": {
+            "text": "By accepting this offer you agree to the",
+            "link": "Terms and Conditions"
+        }
+    },
+    "powered-by": "Powered by"
 }

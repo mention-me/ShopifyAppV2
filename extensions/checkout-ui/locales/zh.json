@@ -1,49 +1,49 @@
 {
-	"checkout": {
-		"modal": {
-			"error": "对不起，发生了未知错误。请稍后再试。"
-		}
-	},
-	"success": {
-		"discount-applied": "您的折扣已应用。"
-	},
-	"find-friend": {
-		"form": {
-			"error": {
-				"name": {
-					"missing": "请输入您朋友的名字。"
-				},
-				"email": {
-					"missing-or-invalid": "请输入您朋友的电子邮件地址。"
-				}
-			}
-		}
-	},
-	"register-result": {
-		"apply-discount": "应用折扣",
-		"error": {
-			"applying-coupon": "我们无法应用您的折扣"
-		}
-	},
-	"who-are-you": {
-		"form": {
-			"label": {
-				"your-email": "您的电子邮件地址"
-			},
-			"error": {
-				"your-email": "请输入您的电子邮件地址。"
-			},
-			"terms-link": "条款和条件",
-			"submit": "申请您的奖励"
-		},
-		"privacy": {
-			"text": "我们的推荐朋友计划由 Mention Me 管理，他们将处理您的数据并向您发送推荐服务邮件。",
-			"link": "更多信息和您的隐私权。"
-		},
-		"terms": {
-			"text": "接受此优惠即表示您同意",
-			"link": "条款和条件"
-		}
-	},
-	"powered-by": "技术支持"
+    "checkout": {
+        "modal": {
+            "error": "对不起，发生了未知错误。请稍后再试。"
+        }
+    },
+    "success": {
+        "discount-applied": "您的折扣已应用。"
+    },
+    "find-friend": {
+        "form": {
+            "error": {
+                "name": {
+                    "missing": "请输入您朋友的名字。"
+                },
+                "email": {
+                    "missing-or-invalid": "请输入您朋友的电子邮件地址。"
+                }
+            }
+        }
+    },
+    "register-result": {
+        "apply-discount": "应用折扣",
+        "error": {
+            "applying-coupon": "我们无法应用您的折扣"
+        }
+    },
+    "who-are-you": {
+        "form": {
+            "label": {
+                "your-email": "您的电子邮件地址"
+            },
+            "error": {
+                "your-email": "请输入您的电子邮件地址。"
+            },
+            "terms-link": "条款和条件",
+            "submit": "申请您的奖励"
+        },
+        "privacy": {
+            "text": "我们的推荐朋友计划由 Mention Me 管理，他们将处理您的数据并向您发送推荐服务邮件。",
+            "link": "更多信息和您的隐私权。"
+        },
+        "terms": {
+            "text": "接受此优惠即表示您同意",
+            "link": "条款和条件"
+        }
+    },
+    "powered-by": "技术支持"
 }

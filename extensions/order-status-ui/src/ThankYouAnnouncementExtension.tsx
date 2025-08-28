@@ -5,11 +5,11 @@ import { reactExtension } from "@shopify/ui-extensions-react/checkout";
 const queryClient = new QueryClient();
 
 const ThankYouAnnouncementExtension = () => {
-	return (
-		<QueryClientProvider client={queryClient}>
-			<ThankYou announcement={true} />
-		</QueryClientProvider>
-	);
+    return (
+        <QueryClientProvider client={queryClient}>
+            <ThankYou announcement={true} />
+        </QueryClientProvider>
+    );
 };
 
 // Changing this? Don't forget to change the .toml file too.
