@@ -3,7 +3,7 @@
 
 # The version of APIs your extension will receive. Learn more:
 # https://shopify.dev/docs/api/usage/versioning
-api_version = "2025-01"
+api_version = "2025-07"
 
 [[extensions]]
 type = "ui_extension"
@@ -25,6 +25,11 @@ module = "./src/ThankYouExtension.tsx"
 # Changing this? Don't forget to change the .tsx file too.
 target = "purchase.thank-you.block.render"
 default_placement = "ORDER_STATUS1"
+
+[[extensions.targeting]]
+module = "./src/ThankYouAnnouncementExtension.tsx"
+# Changing this? Don't forget to change the .tsx file too.
+target = "purchase.thank-you.announcement.render"
 
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.

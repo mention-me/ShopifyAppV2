@@ -1,29 +1,31 @@
 import ReferrerExperience from "./ReferrerExperience";
+import ReferrerExperienceAnnouncement from "./ReferrerExperienceAnnouncement";
+
 import {
-    useApi,
-    useAppliedGiftCards,
-    useAppMetafields,
-    useBillingAddress,
-    useCartLines,
-    useCurrency,
-    useCustomer,
-    useDiscountAllocations,
-    useDiscountCodes,
-    useEmail,
-    useExtensionEditor,
-    useExtensionLanguage,
-    useLanguage,
-    useLocalizationCountry,
-    useLocalizationMarket,
-    usePurchasingCompany,
-    useSettings,
-    useShop,
-    useSubscription,
-    useSubtotalAmount,
-    useTotalAmount,
-    useTotalShippingAmount,
-    useTotalTaxAmount,
-    useTranslate,
+	useApi,
+	useAppliedGiftCards,
+	useAppMetafields,
+	useBillingAddress,
+	useCartLines,
+	useCurrency,
+	useCustomer,
+	useDiscountAllocations,
+	useDiscountCodes,
+	useEmail,
+	useExtensionEditor,
+	useExtensionLanguage,
+	useLanguage,
+	useLocalizationCountry,
+	useLocalizationMarket,
+	usePurchasingCompany,
+	useSettings,
+	useShop,
+	useSubscription,
+	useSubtotalAmount,
+	useTotalAmount,
+	useTotalShippingAmount,
+	useTotalTaxAmount,
+	useTranslate,
 } from "@shopify/ui-extensions-react/checkout";
 import { ReferrerJourneyProvider } from "./context/ReferrerJourneyContext";
 import { setupSentry } from "../../../shared/sentry";
@@ -32,112 +34,125 @@ import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
 import useSegmentFromMetafields from "./hooks/useSegmentFromMetafields";
 
-export const ThankYou = () => {
-    const translate = useTranslate();
+interface Props {
+	announcement?: boolean;
+}
 
-    const { myshopifyDomain } = useShop();
+export const ThankYou = ({ announcement }: Props) => {
+	const translate = useTranslate();
 
-    // Setup sentry as soon as possible so that we can catch failures.
-    setupSentry(myshopifyDomain, "thank-you");
+	const { myshopifyDomain } = useShop();
 
-    const appMetafields = useAppMetafields();
+	// Setup sentry as soon as possible so that we can catch failures.
+	setupSentry(myshopifyDomain, "thank-you");
 
-    const segment = useSegmentFromMetafields(appMetafields);
+	const appMetafields = useAppMetafields();
 
-    const { orderConfirmation } = useApi("purchase.thank-you.block.render");
-    const { order } = useSubscription(orderConfirmation);
+	const segment = useSegmentFromMetafields(appMetafields);
 
-    const currency = useCurrency();
-    const extensionLanguage = useExtensionLanguage();
-    const language = useLanguage();
-    const country = useLocalizationCountry();
-    const market = useLocalizationMarket();
+	const { orderConfirmation } = useApi("purchase.thank-you.block.render");
+	const { order } = useSubscription(orderConfirmation);
 
-    // As per the B2B Checkout UI guide, we can identify B2B purchases by the presence of a purchasing company.
-    // In this case, we want to turn off Mention Me features.
-    // https://shopify.dev/docs/apps/build/b2b/create-checkout-ui
-    const purchasingCompany = usePurchasingCompany();
+	const currency = useCurrency();
+	const extensionLanguage = useExtensionLanguage();
+	const language = useLanguage();
+	const country = useLocalizationCountry();
+	const market = useLocalizationMarket();
 
-    const { loading, mentionMeConfig } = useMentionMeShopifyConfig({
-        myshopifyDomain,
-        extension: "order-status",
-        extensionLanguage: extensionLanguage.isoCode,
-        language: language.isoCode,
-        country: country?.isoCode,
-        currency: currency.isoCode,
-        marketId: market?.id,
-        marketHandle: market?.handle,
-    });
+	// As per the B2B Checkout UI guide, we can identify B2B purchases by the presence of a purchasing company.
+	// In this case, we want to turn off Mention Me features.
+	// https://shopify.dev/docs/apps/build/b2b/create-checkout-ui
+	const purchasingCompany = usePurchasingCompany();
 
-    const editor = useExtensionEditor();
+	const { loading, mentionMeConfig } = useMentionMeShopifyConfig({
+		myshopifyDomain,
+		extension: "order-status",
+		extensionLanguage: extensionLanguage.isoCode,
+		language: language.isoCode,
+		country: country?.isoCode,
+		currency: currency.isoCode,
+		marketId: market?.id,
+		marketHandle: market?.handle,
+	});
 
-    const { isoCode: languageOrLocale } = useLanguage();
+	const editor = useExtensionEditor();
 
-    const billingAddress = useBillingAddress();
+	const { isoCode: languageOrLocale } = useLanguage();
 
-    const email = useEmail();
-    const customer = useCustomer();
+	const billingAddress = useBillingAddress();
 
-    const totalAmount = useTotalAmount();
-    const subTotalAmount = useSubtotalAmount();
-    const shippingAmount = useTotalShippingAmount();
-    const taxAmount = useTotalTaxAmount();
+	const email = useEmail();
+	const customer = useCustomer();
 
-    const cartLines = useCartLines();
+	const totalAmount = useTotalAmount();
+	const subTotalAmount = useSubtotalAmount();
+	const shippingAmount = useTotalShippingAmount();
+	const taxAmount = useTotalTaxAmount();
 
-    const discountCodes = useDiscountCodes();
-    const discountAllocations = useDiscountAllocations();
+	const cartLines = useCartLines();
 
-    const giftCards = useAppliedGiftCards();
+	const discountCodes = useDiscountCodes();
+	const discountAllocations = useDiscountAllocations();
 
-    const {
-        image_location: imageLocation,
-    }: Partial<{
-        image_location: "Top" | "Above information notice" | "Above CTA" | "Below CTA";
-    }> = useSettings();
+	const giftCards = useAppliedGiftCards();
 
-    if (purchasingCompany) {
-        return null;
-    }
+	const {
+		image_location: imageLocation,
+	}: Partial<{
+		image_location: "Top" | "Above information notice" | "Above CTA" | "Below CTA";
+	}> = useSettings();
 
-    if (loading) {
-        return <ReferrerExperience.Skeleton />;
-    }
+	if (purchasingCompany) {
+		return null;
+	}
 
-    if (!mentionMeConfig) {
-        return null;
-    }
+	if (loading) {
+		// You'd think a Skeleton would be nice here. But we'll load one later on once we know what we're rendering.
+		// Otherwise, it can cause this skeleton to flash up, then be removed, and the other to be inserted.
+		return null;
+	}
 
-    return (
-        <ReferrerJourneyProvider imageLocation={imageLocation} mentionMeConfig={mentionMeConfig} orderId={order.id}>
-            <ErrorBoundary
-                beforeCapture={(scope, error) => {
-                    consoleError("ThankYou", "Error boundary caught error", error);
+	if (!mentionMeConfig) {
+		return null;
+	}
 
-                    scope.setTag("component", "ThankYou");
-                }}
-            >
-                <ReferrerExperience
-                    billingAddress={billingAddress}
-                    cartLines={cartLines}
-                    country={country}
-                    customer={customer}
-                    discountAllocations={discountAllocations}
-                    discountCodes={discountCodes}
-                    editor={!!editor}
-                    email={email}
-                    extensionType="thank-you"
-                    giftCards={giftCards}
-                    languageOrLocale={languageOrLocale}
-                    myshopifyDomain={myshopifyDomain}
-                    segment={segment}
-                    subTotal={subTotalAmount}
-                    total={totalAmount}
-                    totalShippingAmount={shippingAmount}
-                    totalTaxAmount={taxAmount}
-                    translate={translate}
-                />
-            </ErrorBoundary>
-        </ReferrerJourneyProvider>
-    );
+	const props = {
+		billingAddress: billingAddress,
+		cartLines: cartLines,
+		country: country,
+		customer: customer,
+		discountAllocations: discountAllocations,
+		discountCodes: discountCodes,
+		editor: !!editor,
+		email: email,
+		extensionType: "thank-you",
+		giftCards: giftCards,
+		languageOrLocale: languageOrLocale,
+		myshopifyDomain: myshopifyDomain,
+		segment: segment,
+		subTotal: subTotalAmount,
+		total: totalAmount,
+		totalShippingAmount: shippingAmount,
+		totalTaxAmount: taxAmount,
+		translate: translate,
+	};
+
+	return (
+		<ReferrerJourneyProvider imageLocation={imageLocation} mentionMeConfig={mentionMeConfig} orderId={order.id}>
+			<ErrorBoundary
+				beforeCapture={(scope, error) => {
+					consoleError("ThankYou", "Error boundary caught error", error);
+
+					scope.setTag("component", "ThankYou");
+				}}
+			>
+				{announcement ?
+					<ReferrerExperienceAnnouncement {...props} /> :
+					<ReferrerExperience
+						{...props}
+					/>
+				}
+			</ErrorBoundary>
+		</ReferrerJourneyProvider>
+	);
 };
