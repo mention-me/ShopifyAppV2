@@ -6,7 +6,7 @@
     "dependencies": {
         "@api/consumer-api": "file:./../../.api/apis/consumer-api",
         "@api/entry-point-api": "file:./../../.api/apis/entry-point-api",
-        "@shopify/ui-extensions": "^2025.4",
+        "@shopify/ui-extensions": "^2025.7",
         "@shopify/ui-extensions-react": "^2025.7",
         "@tanstack/react-query": "^5.84.1",
         "entities": "^6.0.1",
