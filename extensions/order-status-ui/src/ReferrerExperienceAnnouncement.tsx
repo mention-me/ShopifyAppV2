@@ -1,4 +1,4 @@
-import { Banner, Heading, Link, SkeletonTextBlock } from "@shopify/ui-extensions-react/checkout";
+import { Banner, Heading, Link, SkeletonTextBlock, TextBlock } from "@shopify/ui-extensions-react/checkout";
 
 import { decode, EntityLevel } from "entities";
 import { useContext } from "react";
@@ -112,15 +112,19 @@ const ReferrerExperienceAnnouncement = (props: ReferrerEntryPointInputs) => {
             }}
         >
             <Heading level={2}>
-                <Link
-                    overlay={
-                        <Modal id="referrer-modal" title={decode(data.headline, EntityLevel.HTML)}>
-                            <ReferrerExperience announcement {...props} />
-                        </Modal>
-                    }
-                >
-                    {decode(data.headline, EntityLevel.HTML)}
-                </Link>
+                <TextBlock>
+                    {decode(data.headline, EntityLevel.HTML)}{" "}
+                    <Link
+                        overlay={
+                            <Modal id="referrer-modal" title={decode(data.headline, EntityLevel.HTML)}>
+                                <ReferrerExperience announcement {...props} />
+                            </Modal>
+                        }
+                    >
+                        {decode(data.defaultCallToAction, EntityLevel.HTML)}
+                    </Link>
+                </TextBlock>
+
             </Heading>
         </ErrorBoundary>
     );

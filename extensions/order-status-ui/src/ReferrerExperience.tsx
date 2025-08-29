@@ -111,12 +111,10 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
     }
 
     if (loading) {
-        console.log("Loading");
         return <ReferrerExperience.Skeleton />;
     }
 
     if (!data) {
-        console.log("No data");
         return null;
     }
 
