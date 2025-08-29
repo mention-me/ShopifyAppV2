@@ -7,7 +7,7 @@ const queryClient = new QueryClient();
 const ThankYouAnnouncementExtension = () => {
     return (
         <QueryClientProvider client={queryClient}>
-            <ThankYou announcement={true} />
+            <ThankYou announcement />
         </QueryClientProvider>
     );
 };

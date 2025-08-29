@@ -21,6 +21,11 @@ target = "customer-account.order-status.block.render"
 default_placement = "ORDER_STATUS1"
 
 [[extensions.targeting]]
+module = "./src/OrderStatusAnnouncementExtension.tsx"
+# Changing this? Don't forget to change the .tsx file too.
+target = "customer-account.order-status.announcement.render"
+
+[[extensions.targeting]]
 module = "./src/ThankYouExtension.tsx"
 # Changing this? Don't forget to change the .tsx file too.
 target = "purchase.thank-you.block.render"
