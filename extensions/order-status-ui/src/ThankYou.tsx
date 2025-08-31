@@ -1,4 +1,6 @@
 import ReferrerExperience from "./ReferrerExperience";
+import ReferrerExperienceAnnouncement from "./ReferrerExperienceAnnouncement";
+
 import {
     useApi,
     useAppliedGiftCards,
@@ -32,7 +34,11 @@ import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
 import useSegmentFromMetafields from "./hooks/useSegmentFromMetafields";
 
-export const ThankYou = () => {
+interface Props {
+    announcement?: boolean;
+}
+
+export const ThankYou = ({ announcement }: Props) => {
     const translate = useTranslate();
 
     const { myshopifyDomain } = useShop();
@@ -101,12 +107,35 @@ export const ThankYou = () => {
     }
 
     if (loading) {
-        return <ReferrerExperience.Skeleton />;
+        // You'd think a Skeleton would be nice here. But we'll load one later on once we know what we're rendering.
+        // Otherwise, it can cause this skeleton to flash up, then be removed, and the other to be inserted.
+        return null;
     }
 
     if (!mentionMeConfig) {
         return null;
     }
+
+    const props = {
+        billingAddress: billingAddress,
+        cartLines: cartLines,
+        country: country,
+        customer: customer,
+        discountAllocations: discountAllocations,
+        discountCodes: discountCodes,
+        editor: !!editor,
+        email: email,
+        extensionType: "thank-you",
+        giftCards: giftCards,
+        languageOrLocale: languageOrLocale,
+        myshopifyDomain: myshopifyDomain,
+        segment: segment,
+        subTotal: subTotalAmount,
+        total: totalAmount,
+        totalShippingAmount: shippingAmount,
+        totalTaxAmount: taxAmount,
+        translate: translate,
+    };
 
     return (
         <ReferrerJourneyProvider imageLocation={imageLocation} mentionMeConfig={mentionMeConfig} orderId={order.id}>
@@ -117,26 +146,7 @@ export const ThankYou = () => {
                     scope.setTag("component", "ThankYou");
                 }}
             >
-                <ReferrerExperience
-                    billingAddress={billingAddress}
-                    cartLines={cartLines}
-                    country={country}
-                    customer={customer}
-                    discountAllocations={discountAllocations}
-                    discountCodes={discountCodes}
-                    editor={!!editor}
-                    email={email}
-                    extensionType="thank-you"
-                    giftCards={giftCards}
-                    languageOrLocale={languageOrLocale}
-                    myshopifyDomain={myshopifyDomain}
-                    segment={segment}
-                    subTotal={subTotalAmount}
-                    total={totalAmount}
-                    totalShippingAmount={shippingAmount}
-                    totalTaxAmount={taxAmount}
-                    translate={translate}
-                />
+                {announcement ? <ReferrerExperienceAnnouncement {...props} /> : <ReferrerExperience {...props} />}
             </ErrorBoundary>
         </ReferrerJourneyProvider>
     );

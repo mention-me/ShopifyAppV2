@@ -34,8 +34,10 @@ import {
 } from "@shopify/ui-extensions/build/ts/surfaces/checkout/api/standard/standard";
 import { MailingAddress } from "@shopify/ui-extensions/build/ts/surfaces/checkout/api/shared";
 import { I18nTranslate } from "@shopify/ui-extensions/src/surfaces/checkout/api/standard/standard";
+import { ConditionalWrapper } from "./ConditionalWrapper";
 
 export interface ReferrerEntryPointInputs {
+    readonly announcement?: boolean;
     /* eslint-disable react/no-unused-prop-types */
     readonly billingAddress: MailingAddress;
     readonly cartLines?: CartLine[];
@@ -59,7 +61,7 @@ export interface ReferrerEntryPointInputs {
 }
 
 const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
-    const { editor, translate } = props;
+    const { announcement, editor, translate } = props;
 
     const { partnerCode, environment, errorState, imageLocation } = useContext(ReferrerJourneyContext);
 
@@ -124,111 +126,117 @@ const ReferrerExperience = (props: ReferrerEntryPointInputs) => {
                 scope.setTag("component", "OrderExtension");
             }}
         >
-            <View background="base">
-                <BlockStack border="base" borderRadius="large">
-                    {imageLocation === "Top" && data.imageUrl && (
-                        <View>
-                            <Link external to={data.url}>
-                                <Image
-                                    aspectRatio={1.5}
-                                    borderRadius={["large", "large", "none", "none"]}
-                                    cornerRadius={["large", "large", "none", "none"]}
-                                    fit="cover"
-                                    source={data.imageUrl}
-                                />
-                            </Link>
-                        </View>
-                    )}
-                    <View borderRadius="large">
-                        <BlockStack padding="loose" spacing="base">
-                            <Heading level={2}>{decode(data.headline, EntityLevel.HTML)}</Heading>
-                            <TextBlock>{decode(data.description, EntityLevel.HTML)}</TextBlock>
+            <ConditionalWrapper
+                shouldWrap={!announcement}
+                wrapper={(children) => (
+                    <View background="base">
+                        <BlockStack border="base" borderRadius="large">
+                            {children}
+                        </BlockStack>
+                    </View>
+                )}
+            >
+                {imageLocation === "Top" && data.imageUrl && (
+                    <View>
+                        <Link external to={data.url}>
+                            <Image
+                                aspectRatio={1.5}
+                                borderRadius={["large", "large", "none", "none"]}
+                                cornerRadius={["large", "large", "none", "none"]}
+                                fit="cover"
+                                source={data.imageUrl}
+                            />
+                        </Link>
+                    </View>
+                )}
+                <View borderRadius="none">
+                    <BlockStack padding="loose" spacing="base">
+                        {!announcement && <Heading level={2}>{decode(data.headline, EntityLevel.HTML)}</Heading>}
+                        <TextBlock>{decode(data.description, EntityLevel.HTML)}</TextBlock>
 
-                            {imageLocation === "Above information notice" && data.imageUrl && (
-                                <View>
-                                    <Link external to={data.url}>
-                                        <Image
-                                            aspectRatio={1.5}
-                                            borderRadius={["large", "large", "large", "large"]}
-                                            cornerRadius={["large", "large", "large", "large"]}
-                                            fit="cover"
-                                            source={data.imageUrl}
-                                        />
-                                    </Link>
-                                </View>
-                            )}
+                        {imageLocation === "Above information notice" && data.imageUrl && (
+                            <View>
+                                <Link external to={data.url}>
+                                    <Image
+                                        aspectRatio={1.5}
+                                        borderRadius={["large", "large", "large", "large"]}
+                                        cornerRadius={["large", "large", "large", "large"]}
+                                        fit="cover"
+                                        source={data.imageUrl}
+                                    />
+                                </Link>
+                            </View>
+                        )}
 
-                            <Pressable
-                                overlay={
-                                    <Popover>
-                                        <View maxInlineSize={400} padding="base">
-                                            <TextBlock appearance="subdued">
-                                                {data.privacyNotice}{" "}
-                                                <Link external to={data.privacyNoticeUrl}>
-                                                    {decode(
-                                                        data.privacyNoticeLinkText ||
-                                                            "More info and your privacy rights",
-                                                        EntityLevel.HTML
-                                                    )}
-                                                </Link>
-                                            </TextBlock>
-                                        </View>
-                                    </Popover>
-                                }
-                            >
-                                <InlineStack padding={["extraTight", "none"]} spacing="extraTight">
-                                    <TextBlock appearance="subdued" size="small">
-                                        {translate("managed-by")}
-                                    </TextBlock>
+                        <Pressable
+                            overlay={
+                                <Popover>
+                                    <View maxInlineSize={400} padding="base">
+                                        <TextBlock appearance="subdued">
+                                            {data.privacyNotice}{" "}
+                                            <Link external to={data.privacyNoticeUrl}>
+                                                {decode(
+                                                    data.privacyNoticeLinkText || "More info and your privacy rights",
+                                                    EntityLevel.HTML
+                                                )}
+                                            </Link>
+                                        </TextBlock>
+                                    </View>
+                                </Popover>
+                            }
+                        >
+                            <InlineStack padding={["extraTight", "none"]} spacing="extraTight">
+                                <TextBlock appearance="subdued" size="small">
+                                    {translate("managed-by")}
+                                </TextBlock>
 
-                                    <Icon source="question" />
-                                </InlineStack>
-                            </Pressable>
+                                <Icon source="question" />
+                            </InlineStack>
+                        </Pressable>
 
-                            {imageLocation === "Above CTA" && data.imageUrl && (
-                                <View>
-                                    <Link external to={data.url}>
-                                        <Image
-                                            aspectRatio={1.5}
-                                            borderRadius={["large", "large", "large", "large"]}
-                                            cornerRadius={["large", "large", "large", "large"]}
-                                            fit="cover"
-                                            source={data.imageUrl}
-                                        />
-                                    </Link>
-                                </View>
-                            )}
+                        {imageLocation === "Above CTA" && data.imageUrl && (
+                            <View>
+                                <Link external to={data.url}>
+                                    <Image
+                                        aspectRatio={1.5}
+                                        borderRadius={["large", "large", "large", "large"]}
+                                        cornerRadius={["large", "large", "large", "large"]}
+                                        fit="cover"
+                                        source={data.imageUrl}
+                                    />
+                                </Link>
+                            </View>
+                        )}
 
-                            <View blockAlignment="center">
-                                {/*
+                        <View blockAlignment="center">
+                            {/*
                                 Button can't support "external".
                                 See https://github.com/Shopify/ui-extensions/issues/1835#issuecomment-2113067449
                                 And because Link can't be full width, the button is restricted in size :(
                                 */}
-                                <Link external to={data.url}>
-                                    <Button inlineAlignment="center">
-                                        {decode(data.defaultCallToAction, EntityLevel.HTML)}
-                                    </Button>
-                                </Link>
-                            </View>
-                        </BlockStack>
-                    </View>
-
-                    {imageLocation === "Below CTA" && data.imageUrl && (
-                        <View>
                             <Link external to={data.url}>
-                                <Image
-                                    aspectRatio={1.5}
-                                    borderRadius={["none", "none", "large", "large"]}
-                                    cornerRadius={["none", "none", "large", "large"]}
-                                    fit="cover"
-                                    source={data.imageUrl}
-                                />
+                                <Button inlineAlignment="center">
+                                    {decode(data.defaultCallToAction, EntityLevel.HTML)}
+                                </Button>
                             </Link>
                         </View>
-                    )}
-                </BlockStack>
-            </View>
+                    </BlockStack>
+                </View>
+
+                {imageLocation === "Below CTA" && data.imageUrl && (
+                    <View>
+                        <Link external to={data.url}>
+                            <Image
+                                aspectRatio={1.5}
+                                borderRadius={["none", "none", "large", "large"]}
+                                cornerRadius={["none", "none", "large", "large"]}
+                                fit="cover"
+                                source={data.imageUrl}
+                            />
+                        </Link>
+                    </View>
+                )}
+            </ConditionalWrapper>
         </ErrorBoundary>
     );
 };

@@ -5,5 +5,5 @@
     "compilerOptions": {
         "jsx": "react-jsx"
     },
-    "include": ["./shared"],
+    "include": ["./shared"]
 }

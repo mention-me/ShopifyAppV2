@@ -30,8 +30,13 @@ import { useMentionMeShopifyConfig } from "../../../shared/hooks/useMentionMeSho
 import { consoleError } from "../../../shared/logging";
 import { ErrorBoundary } from "@sentry/react";
 import useSegmentFromMetafields from "./hooks/useSegmentFromMetafields";
+import ReferrerExperienceAnnouncement from "./ReferrerExperienceAnnouncement";
 
-export const OrderStatus = () => {
+interface Props {
+    announcement?: boolean;
+}
+
+export const OrderStatus = ({ announcement }: Props) => {
     const translate = useTranslate();
 
     const { myshopifyDomain } = useShop();
@@ -101,19 +106,42 @@ export const OrderStatus = () => {
         consoleError(
             "OrderStatus",
             "Purchasing company found. We're in a B2B situation. Mention Me features will be disabled.",
-            purchasingCompany
+            purchasingCompany,
         );
 
         return null;
     }
 
     if (loading) {
-        return <ReferrerExperience.Skeleton />;
+        // You'd think a Skeleton would be nice here. But we'll load one later on once we know what we're rendering.
+        // Otherwise, it can cause this skeleton to flash up, then be removed, and the other to be inserted.
+        return null;
     }
 
     if (!mentionMeConfig) {
         return null;
     }
+
+    const props = {
+        billingAddress: billingAddress,
+        cartLines: cartLines,
+        country: country,
+        customer: customer,
+        discountAllocations: discountAllocations,
+        discountCodes: discountCodes,
+        editor: !!editor,
+        email: email,
+        extensionType: "order-status",
+        giftCards: giftCards,
+        languageOrLocale: languageOrLocale,
+        myshopifyDomain: myshopifyDomain,
+        segment: segment,
+        subTotal: subTotalAmount,
+        total: totalAmount,
+        totalShippingAmount: shippingAmount,
+        totalTaxAmount: taxAmount,
+        translate: translate,
+    };
 
     return (
         <ReferrerJourneyProvider imageLocation={imageLocation} mentionMeConfig={mentionMeConfig} orderId={order.id}>
@@ -124,26 +152,7 @@ export const OrderStatus = () => {
                     scope.setTag("component", "OrderStatus");
                 }}
             >
-                <ReferrerExperience
-                    billingAddress={billingAddress}
-                    cartLines={cartLines}
-                    country={country}
-                    customer={customer}
-                    discountAllocations={discountAllocations}
-                    discountCodes={discountCodes}
-                    editor={!!editor}
-                    email={email}
-                    extensionType="order-status"
-                    giftCards={giftCards}
-                    languageOrLocale={languageOrLocale}
-                    myshopifyDomain={myshopifyDomain}
-                    segment={segment}
-                    subTotal={subTotalAmount}
-                    total={totalAmount}
-                    totalShippingAmount={shippingAmount}
-                    totalTaxAmount={taxAmount}
-                    translate={translate}
-                />
+                {announcement ? <ReferrerExperienceAnnouncement {...props} /> : <ReferrerExperience {...props} />}
             </ErrorBoundary>
         </ReferrerJourneyProvider>
     );

@@ -1,49 +1,49 @@
 {
-	"checkout": {
-		"modal": {
-			"error": "Beklager, en ukendt fejl er opstået. Prøv venligst igen senere."
-		}
-	},
-	"success": {
-		"discount-applied": "Din rabat er blevet anvendt."
-	},
-	"find-friend": {
-		"form": {
-			"error": {
-				"name": {
-					"missing": "Indtast venligst din vens navn."
-				},
-				"email": {
-					"missing-or-invalid": "Indtast venligst din vens e-mailadresse."
-				}
-			}
-		}
-	},
-	"register-result": {
-		"apply-discount": "Anvend rabat",
-		"error": {
-			"applying-coupon": "Vi kunne ikke anvende din rabat"
-		}
-	},
-	"who-are-you": {
-		"form": {
-			"label": {
-				"your-email": "Din e-mailadresse"
-			},
-			"error": {
-				"your-email": "Indtast venligst din e-mailadresse."
-			},
-			"terms-link": "Vilkår og betingelser",
-			"submit": "Anmod om din belønning"
-		},
-		"privacy": {
-			"text": "Vores vennehenvisningsprogram administreres af Mention Me, som vil behandle dine data og sende dig henvisningsmails.",
-			"link": "Mere info og dine privatlivsrettigheder."
-		},
-		"terms": {
-			"text": "Ved at acceptere dette tilbud accepterer du",
-			"link": "Vilkår og betingelser"
-		}
-	},
-	"powered-by": "Drevet af"
+    "checkout": {
+        "modal": {
+            "error": "Beklager, en ukendt fejl er opstået. Prøv venligst igen senere."
+        }
+    },
+    "success": {
+        "discount-applied": "Din rabat er blevet anvendt."
+    },
+    "find-friend": {
+        "form": {
+            "error": {
+                "name": {
+                    "missing": "Indtast venligst din vens navn."
+                },
+                "email": {
+                    "missing-or-invalid": "Indtast venligst din vens e-mailadresse."
+                }
+            }
+        }
+    },
+    "register-result": {
+        "apply-discount": "Anvend rabat",
+        "error": {
+            "applying-coupon": "Vi kunne ikke anvende din rabat"
+        }
+    },
+    "who-are-you": {
+        "form": {
+            "label": {
+                "your-email": "Din e-mailadresse"
+            },
+            "error": {
+                "your-email": "Indtast venligst din e-mailadresse."
+            },
+            "terms-link": "Vilkår og betingelser",
+            "submit": "Anmod om din belønning"
+        },
+        "privacy": {
+            "text": "Vores vennehenvisningsprogram administreres af Mention Me, som vil behandle dine data og sende dig henvisningsmails.",
+            "link": "Mere info og dine privatlivsrettigheder."
+        },
+        "terms": {
+            "text": "Ved at acceptere dette tilbud accepterer du",
+            "link": "Vilkår og betingelser"
+        }
+    },
+    "powered-by": "Drevet af"
 }
